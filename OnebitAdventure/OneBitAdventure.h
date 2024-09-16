@@ -10,34 +10,12 @@ enum OneBitObjects // Enumeração dos tipos de objetos
     PLAYER,
     ENEMY,
     PROP,
+    BOX,
     DOOR,
     CHEST,
     COIN,
-	GRASS,
-    WALL,
-    TREE,
-    PILLAR,
-    FENCE,
-	CAMPFIRE
-};
-
-// ------------------------------------------------------------------------------
-
-enum DirectingAnimation // Enumeração dos estados de movimentação
-{ 
-    STILL, 
-    WALKUP, 
-    WALKDOWN, 
-    WALKLEFT, 
-    WALKRIGHT,
-    DAMAGE
-};
-
-// ------------------------------------------------------------------------------
-
-enum MovementType // Enumeração dos estados de animação
-{
-	ATACK, WALK, BACK, IDLE
+	CAMPFIRE,
+    PILLAR
 };
 
 // ------------------------------------------------------------------------------

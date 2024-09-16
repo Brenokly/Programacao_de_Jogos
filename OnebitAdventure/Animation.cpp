@@ -81,24 +81,26 @@ void Animation::Add(uint id, uint * seq, uint seqSize)
 
 void Animation::Select(uint id)
 {
-    const auto & [seq, size] = table[id];
+    // Retorna se a sequência não existe na tabela
+    if (table.find(id) == table.end())
+        return;
 
-    // se uma nova sequência for selecionada
-    if (sequence != seq)
-    {
-        // aponta para nova sequência
+    const auto& [seq, size] = table[id];
+
+    // Se uma nova sequência for selecionada
+    if (sequence != seq) {
+        // Aponta para a nova sequência
         sequence = seq;
 
-        // reinicia a sequência
+        // Reinicia a sequência
         iniFrame = 0;
         endFrame = size - 1;
 
-        // se o frame atual está fora da sequência
+        // Se o frame atual está fora da sequência
         if (frame > endFrame)
             frame = 0;
     }
 }
-
 
 // ---------------------------------------------------------------------------------
 

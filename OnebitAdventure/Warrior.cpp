@@ -2,119 +2,146 @@
 // Inclusões
 
 #include "Warrior.h"
-#include "Enemy.h"
-#include "Ghost.h"
 #include "Level1.h"
-#include "Sprite.h"
+#include "Ghost.h"
 
 // ---------------------------------------------------------------------------------
 
 // Construtor da classe Warrior, inicializa tudo especifico do Warrior
-Warrior::Warrior(float width, float height) 
-	: Character(width, height) // Chamada do construtor da classe base
+Warrior::Warrior(int col, int line)
+	: Character() // Chamada do construtor da classe base
 {
-	Image* img = new Image("Resources/WarriorSprite.png", this->width * 4, this->height * 2); // Carrega a imagem do Warrior
-	walking = new TileSet(img, this->width, this->height, 4, 8);                              // Cria o TileSet do Warrior
-	anim = new Animation(walking, 0.125f, true);											  // Cria a animação do Warrior
+	// Cria o TileSet do Warrior
+	tileSet = new TileSet("Resources/WarriorSprite.png", width * 4, height * 2, 
+		width, height, 4, 8);
 
-    uint SeqRight[4] = { 0,1,2,3 };
-    uint SeqLeft[4] = { 4,5,6,7 };
-    anim->Add(WALKRIGHT, SeqRight, 4);
-    anim->Add(WALKLEFT, SeqLeft, 4);
+	// Cria a animação do Warrior
+	anim = new Animation(tileSet, 0.125f, true);
+	damageTimer = new Timer();
 
-	maxLife = 52 + (10 * (level - 1));
-    vida = maxLife;
-	danoAtaque = 2;			// Dano de ataque de 2
-	chanceCritica = 2.0f;   // Chance de crítico de 2%
+    uint Left[4]  = { 0, 1, 2, 3 };
+    uint Right[4] = { 4, 5, 6, 7 };
+
+	// Adiciona as combinações de estado de animação e direção em que 
+	// a sequência de animações muda
+	anim->Add(WALK | RIGHT, Right, 4);
+    anim->Add(WALK | LEFT, Left, 4);
+
+	animState = WALK;
+	direction = LEFT;
+
+	maxLife = 52 + (10 * (level - 1));	// Vida máxima do Warrior por nível
+	life = maxLife;						// Vida padrão do Warrior
+	attack = 2;							// Dano de ataque de 2
+	criticalChance = 2.0f;				// Chance de crítico de 2%
 
     // Inicialize BBox após walking ser definido
     InitializeBBox();
 
-	// Inicializa a posição do Warrior ao lado da fogueira
-	float col = Level1::hud->Col(5);
-	float line = Level1::hud->Line(7);
-	MoveTo(col, line, Layer::UPPER);
-
-	targetX = X();
-	targetY = Y();
+	// Inicializa a posição
+	MoveTo(Level1::hud->Col(col), Level1::hud->Line(line), Layer::MIDDLE);
 }
 
 // ---------------------------------------------------------------------------------
 
 Warrior::~Warrior()
 {
-	delete walking;
+	delete damageTimer;
 	delete anim;
+	delete tileSet;
+}
+
+// ---------------------------------------------------------------------------------
+
+void Warrior::UpdateAnimation()
+{
+	anim->Select(animState | direction);	// Seleciona a sequência de animação
+	anim->NextFrame();                      // Atualiza a animação
 }
 
 // ---------------------------------------------------------------------------------
 
 void Warrior::OnCollision(Object* obj)
 {
-	Enemy* enemy = (Enemy*)obj;
+	if (isDead) return;
 
-	if (obj->Type() == ENEMY && isHit) {
+	uint type = obj->Type();
 
-		timer->Start(); // Inicia o timer para o cálculo de tempo de exibição da mensagem!
-		attackTimer->Start(); // Inicia o timer para o cálculo de tempo de pausa entre os ataques!
+	// Se o objeto colidido for um inimigo
+	if (type == ENEMY)
+	{
+		if (!isHit) return;
 
-		int EnemyX = enemy->GetPrevX();
-		int EnemyY = enemy->GetPrevY();
-		int PlayerX = targetX;
-		int PlayerY = targetY;
+		Enemy* enemy = (Enemy*)obj;
 
-		// Se o player vai para a posição anterior do inimigo, ele ataca o inimigo e vice-versa
-		if (PlayerX == EnemyX && PlayerY == EnemyY) {
+		txtTimer->Start();			// Inicia o timer para o cálculo de tempo de exibição da mensagem!
 
-			SetMovementType(BACK);
+		// Reinicia o timer de ataque
+		attackTimer->Reset();	// Inicia o timer para o cálculo de tempo de pausa entre os ataques!
 
-			// Recupera a referência ao inimigo colidido
-			int dano = danoAtaque;
+		// Pega a direção em que o inimigo está se movendo
+		Direction enemyDirection = enemy->GetDirection();
 
-			// Gera um número aleatório entre 0 e 100
-			int randomValue = rand() % 100;
+		// Verifica se o Warrior e o inimigo estão se colidindo em direções opostas
+		bool verticalCollision = (direction == UP && enemyDirection == DOWN) 
+			|| (direction == DOWN && enemyDirection == UP);
 
-			// Se o valor gerado for menor que a chance crítica, aplica o crítico
-			if (randomValue < chanceCritica) {
-				dano *= 2; // Dano crítico, multiplicado por 2
+		bool horizontalCollision = (direction == LEFT && enemyDirection == RIGHT) 
+			|| (direction == RIGHT && enemyDirection == LEFT);
+
+		// Calcula a distância entre os destinos do Warrior e o inimigo
+		int prevDist = PrevDistance(enemy);
+
+		// Player realiza o ataque se tiverem direções opostas ou o ghost estiver parado
+		if (verticalCollision || horizontalCollision || enemyDirection == STILL)
+		{
+			// Se estiverem a menos de 1 tile de distância, o Warrior ataca
+			if (prevDist < 1.5f * height)
+			{
+				// Gera um número aleatório entre 0 e 100
+				int randomValue = rand() % 100;
+
+				float dano = attack; // Dano normal
+
+				// Se o valor gerado for menor que a chance crítica, aplica o crítico
+				if (randomValue < criticalChance)
+				{
+					dano *= 2; // Dano crítico, multiplicado por 2
+				}
+
+				// Aplica o dano ao inimigo
+				enemy->SetDamage(dano);
+
+				// seta a mensagem de dano no unordered_map
+				// Dano que o personagem causou
+				text.insert({ std::to_string(enemy->GetDamage()), Color(1.0f,1.0f,1.0f,1.0f) });
+
+				// Inicia a contagem de tempo de exibição de dano
+				damageTimer->Reset();
+
+				Move(BACK); // Volta para a posição anterior
 			}
-
-			// Aplica o dano ao inimigo
-			enemy->SetVida(dano);
-
-			// seta a mensagem de dano no unored_map
-			// Dano que o personagem causou
-			text.insert({ std::to_string((int)dano), Color(1.0f,1.0f,1.0f,1.0f) });
-
-			// Dano que o inimigo causou
-			text.insert({ std::to_string((int)enemy->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
 		}
-		else {
-			// Se o player não vai para a posição anterior do inimigo, ele é atingido pelo inimigo
-			SetMovementType(WALK);
-			// Dano que o inimigo causou
-			text.insert({ std::to_string((int)enemy->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
-		}
+
+		// Inicia a contagem de tempo de exibição de dano
+		damageTimer->Reset();
 
 		// Evita que o Warrior continue a ser atingido até que a próxima colisão seja registrada
 		isHit = false;
-
-		// Se a vida do personagem for menor ou igual a 0, remove-o da cena
-		if (vida <= 0) {
-
-			Image* img = new Image("Resources/morte.png", 64, 64); // Carrega a imagem do Warrior
-			walking = new TileSet(img, 64, 64, 1, 1);              // Cria o TileSet do Warrior
-			anim = new Animation(walking, 0.125f, true);		   //
-			isDead = true;										   // foi de base
-		}
 	}
-	else if (obj->Type() == COIN)
+	else if (type == COIN)
 	{
 		Level1::scene->Delete(obj, STATIC);
 	}
-	else if (obj->Type() != DOOR)
+	else if (type != DOOR)
 	{
-		SetMovementType(BACK);
+		// Se o objeto colidido for diferente de uma porta, o Warrior volta para a posição anterior
+		Move(BACK);
+
+		if (type == BOX)
+		{
+			// Implementar interação com a caixa: sprite de vida e itens dropados
+		}
 	}
 }
 

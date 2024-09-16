@@ -114,12 +114,6 @@
     <ClCompile Include="Warrior.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Ghost.cpp">
-      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Hud.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
@@ -128,6 +122,27 @@
     </ClCompile>
     <ClCompile Include="Prop.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Game\Arquivos de Origem\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Engine\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Engine\Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,12 +209,6 @@
     <ClInclude Include="Warrior.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Ghost.h">
-      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Game\Arquivos de Recurso</Filter>
     </ClInclude>
@@ -214,6 +223,27 @@
     </ClInclude>
     <ClInclude Include="Prop.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Engine\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Engine\Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

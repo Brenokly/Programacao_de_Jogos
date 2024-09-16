@@ -1,6 +1,6 @@
 /**********************************************************************************
 // Sprite (Arquivo de Cabeçalho)
-// 
+//
 // Criação:     11 Jul 2007
 // Atualização: 23 Ago 2023
 // Compilador:  Visual C++ 2022
@@ -72,14 +72,15 @@ class Sprite
 {
 private:
     SpriteData sprite;              // dados do sprite 
+    const Image* image;            // ponteiro para uma imagem
     bool localImage;                // imagem local ou externa
-    const Image * image;            // ponteiro para uma imagem
 
 public:
-    Sprite(string filename);                                    // constroi sprite a partir de um arquivo
-    Sprite(string filename, float width, float height);         // constroi sprite a partir de um arquivo
-    Sprite(const Image * img);                                  // constroi sprite a partir de imagem existente
-    ~Sprite();                                                  // destrutor do sprite
+    Sprite(string filename);        // constroi sprite a partir de um arquivo
+    // constroi sprite redimensionado a partir de um arquivo
+    Sprite(string filename, uint width, uint height);
+    Sprite(const Image* img);      // constroi sprite a partir de imagem existente
+    ~Sprite();                      // destrutor do sprite
 
     int Width();                    // largura do sprite
     int Height();                   // altura do sprite
@@ -101,12 +102,16 @@ public:
 // Funções Inline
 
 // retorna a largura do sprite
-inline int Sprite::Width() 
-{ return image->Width(); }
+inline int Sprite::Width()
+{
+    return image->Width();
+}
 
 // retorna a altura do sprite
-inline int Sprite::Height() 
-{ return image->Height(); }
+inline int Sprite::Height()
+{
+    return image->Height();
+}
 
 // ---------------------------------------------------------------------------------
 

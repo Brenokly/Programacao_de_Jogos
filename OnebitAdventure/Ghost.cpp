@@ -1,75 +1,105 @@
 // ---------------------------------------------------------------------------------
 // Inclusões
 
-#include "OneBitAdventure.h"
 #include "Ghost.h"
+#include "OneBitAdventure.h"
+#include "Character.h"
 #include "Level1.h"
-#include "Prop.h"
 
 // ---------------------------------------------------------------------------------
 
 // Construtor da classe Ghost, inicializa tudo especifico do Ghost
-Ghost::Ghost(float width, float height, float col, float line)
-	: Enemy(width, height) // Chamada do construtor da classe base
+Ghost::Ghost(float col, float line)
+	: Enemy() // Chamada do construtor da classe base
 {
-	Image* img = new Image("Resources/GhostFolha.png", this->width * 3, this->height * 2);	// Carrega a imagem do Ghost
-	walking = new TileSet(img, this->width, this->height, 3, 6);							// Cria o TileSet do Ghost
-	anim = new Animation(walking, 0.145f, true);
-	// Cria a animação do Ghost
+	width = Level1::hud->tileWidth;
+	height = Level1::hud->tileHeight;
 
-	enemyState = WALK;						// Estado inicial do Ghost
+	// Inicializa TileSet a animação do Ghost
+	tileSet = new TileSet("Resources/GhostFolha.png", width * 3, height * 2,
+		width, height, 3, 6);
+	anim = new Animation(tileSet, 0.145f, true);
+	damageTimer = new Timer();
 
+	// Cria as sequências de animação
 	uint Seq1[3] = { 0,1,2 };
 	uint Seq2[3] = { 3,4,5 };
 	anim->Add(WALK, Seq1, 3);
 	anim->Add(ATACK, Seq2, 3);
 
-	vidaMax = 5 + (10 * (level - 1));		// Vida máxima do Ghost por nível
-	vida = vidaMax;							// Vida padrão do fastasma (Não tem na wiki informando o máximo nem quanto aumenta)
-	danoAtaque = 3 + (2 * (level - 1));		// Dano de ataque de 1	(Não tem na wiki informando o máximo nem quanto aumenta)
+	animSeq = WALK;
+	anim->Select(animSeq);
+
+	level = 1;								// Nível do Ghost
+	maxLife = 5 + (10 * (level - 1));		// Vida máxima do Ghost por nível
+	life = maxLife;							// Vida padrão do fastasma (Não tem na wiki informando o máximo nem quanto aumenta)
+	attack = 3 + (2 * (level - 1));		// Dano de ataque de 1	(Não tem na wiki informando o máximo nem quanto aumenta)
 
 	// Inicialize BBox após walking ser definido
 	InitializeBBox();
 
-	MoveTo(col, line, Layer::UPPER);
+	// Inicializa a posição
+	MoveTo(Level1::hud->Col(col), Level1::hud->Line(line), Layer::MIDDLE);
 
 	name = "Ghost";							// Nome do Ghost
-
-	targetX = X();
-	targetY = Y();
 }
 
 // ---------------------------------------------------------------------------------
 
 Ghost::~Ghost()
 {
+	delete damageTimer;
 	delete anim;
-	delete walking;
+	delete tileSet;
+}
+
+// ---------------------------------------------------------------------------------
+
+void Ghost::UpdateAnimation()
+{
+	anim->Select(animState);
+	anim->NextFrame();
 }
 
 // ---------------------------------------------------------------------------------
 
 void Ghost::OnCollision(Object* obj)
 {
-	// Implemente a lógica de resolução de colisão aqui
+	uint type = obj->Type();
 
-	if (obj->Type() == PLAYER && isHit) { // Se o objeto colidido for o jogador, ataca o jogador e volta para trás
-		anim->Select(ATACK);
+	// Se o objeto colidido for o player
+	if (type == PLAYER)
+	{
+		if (!isHit) return;
 
-		targetX = prevX;
-		targetY = prevY;
+		Entity* player = (Entity*)(obj);
 
-		Character* player = (Character*)(obj);
-		player->SetVida(danoAtaque);
+		float targetDist = TargetDistance(player);	// Diferença entre os targets
 
-		if (vida <= 0) {
+		// Se o ghost e o player tiverem o mesmo destino (targetX e targetY)
+		if (targetDist < 4.0f || direction != STILL)
+		{
+			player->SetDamage(attack);		// Ataca o player
+
+			// Dano que o inimigo causou
+			((Character*)player)->text.insert({std::to_string(player->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f)});
+
+			Move(BACK);								// Volta o ghost para trás
+		}
+
+		// Verifica se o ghost morreu após receber o dano
+		if (life <= 0)
+		{
 			// Morreu
 			// Deleta o objeto
-			Level1::scene->Delete(this, MOVING);
-			player->setXp(20 * (level));
+			Level1::scene->Remove((Object*)this, MOVING);
+			((Character*)player)->SetXp(20 * (level));	            // Adiciona a experiência ao player
 		}
 
 		isHit = false;
+	}
+	else if (type == ENEMY) {
+		Move(BACK);
 	}
 }
 
