@@ -77,6 +77,10 @@ void Prop::Update()
 	CameraMovement();
 
 	UpdateAnimation();
+
+	if (y - (height / 2.0f) >= window->Height()) {
+		Level1::scene->Delete();
+	}
 }
 
 // ----------------------------------------------------------------------------------

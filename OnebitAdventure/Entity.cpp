@@ -8,14 +8,14 @@ Entity::Entity()
     deltaX(0), deltaY(0), newX(0), newY(0), 
     distance(0), limiarDist(0), pullStrength(0), direction(STILL),
     life(0), maxLife(0), attack(0), defense(0), damage(0),
-	isHit(false), isDead(false), isMoving(false)
+	isHit(false), isDead(false), isMoving(false), level(0)
 {
     width = Level1::hud->tileWidth;
     height = Level1::hud->tileHeight;
 
     limiar = window->CenterY();
 
-	speed = 250.0f;  // Velocidade de movimento
+	speed = 400.0f;  // Velocidade de movimento
 
     // Raio de distância na qual começa a desaceleração
     slowDownRadius = width * 0.3f;  // Desacelera a 30% da largura do tile

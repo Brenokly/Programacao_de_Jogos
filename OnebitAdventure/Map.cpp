@@ -21,6 +21,7 @@ typedef vector<floatMatrix> chunkMatrix;
 typedef std::uniform_int_distribution<int> intDistribution;
 typedef std::uniform_real_distribution<double> doubleDistribution;
 
+
 // Constantes
 const int tamanho = 11;   // Tamanho do mapa
 const int nChunks = 20;	  // Número de chunks no mapa

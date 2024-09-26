@@ -16,6 +16,8 @@ private:
 	TileSet* tileBackg = nullptr;  // tile set do fundo
 
 public:
+
+
 	void Init();                    // inicialização
 	void Update();                  // atualização
 	void Draw();                    // desenho

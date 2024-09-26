@@ -8,6 +8,7 @@
 #include "Engine.h"
 #include <cstdlib>
 #include <ctime>
+#include "Hydra.h"
 
 // ------------------------------------------------------------------------------
 
@@ -24,19 +25,21 @@ void Level1::Init()
 
     scene = new Scene();
     hud = new Hud();
-    map = new Map(std::rand() % 100);
+    //map = new Map(std::rand() % 100);
     player = new Warrior(5, 7);
-    
+    Hydra* hydra = new Hydra(8, 10);
+
     scene->Add(hud, STATIC);
     scene->Add(player, MOVING);
-    scene->Add(new Ghost(8, 10), MOVING);
-    scene->Add(new Ghost(5, 12), MOVING);
-    scene->Add(new Ghost(2, 2), MOVING);
-    scene->Add(new Ghost(1, 7), MOVING);
-    scene->Add(new Ghost(8, 14), MOVING);
-    scene->Add(new Ghost(5, 15), MOVING);
-    scene->Add(new Ghost(2, 12), MOVING);
-    scene->Add(new Ghost(1, 17), MOVING);
+    scene->Add(hydra, MOVING);
+    //scene->Add(new Ghost(8, 10), MOVING);
+    //scene->Add(new Ghost(5, 12), MOVING);
+    //scene->Add(new Ghost(2, 2), MOVING);
+    //scene->Add(new Ghost(1, 7), MOVING);
+    //scene->Add(new Ghost(8, 14), MOVING);
+    //scene->Add(new Ghost(5, 15), MOVING);
+    //scene->Add(new Ghost(2, 12), MOVING);
+    //scene->Add(new Ghost(1, 17), MOVING);
 }
 
 // ------------------------------------------------------------------------------

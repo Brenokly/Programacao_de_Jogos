@@ -20,13 +20,12 @@ void Enemy::InitializeBBox()
 // ------------------------------------------------------------------------------
 
 // Construtor da classe Enemy
-Enemy::Enemy()
-    : Entity()
+Enemy::Enemy() : Entity()
 {
     // --------------------------------------------------------------------------------------------
     // Inicializa as variáveis de estado do inimigo
 
-    type = ENEMY;                 // Tipo do inimigo
+    type = ENEMY;                        // Tipo do inimigo
 	proximityThreshold = 2.0f * width;   // Distância para iniciar a perseguição ao jogador
 
     // --------------------------------------------------------------------------------------------
@@ -61,7 +60,7 @@ void Enemy::Update()
 {
     if (Level1::player->IsMoving())
 	{
-        HandleMovement();                                   // Define a direção de movimento
+		HandleMovement(90.0f);                              // Define a direção de movimento com 90% de chance de seguir o jogador
     }
 
 	CameraMovement();									    // Atualiza a movimentação da câmera
@@ -73,6 +72,13 @@ void Enemy::Update()
     if (Distance(Level1::player) <= height + 2.25f)
     {
         DisplayEnemyHealth();
+    }
+
+    // Verifica se o ghost morreu após receber o dano
+    if (life <= 0) {
+ 
+        Level1::scene->Remove(this, MOVING);
+		Level1::player->SetXp(20 * level);	                // Adiciona a experiência ao player
     }
 
     UpdateAnimation();                                      // Atualiza a animação do inimigo
@@ -106,17 +112,17 @@ void Enemy::MoveRandomly() {
 // ------------------------------------------------------------------------------
 
 // Lida com a movimentação do inimigo
-void Enemy::HandleMovement()
+void Enemy::HandleMovement(float moveToPlayer)
 {
     // Se o inimigo já chegou ao destino anterior, então, ele pode se mover novamente
     if (!isMoving)
     {
-        isHit = true;   // Indica que o inimigo pode atacar o jogador
+        isHit = true;       // Indica que o inimigo pode atacar o jogador
         isMoving = true;
 
         if (Distance(Level1::player) < proximityThreshold) {
             // 85% de chance de mover na direção do jogador
-            if (rand() % 100 < 90) {
+            if (rand() % 100 < moveToPlayer) {
                 MoveTowardsPlayer();
             }
             else {

@@ -30,7 +30,7 @@ public:
 	Map(uint seed);
 	~Map();
 
-	void Generate();						// Gera um chunk
+	void Generate();									// Gera um chunk
 };
 
 // ------------------------------------------------------------------------------

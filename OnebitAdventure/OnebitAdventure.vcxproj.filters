@@ -52,6 +52,12 @@
     <Filter Include="Game\Arquivos de Cabeçalho\Entity\Prop">
       <UniqueIdentifier>{376bcf3f-53de-40ba-8e30-ae1ac94ef791}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Arquivos de Origem\Entity\Bosses">
+      <UniqueIdentifier>{9bde06f5-64eb-4a28-b5be-a412f4c103ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Bosses">
+      <UniqueIdentifier>{2b94ad73-22f1-49a4-98cf-a0c1df7fb51b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -120,9 +126,6 @@
     <ClCompile Include="Character.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Prop.cpp">
-      <Filter>Game\Arquivos de Origem\Entity\Prop</Filter>
-    </ClCompile>
     <ClCompile Include="Chunk.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
@@ -143,6 +146,15 @@
     </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>Engine\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Hydra.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="Prop.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Bosses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Engine\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Hydra.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

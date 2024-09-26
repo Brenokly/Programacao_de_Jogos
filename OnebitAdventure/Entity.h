@@ -72,35 +72,37 @@ protected:
 
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
-	virtual void OnCollision(Object* obj) = 0;	// resolução da colisão
-	virtual void UpdateAnimation() = 0;			// atualização da animação
+	virtual void OnCollision(Object* obj) = 0;			// resolução da colisão
+	virtual void UpdateAnimation() = 0;					// atualização da animação
 
 	// Combina a direção e o estado da animação para retornar uma sequência de animação única
 	uint GetAnimSeq(Direction direction, AnimationState animState);
 
-	void Movement();							// realiza a movimentação da entidade
-	void CameraMovement();						// realiza a movimentação da câmera
-	void ConstrainToScreen();					// limita a movimentação da entidade à tela
+	void Movement();									// realiza a movimentação da entidade
+	void CameraMovement();								// realiza a movimentação da câmera
+	void ConstrainToScreen();							// limita a movimentação da entidade à tela
 
 public:
 	Entity();
-	~Entity();
+	virtual ~Entity() = 0;								// Virtual puro
 
 	void Move(Direction direction);						// define a direção do próximo movimento
 	void MoveTo(float x, float y, float z) override;	// move a entidade para a posição (x, y, z)
 	
 	// Métodos Get
-	bool IsMoving() const;						// retorna se está executando um movimento
-	bool IsHit() const;
-	bool IsDead() const;
-	float GetTargetX() const;
-	float GetTargetY() const;
-	float GetPrevX() const;
-	float GetPrevY() const;
-	int GetLife() const;
-	int GetMaxLife() const;
-	int GetDamage() const;						// retorna dano recebido
-	Direction GetDirection() const;				// retorna a direção atual
+	bool IsMoving() const;								// retorna se está executando um movimento
+	bool IsHit() const;									// retorna se a entidade já atacou
+	bool IsDead() const;								// retorna se a entidade está morta
+	float GetTargetX() const;							// retorna a posição x do destino
+	float GetTargetY() const;							// retorna a posição y do destino
+	float GetPrevX() const;								// retorna a posição x anterior
+	float GetPrevY() const;								// retorna a posição y anterior
+	int GetLife() const;								// retorna vida atual
+	int GetMaxLife() const;								// retorna vida máxima
+	int GetDamage() const;								// retorna dano recebido
+	float GetWidth() const;								// retorna a largura da entidade
+	float GetHeight() const;							// retorna a altura da entidade
+	Direction GetDirection() const;						// retorna a direção atual
 
 	// calcula a distância entre duas entidades
 	float Distance(Entity* entity) const;
@@ -111,7 +113,7 @@ public:
 	// calcula a diferença entre as posições anteriores de duas entidades
 	float PrevDistance(Entity* entity) const;
 
-	void SetDamage(int damage);					// recebe o dano causado por outra entidade
+	void SetDamage(int damage);							// recebe o dano causado por outra entidade
 };
 
 // ----------------------------------------------------------------------------------
@@ -176,6 +178,16 @@ inline int Entity::GetMaxLife() const
 inline int Entity::GetDamage() const
 {
 	return damage;
+}
+
+inline float Entity::GetWidth() const
+{
+	return width;
+}
+
+inline float Entity::GetHeight() const
+{
+	return height;
 }
 
 inline Direction Entity::GetDirection() const

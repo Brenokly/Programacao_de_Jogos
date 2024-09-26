@@ -8,40 +8,50 @@
 
 // ---------------------------------------------------------------------------------
 
-// Construtor da classe Ghost, inicializa tudo especifico do Ghost
-Ghost::Ghost(float col, float line)
-	: Enemy() // Chamada do construtor da classe base
+// Construtor da classe Ghost
+Ghost::Ghost(float col, float line) : Enemy() // Chamada do construtor da classe base
 {
-	width = Level1::hud->tileWidth;
-	height = Level1::hud->tileHeight;
+    // --------------------------------------------------------------------------------------------
+    // Inicializa variáveis de dimensão e tile set
 
-	// Inicializa TileSet a animação do Ghost
-	tileSet = new TileSet("Resources/GhostFolha.png", width * 3, height * 2,
-		width, height, 3, 6);
-	anim = new Animation(tileSet, 0.145f, true);
-	damageTimer = new Timer();
+    width = Level1::hud->tileWidth;
+    height = Level1::hud->tileHeight;
 
-	// Cria as sequências de animação
-	uint Seq1[3] = { 0,1,2 };
-	uint Seq2[3] = { 3,4,5 };
-	anim->Add(WALK, Seq1, 3);
-	anim->Add(ATACK, Seq2, 3);
+    // Inicializa TileSet com a animação do Ghost
+    tileSet = new TileSet("Resources/GhostFolha.png", width * 3, height * 2, width, height, 3, 6);
+    anim = new Animation(tileSet, 0.145f, true);
 
-	animSeq = WALK;
-	anim->Select(animSeq);
+    // --------------------------------------------------------------------------------------------
+    // Inicializa o temporizador de dano e as sequências de animação
 
-	level = 1;								// Nível do Ghost
-	maxLife = 5 + (10 * (level - 1));		// Vida máxima do Ghost por nível
-	life = maxLife;							// Vida padrão do fastasma (Não tem na wiki informando o máximo nem quanto aumenta)
-	attack = 3 + (2 * (level - 1));		// Dano de ataque de 1	(Não tem na wiki informando o máximo nem quanto aumenta)
+    damageTimer = new Timer();
 
-	// Inicialize BBox após walking ser definido
-	InitializeBBox();
+    uint Seq1[3] = { 0, 1, 2 };  // Sequência de caminhada
+    uint Seq2[3] = { 3, 4, 5 };  // Sequência de ataque
 
-	// Inicializa a posição
-	MoveTo(Level1::hud->Col(col), Level1::hud->Line(line), Layer::MIDDLE);
+    anim->Add(WALK, Seq1, 3);
+    anim->Add(ATACK, Seq2, 3);
+    animSeq = WALK;  // Define sequência inicial como caminhada
+    anim->Select(animSeq);
 
-	name = "Ghost";							// Nome do Ghost
+    // --------------------------------------------------------------------------------------------
+    // Inicializa variáveis de status do Ghost (nível, vida e ataque)
+
+    level = 1;                             // Nível do Ghost
+    maxLife = 5 + (10 * (level - 1));      // Vida máxima do Ghost por nível
+    life = maxLife;                        // Vida atual do Ghost
+    attack = 3 + (2 * (level - 1));        // Dano de ataque do Ghost
+
+    // --------------------------------------------------------------------------------------------
+    // Inicializa bounding box e posição do Ghost
+
+    InitializeBBox();
+    MoveTo(Level1::hud->Col(col), Level1::hud->Line(line), Layer::MIDDLE);
+
+    // --------------------------------------------------------------------------------------------
+    // Inicializa o nome do Ghost
+
+    name = "Ghost";  // Nome do Ghost
 }
 
 // ---------------------------------------------------------------------------------
