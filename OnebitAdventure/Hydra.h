@@ -17,6 +17,8 @@ protected:
 
 	TileSet* ataque1;													// TileSet da Hydra
 	Animation* animAtaque1;												// Animação do ataque
+	int seqAtaque1[3];													// Sequência de animação do ataque
+	int indexAtaque1;													// Índice do ataque
 
 	void InitializeBBox() override;										// Inicializa a caixa de colisão (BBox)
 public:
@@ -24,14 +26,13 @@ public:
 	~Hydra() override;
 
 	void OnCollision(Object* obj) override;								// resolução da colisão
-	void UpdateAnimation() override;									// atualização da animação do Ghost
 
 	// Métodos de Ataque
-	void Varredura();
 	void Ataque2();
 	void Ataque3();
 
 	void Update() override;												// atualização do estado do Boss
+	void Draw() override;												// desenho do Boss
 	void DrawHealthBar() override;										// Desenha a barra de vida do inimigo 
 	void DrawHealthText() override;										// Desenha o texto de vida do inimigo
 	void DrawLevel() override;											// Desenha o nível do inimigo

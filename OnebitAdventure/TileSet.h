@@ -30,32 +30,32 @@ private:
     uint height;                            // altura de um quadro
     uint columns;                           // número de colunas na folha
     uint size;                              // quantidade de quadros na folha
-	bool localImage;    		            // flag para indicar se a imagem é local
+    bool localImage;    		            // flag para indicar se a imagem é local
 
 public:
     TileSet(string filename,                // nome do arquivo
-		    uint imgWidth,  		        // largura da imagem
-		    uint imgHeight,				    // altura da imagem
-            uint tileWidth,                 // largura de um quadro
-            uint tileHeight,                // altura de um quadro
-            uint numCols,                   // número de colunas na folha
-            uint numTiles);                 // quantidade de quadros
-
-    TileSet(Image* image,                   // imagem da folha
-            uint tileWidth,                 // largura de um quadro
-            uint tileHeight,                // altura de um quadro
-            uint numCols,                   // número de colunas na folha
-            uint numTiles);                 // quantidade de quadros
+        uint imgWidth,  		        // largura da imagem
+        uint imgHeight,				    // altura da imagem
+        uint tileWidth,                 // largura de um quadro
+        uint tileHeight,                // altura de um quadro
+        uint numCols,                   // número de colunas na folha
+        uint numTiles);                 // quantidade de quadros
 
     TileSet(string filename,                // nome do arquivo
             uint numLines,                  // número de linhas na folha
             uint numCols);                  // número de colunas na folha
 
-    TileSet(Image* image,                  // imagem da folha
-            uint numLines,                  // número de linhas na folha
-            uint numCols);				    // número de colunas na folha
+    TileSet(Image* image,                   // imagem da folha
+        uint tileWidth,                     // largura de um quadro
+        uint tileHeight,                    // altura de um quadro
+        uint numCols,                       // número de colunas na folha
+        uint numTiles);                     // quantidade de quadros
 
-    ~TileSet();                     
+    TileSet(Image* image,                   // imagem da folha
+        uint numLines,                      // número de linhas na folha
+        uint numCols);				        // número de colunas na folha
+
+    ~TileSet();                                
 
     uint    TileWidth();                    // retorna a largura de um quadro
     uint    TileHeight();                   // retorna a altura de um quadro
@@ -102,7 +102,3 @@ inline ID3D11ShaderResourceView * TileSet::View()
 // ---------------------------------------------------------------------------------
 
 #endif
-
-
-
-

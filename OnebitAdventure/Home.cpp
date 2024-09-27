@@ -1,7 +1,7 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#include "Engine.h"
+#include "OneBitAdventure.h"
 #include "Home.h"
 #include "Select.h"
 
@@ -15,6 +15,8 @@ void Home::Init()
 
     // tela de fundo é uma animação de um tile set 1x2
     backg = new Animation(tileBackg, 0.6f, true);
+
+	OneBitAdventure::audio->Play(MENU);
 }
 
 // ------------------------------------------------------------------------------
@@ -28,11 +30,11 @@ void Home::Update()
     // passa ao primeiro nível com ENTER
     if (window->KeyPress(VK_RETURN))
     {
-        Engine::Next<Select>();
-        return;
+       OneBitAdventure::NextLevel<Select>();
     }
-
-    backg->NextFrame();
+    else {
+        backg->NextFrame();
+    }
 }
 
 // ------------------------------------------------------------------------------

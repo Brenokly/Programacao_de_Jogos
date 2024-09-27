@@ -22,8 +22,7 @@ Warrior::Warrior(int col, int line)
     uint Left[4]  = { 0, 1, 2, 3 };
     uint Right[4] = { 4, 5, 6, 7 };
 
-	// Adiciona as combinações de estado de animação e direção em que 
-	// a sequência de animações muda
+	// Adiciona as combinações de estado de animação e direção em que a sequência de animações muda
 	anim->Add(WALK | RIGHT, Right, 4);
     anim->Add(WALK | LEFT, Left, 4);
 
@@ -133,7 +132,7 @@ void Warrior::OnCollision(Object* obj)
 	{
 		Level1::scene->Delete(obj, STATIC);
 	}
-	else if (type != DOOR)
+	else if (type != DOOR && type != BOSSATACK)
 	{
 		// Se o objeto colidido for diferente de uma porta, o Warrior volta para a posição anterior
 		Move(BACK);

@@ -1,11 +1,11 @@
-/**********************************************************************************
-// Sprite (Arquivo de Cabeçalho)
+ï»¿/**********************************************************************************
+// Sprite (Arquivo de Cabeï¿½alho)
 //
-// Criação:     11 Jul 2007
-// Atualização: 23 Ago 2023
+// Criaï¿½ï¿½o:     11 Jul 2007
+// Atualizaï¿½ï¿½o: 23 Ago 2023
 // Compilador:  Visual C++ 2022
 //
-// Descrição:   Define uma classe para representar um sprite
+// Descriï¿½ï¿½o:   Define uma classe para representar um sprite
 //
 **********************************************************************************/
 
@@ -30,7 +30,7 @@ struct Layer
     static const float BACK;
 };
 
-// definição de cor para o sprite
+// definiï¿½ï¿½o de cor para o sprite
 struct Color
 {
     float r;
@@ -42,7 +42,7 @@ struct Color
         r(red), g(green), b(blue), a(alpha) {}
 };
 
-// definição de um sprite
+// definiï¿½ï¿½o de um sprite
 struct SpriteData
 {
     float x, y;
@@ -87,19 +87,19 @@ public:
 
     void Draw(                                                // desenha sprite
         float x, float y, float z = Layer::MIDDLE,            // coordenadas da tela
-        float scale = 1.0f, float rotation = 0.0f,            // escala e rotação
+        float scale = 1.0f, float rotation = 0.0f,            // escala e rotaï¿½ï¿½o
         Color color = { 1, 1, 1, 1 });                        // efeito de cor
 
     void DrawResize(                                          // desenha sprite
         float x, float y,                                     // coordenadas da tela
-        float width, float height,                            // dimensões do sprite
+        float width, float height,                            // dimensï¿½es do sprite
         float z = Layer::MIDDLE,                              // camada da tela    
-        float scale = 1.0f, float rotation = 0.0f,            // escala e rotação
+        float scale = 1.0f, float rotation = 0.0f,            // escala e rotaï¿½ï¿½o
         Color color = { 1, 1, 1, 1 });                        // efeito de cor
 };
 
 // ---------------------------------------------------------------------------------
-// Funções Inline
+// Funï¿½ï¿½es Inline
 
 // retorna a largura do sprite
 inline int Sprite::Width()

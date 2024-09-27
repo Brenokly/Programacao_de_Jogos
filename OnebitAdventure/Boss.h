@@ -16,8 +16,9 @@ public:
 	Boss();
 	virtual ~Boss() = 0;
 
+	void ConstrainToScreen() override;
 	virtual void OnCollision(Object* obj) override = 0;					// resolução da colisão
-	virtual void UpdateAnimation() override = 0;						// atualização da animação do Ghost
+	void UpdateAnimation();												// atualização da animação do Ghost
 	virtual void Update() override = 0;									// atualização do estado do Boss
 };
 

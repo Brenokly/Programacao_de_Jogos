@@ -57,6 +57,26 @@ Boss::~Boss()
 
 // ------------------------------------------------------------------------------
 
+void Boss::ConstrainToScreen()
+{
+    // Verifica o limite direito
+    if (x + tileSet->TileWidth() / 2.0f > Level1::hud->mainRightSide - Level1::hud->offset) {
+        targetX = prevX;
+    }
+
+    // Verifica o limite esquerdo
+    if (x - tileSet->TileWidth() / 2.0f < Level1::hud->mainLeftSide + Level1::hud->offset) {
+        targetX = prevX;
+    }
+
+    // Verifica o limite inferior
+    if (y - tileSet->TileHeight() > window->Height()) {
+        targetY = prevY;
+    }
+}
+
+// ------------------------------------------------------------------------------
+
 void Boss::UpdateAnimation()
 {
     anim->Select(animState);

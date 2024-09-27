@@ -58,6 +58,12 @@
     <Filter Include="Game\Arquivos de Cabeçalho\Entity\Bosses">
       <UniqueIdentifier>{2b94ad73-22f1-49a4-98cf-a0c1df7fb51b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Arquivos de Origem\Entity\Bosses\AttackBosses">
+      <UniqueIdentifier>{b474fce5-69db-4008-ad0b-c04c12a44be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Bosses\AttackBosses">
+      <UniqueIdentifier>{39fefd45-ea0b-41e6-9006-dff05b383b56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -154,6 +160,18 @@
       <Filter>Game\Arquivos de Origem\Entity\Prop</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Engine\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Attack.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Bosses\AttackBosses</Filter>
+    </ClCompile>
+    <ClCompile Include="Varredura.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Bosses\AttackBosses</Filter>
+    </ClCompile>
+    <ClCompile Include="Alerts.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Bosses</Filter>
     </ClCompile>
   </ItemGroup>
@@ -261,6 +279,18 @@
       <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Engine\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Attack.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses\AttackBosses</Filter>
+    </ClInclude>
+    <ClInclude Include="Varredura.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses\AttackBosses</Filter>
+    </ClInclude>
+    <ClInclude Include="Alerts.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses</Filter>
     </ClInclude>
   </ItemGroup>

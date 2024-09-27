@@ -5,7 +5,7 @@
 #include "Select.h"
 #include "Warrior.h"
 #include "Ghost.h"
-#include "Engine.h"
+#include "OneBitAdventure.h"
 #include <cstdlib>
 #include <ctime>
 #include "Hydra.h"
@@ -19,14 +19,33 @@ Character * Level1::player  = nullptr;
 
 // ------------------------------------------------------------------------------
 
-void Level1::Init()
+void Level1::Init(Characters character)
 {
+	OneBitAdventure::audio->Play(GAME);
+
     std::srand(static_cast<unsigned int>(std::time(0)));
 
     scene = new Scene();
     hud = new Hud();
     //map = new Map(std::rand() % 100);
-    player = new Warrior(5, 7);
+
+    switch (character)
+    {
+    case WARRIOR:
+        player = new Warrior(5, 7);
+        break;
+    case MAGE:
+        break;
+    case ARCHER:
+        break;
+    case ROGUE:
+        break;
+    default:
+        player = new Warrior(5, 7);
+        break;
+    }
+
+
     Hydra* hydra = new Hydra(8, 10);
 
     scene->Add(hud, STATIC);
@@ -49,7 +68,7 @@ void Level1::Update()
     // volta para a tela de inicio
     if (window->KeyPress(VK_ESCAPE))
     {
-        Engine::Next<Select>();
+        OneBitAdventure::NextLevel<Select>();
     }
     else if (window->KeyPress('B'))
     {

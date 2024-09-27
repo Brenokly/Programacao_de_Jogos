@@ -17,18 +17,18 @@
 class Level1 : public Game
 {
 private:
-	bool viewBox = false;			// controle de visualização de caixas de colisão
+	bool viewBox = false;				// controle de visualização de caixas de colisão
 
 public:
-	static Scene * scene;			// gerenciador de cena
-	static Hud * hud;				// gerenciador do hud do jogo
-	static Map * map;				// gerenciador do mapa do jogo
-	static Character * player;		// instancia do jogador (classe guerreiro)
+	static Scene * scene;				// gerenciador de cena
+	static Hud * hud;					// gerenciador do hud do jogo
+	static Map * map;					// gerenciador do mapa do jogo
+	static Character * player;			// instancia do jogador (classe guerreiro)
 
-	void Init();					// inicialização
-	void Update();					// atualização
-	void Draw();					// desenho
-	void Finalize();				// finalização
+	void Init(Characters character);	// inicialização
+	void Update();						// atualização
+	void Draw();						// desenho
+	void Finalize();					// finalização
 };
 
 // -----------------------------------------------------------------------------

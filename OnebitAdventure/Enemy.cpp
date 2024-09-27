@@ -58,8 +58,7 @@ Enemy::~Enemy()
 // Atualiza o estado do inimigo
 void Enemy::Update()
 {
-    if (Level1::player->IsMoving())
-	{
+    if (Level1::player->IsMoving()) {
 		HandleMovement(90.0f);                              // Define a direção de movimento com 90% de chance de seguir o jogador
     }
 
@@ -118,15 +117,15 @@ void Enemy::HandleMovement(float moveToPlayer)
     if (!isMoving)
     {
         isHit = true;       // Indica que o inimigo pode atacar o jogador
-        isMoving = true;
+		isMoving = true;	// Indica que o inimigo está se movendo
 
         if (Distance(Level1::player) < proximityThreshold) {
-            // 85% de chance de mover na direção do jogador
+            // % de chance de mover na direção do jogador
             if (rand() % 100 < moveToPlayer) {
                 MoveTowardsPlayer();
             }
             else {
-                // 15% de chance de mover aleatoriamente
+                // % de chance de mover aleatoriamente
                 MoveRandomly();
             }
         }

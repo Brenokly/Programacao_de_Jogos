@@ -1,11 +1,11 @@
-/**********************************************************************************
-// Sprite (Código Fonte)
+ï»¿/**********************************************************************************
+// Sprite (Cï¿½digo Fonte)
 //
-// Criação:     11 Jul 2007
-// Atualização: 23 Ago 2023
+// Criaï¿½ï¿½o:     11 Jul 2007
+// Atualizaï¿½ï¿½o: 23 Ago 2023
 // Compilador:  Visual C++ 2022
 //
-// Descrição:   Define uma classe para representar um sprite
+// Descriï¿½ï¿½o:   Define uma classe para representar um sprite
 //
 **********************************************************************************/
 
@@ -13,7 +13,7 @@
 #include "Engine.h"
 
 // -------------------------------------------------------------------------------
-// Inicialização de membros estáticos das classes
+// Inicializaï¿½ï¿½o de membros estï¿½ticos das classes
 
 // valores de profundidade predefinidos
 const float Layer::FRONT = 0.01f;

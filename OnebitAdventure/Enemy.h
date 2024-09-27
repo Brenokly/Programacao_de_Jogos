@@ -81,9 +81,9 @@ inline void Enemy::Draw()
 {
     // Desenha o sprite do inimigo na cor vermelha por um tempo se tiver recebido dano
     if (damageTimer->Elapsed(0.25f))
-        anim->Draw(x, y, z);
+        anim->Draw(x, y);
     else
-        anim->Draw(x, y, z, Color(1.0f, 0.0f, 0.0f, 1.0f));
+        anim->Draw(x, y, Layer::FRONT, Color(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 // ---------------------------------------------------------------------------------

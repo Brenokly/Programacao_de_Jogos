@@ -1,7 +1,7 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#include "Engine.h"
+#include "OneBitAdventure.h"
 #include "Sprite.h"
 #include "Select.h"
 #include "Home.h"
@@ -21,15 +21,13 @@ void Select::Update()
 	// volta para a tela inicial
 	if (window->KeyPress(VK_ESCAPE))
 	{
-		Engine::Next<Home>();
-		return;
+		OneBitAdventure::NextLevel<Home>();
 	}
 
 	// passa ao primeiro nível com ENTER
 	if (window->KeyPress(VK_RETURN))
 	{
-		Engine::Next<Level1>();
-		return;
+		OneBitAdventure::NextLevel<Level1>();
 	}
 }
 

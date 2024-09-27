@@ -34,6 +34,7 @@ Character::Character()
     level = 1;
     maxXp = 60 + (6 * (level - 1));
     xp = 56;
+	criticalChance = 0.1f;
 }
 
 // ---------------------------------------------------------------------------------
@@ -106,10 +107,12 @@ void Character::HandleInput()
 void Character::Draw()
 {
     // Desenha o sprite do player na cor vermelha por um tempo se tiver recebido dano
-    if (damageTimer->Elapsed(0.25f))
-        anim->Draw(x, y, z);
-    else
-        anim->Draw(x, y, z, Color(1.0f, 0.0f, 0.0f, 1.0f));
+    if (damageTimer->Elapsed(0.25f)) {
+        anim->Draw(x, y);
+    }
+    else {
+        anim->Draw(x, y, Layer::FRONT, Color(1.0f, 0.0f, 0.0f, 1.0f));
+    }
 
     DrawTextGet();
 }

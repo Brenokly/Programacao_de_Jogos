@@ -80,7 +80,7 @@ protected:
 
 	void Movement();									// realiza a movimentação da entidade
 	void CameraMovement();								// realiza a movimentação da câmera
-	void ConstrainToScreen();							// limita a movimentação da entidade à tela
+	virtual void ConstrainToScreen();				    // limita a movimentação da entidade à tela
 
 public:
 	Entity();
