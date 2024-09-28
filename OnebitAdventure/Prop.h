@@ -7,6 +7,7 @@
 // Inclusões
 
 #include "Entity.h"
+#include "OneBitAdventure.h"
 
 // ----------------------------------------------------------------------------------
 
@@ -21,10 +22,11 @@ public:
 	Prop(uint type, Image * image, float col, float line, bool interactable, bool bbox = true);
 	~Prop();
 
-	void Update();
-	void Draw();
+	void Update() override;
+	void Draw() override;
 	void OnCollision(Object* obj) override;
 	void UpdateAnimation() override;
+	void InitializeBBox() override;
 };
 
 // ----------------------------------------------------------------------------------

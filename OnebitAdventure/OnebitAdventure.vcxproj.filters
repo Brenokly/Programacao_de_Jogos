@@ -8,10 +8,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Game\Arquivos de Origem">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -28,12 +24,6 @@
     <Filter Include="Engine\Arquivos de Sombreamento">
       <UniqueIdentifier>{6eefbe06-0d99-4677-b4ce-54bd3cc97d9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho\Entity">
-      <UniqueIdentifier>{cad8467a-a47c-4f96-bcdf-300382dde5bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Enemy">
-      <UniqueIdentifier>{7772968c-3c38-4c7a-8b75-41eda9efb09a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Arquivos de Origem\Entity">
       <UniqueIdentifier>{cb39481d-40e4-4095-bb90-f6bb2c1f2ddf}</UniqueIdentifier>
     </Filter>
@@ -43,23 +33,33 @@
     <Filter Include="Game\Arquivos de Origem\Entity\Enemy">
       <UniqueIdentifier>{709fe330-2f70-41ef-88b5-682ca104b247}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Player">
-      <UniqueIdentifier>{7522dc7d-7004-4cc4-9815-f14458f601a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Arquivos de Origem\Entity\Prop">
       <UniqueIdentifier>{a300186c-5f1b-45fe-aba6-9315572dbcce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Prop">
-      <UniqueIdentifier>{376bcf3f-53de-40ba-8e30-ae1ac94ef791}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Arquivos de Origem\Entity\Bosses">
       <UniqueIdentifier>{9bde06f5-64eb-4a28-b5be-a412f4c103ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Bosses">
-      <UniqueIdentifier>{2b94ad73-22f1-49a4-98cf-a0c1df7fb51b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Arquivos de Origem\Entity\Bosses\AttackBosses">
       <UniqueIdentifier>{b474fce5-69db-4008-ad0b-c04c12a44be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity">
+      <UniqueIdentifier>{cad8467a-a47c-4f96-bcdf-300382dde5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Enemy">
+      <UniqueIdentifier>{7772968c-3c38-4c7a-8b75-41eda9efb09a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Player">
+      <UniqueIdentifier>{7522dc7d-7004-4cc4-9815-f14458f601a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Prop">
+      <UniqueIdentifier>{376bcf3f-53de-40ba-8e30-ae1ac94ef791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Entity\Bosses">
+      <UniqueIdentifier>{2b94ad73-22f1-49a4-98cf-a0c1df7fb51b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Arquivos de Cabeçalho\Entity\Bosses\AttackBosses">
       <UniqueIdentifier>{39fefd45-ea0b-41e6-9006-dff05b383b56}</UniqueIdentifier>
@@ -173,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="Alerts.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="Alerts.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Game\Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

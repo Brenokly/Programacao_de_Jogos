@@ -4,6 +4,7 @@
 #include "Warrior.h"
 #include "Level1.h"
 #include "Ghost.h"
+#include "Hydra.h"
 
 // ---------------------------------------------------------------------------------
 

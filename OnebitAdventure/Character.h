@@ -5,8 +5,10 @@
 
 // ------------------------------------------------------------------------------
 
-#include "Types.h"
+#include "OneBitAdventure.h"
+#include "Object.h"
 #include "Entity.h"
+#include "Types.h"
 #include "Font.h"
 #include <string>
 #include <unordered_map>
@@ -33,7 +35,13 @@ protected:
 	// --------------------------------------------------------------------------------------------
 	// Métodos protegidos 
 
-	void InitializeBBox();									// inicializa a BBox
+	void Update() override;							// atualização
+	void Draw() override;							// desenho
+	void InitializeBBox() override;					// inicializa a BBox
+
+	// Métodos de movimentação e animação
+	void HandleInput();										// movimentação do jogador
+	void DrawTextGet();										// desenha o texto na tela
 
 public:
 	Character();											// construtor
@@ -41,21 +49,11 @@ public:
 
 	std::unordered_map<string, Color> text; // unordered_map para armazenar o texto a ser exibido na tela
 
-	// Métodos de movimentação e animação
-	void HandleInput();										// movimentação do jogador
-
 	// Métodos de recuperação e modificação de atributos
 	int GetLevel() const;
 	int GetMaxXp() const;
 	int GetXp() const;
 	void SetXp(int xp);										// define a experiência do jogador
-
-	// Métodos auxiliares
-	void Update();											// atualização
-	void Draw();											// desenho
-
-	void DrawTextGet();										// desenha o texto na tela
-	
 };
 
 // --------------------------------------------------------------------------------------------------

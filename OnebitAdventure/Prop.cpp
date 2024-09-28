@@ -1,5 +1,6 @@
 #include "Prop.h"
 #include "Level1.h"
+#include "Character.h"
 
 // ----------------------------------------------------------------------------------
 
@@ -43,12 +44,7 @@ Prop::Prop(uint type, Image* image, float col, float line, bool interactable, bo
 
 	if (bbox)
 	{
-		BBox(new Rect(
-			x - width / 2.4f,
-			y - height / 2.3f,
-			x + width / 2.4f,
-			y + height / 2.3f)
-		);
+		InitializeBBox();
 	}
 
 	if (type == PILLAR)
@@ -68,6 +64,18 @@ Prop::~Prop()
 	if (sprite) delete sprite;
 	if (anim) delete anim;
 	if (tileSet) delete tileSet;
+}
+
+// ----------------------------------------------------------------------------------
+
+void Prop::InitializeBBox()
+{
+	BBox(new Rect(
+		x - width / 2.4f,
+		y - height / 2.3f,
+		x + width / 2.4f,
+		y + height / 2.3f)
+	);
 }
 
 // ----------------------------------------------------------------------------------

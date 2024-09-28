@@ -2,6 +2,8 @@
 // Inclusões
 
 #include "Enemy.h"
+#include "Level1.h"
+#include "Character.h"
 
 // ------------------------------------------------------------------------------
 

@@ -8,10 +8,8 @@
 
 #include "Types.h"                      // Tipos específicos da engine
 #include "Entity.h"                     // Interface base para objetos
-#include "Animation.h"                  // Animações de sprites
 #include "Font.h"                       // Fonte para exibir texto na tela
-#include "TileSet.h"                    // Folha de sprite
-#include "Level1.h"
+#include "OneBitAdventure.h"            // Classe principal do jogo
 #include <string>                       // Biblioteca para manipulação de strings
 
 // ------------------------------------------------------------------------------
@@ -40,7 +38,7 @@ protected:
     // --------------------------------------------------------------------------------------------
     // Métodos Protegidos 
 
-    virtual void InitializeBBox();                      // Inicializa a caixa de colisão (BBox)
+    virtual void InitializeBBox() override;             // Inicializa a caixa de colisão (BBox)
     void MoveRandomly();                                // Move o inimigo aleatoriamente
 	void HandleMovement(float moveToPlayer);			// Controla a movimentação do inimigo
 
@@ -54,24 +52,19 @@ public:
     // --------------------------------------------------------------------------------------------
     // Métodos Virtuais Puras
 
-    virtual void OnCollision(Object* obj) = 0;          // Resolução de colisão com outros objetos
     virtual void UpdateAnimation() = 0;                 // Atualiza a animação do inimigo
-
-    // --------------------------------------------------------------------------------------------
-    // Métodos de Movimentação e Animação
-
-    void MoveTowardsPlayer();                           // Movimenta o inimigo em direção ao jogador
 
     // --------------------------------------------------------------------------------------------
     // Métodos Principais
 
-    void Update();                                      // Atualiza o estado e a movimentação do inimigo
-    virtual void Draw();                                // Desenha o inimigo na tela
+    virtual void Update() override;                     // Atualiza o estado e a movimentação do inimigo
+    virtual void Draw() override;                       // Desenha o inimigo na tela
 	virtual void DrawHealthBar();                       // Desenha a barra de vida do inimigo 
 	virtual void DrawHealthText();                      // Desenha o texto de vida do inimigo
 	virtual void DrawLevel();                           // Desenha o nível do inimigo
 	virtual void DrawName();                            // Desenha o nome do inimigo   
-    void DisplayEnemyHealth();                          // Exibe a vida do inimigo na tela
+    virtual void DisplayEnemyHealth();                  // Exibe a vida do inimigo na tela
+    virtual void MoveTowardsPlayer();                   // Movimenta o inimigo em direção ao jogador
 };
 
 // ---------------------------------------------------------------------------------

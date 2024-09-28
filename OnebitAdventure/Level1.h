@@ -6,11 +6,14 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#include "Game.h"
 #include "Scene.h"
-#include "Character.h"
 #include "Hud.h"
 #include "Map.h"
+#include "Game.h"
+
+// ------------------------------------------------------------------------------
+
+class Character;		// declaração antecipada da classe Character
 
 // ------------------------------------------------------------------------------
 
@@ -20,12 +23,12 @@ private:
 	bool viewBox = false;				// controle de visualização de caixas de colisão
 
 public:
-	static Scene * scene;				// gerenciador de cena
-	static Hud * hud;					// gerenciador do hud do jogo
+	static Scene *& scene;				// gerenciador de cena
+	static Hud *& hud;					// gerenciador do hud do jogo
 	static Map * map;					// gerenciador do mapa do jogo
-	static Character * player;			// instancia do jogador (classe guerreiro)
+	static Character *& player;			// referencia para o jogador
 
-	void Init(Characters character);	// inicialização
+	void Init();						// inicialização
 	void Update();						// atualização
 	void Draw();						// desenho
 	void Finalize();					// finalização

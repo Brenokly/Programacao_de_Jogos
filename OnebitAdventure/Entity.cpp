@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Level1.h"
+#include "Character.h"
 #include <cmath>
 
 Entity::Entity()

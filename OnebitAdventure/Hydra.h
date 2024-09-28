@@ -1,4 +1,8 @@
 // Hydra.h
+
+#ifndef HYDRA_H
+#define HYDRA_H
+
 // ------------------------------------------------------------------------------
 // Inclusões de Arquivos
 
@@ -38,3 +42,6 @@ public:
 	void DrawLevel() override;											// Desenha o nível do inimigo
 	void DrawName() override;											// Desenha o nome do inimigo 
 };
+
+#endif		// HYDRA_H
+//------------------------------------------------------------------------------

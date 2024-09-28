@@ -2,54 +2,31 @@
 // Inclusões
 
 #include "Level1.h"
-#include "Select.h"
 #include "Warrior.h"
-#include "Ghost.h"
-#include "OneBitAdventure.h"
+#include "Hydra.h"
+#include "Select.h"
 #include <cstdlib>
 #include <ctime>
-#include "Hydra.h"
 
 // ------------------------------------------------------------------------------
 
-Scene     * Level1::scene   = nullptr;
-Hud       * Level1::hud     = nullptr;
-Map       * Level1::map     = nullptr;
-Character * Level1::player  = nullptr;
+Scene     *& Level1::scene   = OneBitAdventure::scene;
+Hud       *& Level1::hud     = OneBitAdventure::hud;
+Character *& Level1::player  = OneBitAdventure::player;
+Map        * Level1::map     = nullptr;
 
 // ------------------------------------------------------------------------------
 
-void Level1::Init(Characters character)
+void Level1::Init()
 {
 	OneBitAdventure::audio->Play(GAME);
 
     std::srand(static_cast<unsigned int>(std::time(0)));
-
-    scene = new Scene();
-    hud = new Hud();
     //map = new Map(std::rand() % 100);
-
-    switch (character)
-    {
-    case WARRIOR:
-        player = new Warrior(5, 7);
-        break;
-    case MAGE:
-        break;
-    case ARCHER:
-        break;
-    case ROGUE:
-        break;
-    default:
-        player = new Warrior(5, 7);
-        break;
-    }
-
 
     Hydra* hydra = new Hydra(8, 10);
 
     scene->Add(hud, STATIC);
-    scene->Add(player, MOVING);
     scene->Add(hydra, MOVING);
     //scene->Add(new Ghost(8, 10), MOVING);
     //scene->Add(new Ghost(5, 12), MOVING);

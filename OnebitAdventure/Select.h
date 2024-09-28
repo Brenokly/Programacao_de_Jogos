@@ -4,6 +4,7 @@
 #ifndef SELECT_H
 #define SELECT_H
 
+#include "Game.h"
 #include "Sprite.h"
 
 // ------------------------------------------------------------------------------

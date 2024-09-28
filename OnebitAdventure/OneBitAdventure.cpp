@@ -1,16 +1,17 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#include "Engine.h"
-#include "Resources.h"
-#include "Home.h"
 #include "OneBitAdventure.h"
+#include "Home.h"
 
 //-------------------------------------------------------------------------------
 
-Game* OneBitAdventure::level = nullptr;
-Character* OneBitAdventure::player = nullptr;
-Audio* OneBitAdventure::audio = nullptr;
+Scene       * OneBitAdventure::scene    = nullptr;
+Game        * OneBitAdventure::level    = nullptr;
+Character   * OneBitAdventure::player   = nullptr;
+Audio       * OneBitAdventure::audio    = nullptr;
+Mouse       * OneBitAdventure::mouse    = nullptr;
+Hud         * OneBitAdventure::hud      = nullptr;
 
 //-------------------------------------------------------------------------------
 
@@ -21,8 +22,12 @@ void OneBitAdventure::Init()
     audio->Add(GAME, "Resources/Audios/Game.wav");
 	audio->Add(PORTA, "Resources/Audios/Porta.wav");
 	audio->Add(ATAQUE, "Resources/Audios/Ataque.wav");
-	audio->Add(CLICK, "Resources/Audios/Click.wav");
+	audio->Add(AUDIO_CLICK, "Resources/Audios/Click.wav");
 	audio->Add(MOEDA, "Resources/Audios/Moeda.wav");
+
+    hud = new Hud();
+    mouse = new Mouse();
+    scene = new Scene;
 
 	level = new Home();
 	level->Init();
@@ -34,6 +39,9 @@ void OneBitAdventure::Update()
 {
     // atualiza nível
     level->Update();
+
+    // atualiza mouse
+    mouse->Update();
 }
 
 //-------------------------------------------------------------------------------
@@ -42,6 +50,9 @@ void OneBitAdventure::Draw()
 {
     // desenha nível
     level->Draw();
+
+    // desenha mouse
+    mouse->Draw();
 }
 
 //-------------------------------------------------------------------------------

@@ -8,9 +8,12 @@
 
 #include "Types.h"                      // tipos específicos da engine
 #include "Object.h"                     // interface de Object
-#include "Character.h"
 #include "Animation.h"
 #include "Font.h"
+
+// ---------------------------------------------------------------------------------
+
+class Character;						// declaração antecipada da classe Character
 
 // ---------------------------------------------------------------------------------
 
@@ -37,8 +40,8 @@ private:
 	float height;	                            // Altura do background principal
 
 public:
-    uint tileWidth;							    // Largura de um tile
-    uint tileHeight;							// Altura de um tile
+	uint tileWidth;                             // Largura de um tile
+	uint tileHeight;                            // Altura de um tile
     float mainLeftSide;                         // Lado esquerdo do background principal
     float mainRightSide;                        // Lado direito do background principal
     float mainBottomSide;					    // Lado inferior do background principal

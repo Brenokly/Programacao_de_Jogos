@@ -20,8 +20,7 @@ void Character::InitializeBBox()
 // ---------------------------------------------------------------------------------
 
 // construtor para inicializar os atributos genéricos do jogador
-Character::Character()
-    : Entity()
+Character::Character() : Entity()
 {
     txtTimer = new Timer();
     attackTimer = new Timer();

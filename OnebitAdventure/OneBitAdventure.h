@@ -6,10 +6,13 @@
 // ------------------------------------------------------------------------------
 // Inclusões de Arquivos
 
+#include "Resources.h"
+#include "Engine.h"
 #include "Game.h"
 #include "Audio.h"
-#include "Resources.h"
-#include "Character.h"
+#include "Scene.h"
+#include "Mouse.h"
+#include "Hud.h"
 
 // ------------------------------------------------------------------------------
 
@@ -33,9 +36,11 @@ enum Characters { WARRIOR, MAGE, ARCHER, ROGUE };
 
 // ------------------------------------------------------------------------------
 
-enum Sounds { MENU, GAME, PORTA, ATAQUE, CLICK, MOEDA };
+enum Sounds { MENU, GAME, PORTA, ATAQUE, AUDIO_CLICK, MOEDA };
 
 // ------------------------------------------------------------------------------
+
+class Character; // Declaração antecipada da classe Character
 
 class OneBitAdventure : public Game
 {
@@ -43,7 +48,10 @@ private:
     static Game* level;                 // nível atual do jogo
 
 public:
-    static Audio* audio;                // sistema de áudio
+    static Audio * audio;               // sistema de áudio
+	static Scene * scene;   	        // cena do jogo
+	static Mouse * mouse;				// mouse do jogo
+	static Hud * hud;                   // hud do jogo
     static Character* player;           // personagem principal
 
     void Init();                        // inicializa jogo

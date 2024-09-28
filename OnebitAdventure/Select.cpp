@@ -1,11 +1,11 @@
 // ------------------------------------------------------------------------------
 // Inclusões
 
-#include "OneBitAdventure.h"
-#include "Sprite.h"
 #include "Select.h"
+#include "OneBitAdventure.h"
 #include "Home.h"
 #include "Level1.h"
+#include "Warrior.h"
 
 // ------------------------------------------------------------------------------
 
@@ -27,6 +27,12 @@ void Select::Update()
 	// passa ao primeiro nível com ENTER
 	if (window->KeyPress(VK_RETURN))
 	{
+		if (OneBitAdventure::player)
+		{
+			delete OneBitAdventure::player;
+		}
+		OneBitAdventure::player = new Warrior(5, 7);
+		OneBitAdventure::scene->Add(OneBitAdventure::player, MOVING);
 		OneBitAdventure::NextLevel<Level1>();
 	}
 }

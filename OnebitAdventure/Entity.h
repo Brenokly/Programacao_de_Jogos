@@ -8,7 +8,6 @@
 
 #include "Object.h"
 #include "Animation.h"
-#include "OneBitAdventure.h"
 #include "Timer.h"
 
 enum Direction				// Enumeração das direções de uma movimentação
@@ -70,10 +69,13 @@ protected:
 	int defense;
 	int damage;
 
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
-	virtual void OnCollision(Object* obj) = 0;			// resolução da colisão
+	// Métodos virtuais puros de Object
+	virtual void Update() = 0;							// atualização da entidade
+	virtual void Draw() = 0;							// desenho da entidade
+
+	// Métodos virtuais puros de Entity
 	virtual void UpdateAnimation() = 0;					// atualização da animação
+	virtual void InitializeBBox() = 0;					// inicializa caixa de colisão
 
 	// Combina a direção e o estado da animação para retornar uma sequência de animação única
 	uint GetAnimSeq(Direction direction, AnimationState animState);
