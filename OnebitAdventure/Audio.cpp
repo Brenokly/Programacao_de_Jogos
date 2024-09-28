@@ -69,6 +69,8 @@ void Audio::Add(uint id, string filename, uint nVoices)
 
     // insere novo som na coleção
     soundTable[id] = sound;
+    // Novo som que pode ser tocado
+    isplaying[id] = false;
 }
 
 // ---------------------------------------------------------------------------------
@@ -93,6 +95,8 @@ void Audio::Play(uint id, bool repeat)
 
     // seleciona nova trilha para reprodução do próximo som
     selected->index = (selected->index + 1) % selected->tracks;
+
+    isplaying[id] = true;
 }
 
 // ---------------------------------------------------------------------------------
@@ -101,6 +105,7 @@ void Audio::Stop(uint id)
 {
     // recupera som da tabela
     Sound * selected = soundTable[id];
+    isplaying[id] = false;
 
     // encerra todas as trilhas desse som
     for (uint i = 0; i < selected->tracks; ++i)
@@ -144,3 +149,8 @@ void Audio::Frequency(uint id, float level)
 
 // ---------------------------------------------------------------------------------
 
+bool Audio::isPlaying(uint id) {
+    return isplaying[id];
+}
+
+// ---------------------------------------------------------------------------------

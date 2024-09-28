@@ -16,7 +16,9 @@ void Home::Init()
     // tela de fundo é uma animação de um tile set 1x2
     backg = new Animation(tileBackg, 0.6f, true);
 
-	OneBitAdventure::audio->Play(MENU);
+    if (!OneBitAdventure::audio->isPlaying(MENU)) {
+        OneBitAdventure::audio->Play(MENU, true);
+    }
 }
 
 // ------------------------------------------------------------------------------
@@ -30,7 +32,7 @@ void Home::Update()
     // passa ao primeiro nível com ENTER
     if (window->KeyPress(VK_RETURN))
     {
-       OneBitAdventure::NextLevel<Select>();
+        OneBitAdventure::NextLevel<Select>();
     }
     else {
         backg->NextFrame();

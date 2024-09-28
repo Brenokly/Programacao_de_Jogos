@@ -6,15 +6,23 @@
 
 #include "Game.h"
 #include "Sprite.h"
+#include "Character.h"
+
+// ------------------------------------------------------------------------------
+
+enum Characters { WARRIOR, MAGE, ARCHER, ROGUE };
 
 // ------------------------------------------------------------------------------
 
 class Select : public Game
 {
 private:
-	Sprite* backg = nullptr;   // plano de fundo
+	Sprite* backg;				// plano de fundo
+	Characters character;		// personagem selecionado
+	Character* player;			// personagem do jogador
 
 public:
+
 	void Init();                // inicialização
 	void Update();              // atualização
 	void Draw();                // desenho

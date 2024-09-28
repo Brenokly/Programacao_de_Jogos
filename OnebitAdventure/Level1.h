@@ -23,7 +23,7 @@ private:
 	bool viewBox = false;				// controle de visualização de caixas de colisão
 
 public:
-	static Scene *& scene;				// gerenciador de cena
+	static Scene * scene;				// gerenciador de cena
 	static Hud *& hud;					// gerenciador do hud do jogo
 	static Map * map;					// gerenciador do mapa do jogo
 	static Character *& player;			// referencia para o jogador

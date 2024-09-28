@@ -6,9 +6,9 @@
 
 //-------------------------------------------------------------------------------
 
+Character   * OneBitAdventure::player   = nullptr;
 Scene       * OneBitAdventure::scene    = nullptr;
 Game        * OneBitAdventure::level    = nullptr;
-Character   * OneBitAdventure::player   = nullptr;
 Audio       * OneBitAdventure::audio    = nullptr;
 Mouse       * OneBitAdventure::mouse    = nullptr;
 Hud         * OneBitAdventure::hud      = nullptr;
@@ -21,7 +21,7 @@ void OneBitAdventure::Init()
     audio->Add(MENU, "Resources/Audios/Menu.wav");
     audio->Add(GAME, "Resources/Audios/Game.wav");
 	audio->Add(PORTA, "Resources/Audios/Porta.wav");
-	audio->Add(ATAQUE, "Resources/Audios/Ataque.wav");
+	audio->Add(ATAQUE, "Resources/Audios/Ataque.wav", 3);
 	audio->Add(AUDIO_CLICK, "Resources/Audios/Click.wav");
 	audio->Add(MOEDA, "Resources/Audios/Moeda.wav");
 
@@ -59,12 +59,38 @@ void OneBitAdventure::Draw()
 
 void OneBitAdventure::Finalize()
 {
-    level->Finalize();
+    if (level != nullptr) {
+        level->Finalize();
+        delete level;
+        level = nullptr;  
+    }
 
-    delete player;
-    delete audio;
-    delete level;
+    if (audio != nullptr) {
+        delete audio;
+        audio = nullptr;  
+    }
+
+    if (mouse != nullptr) {
+        delete mouse;
+        mouse = nullptr;
+    }
+
+    if (hud != nullptr) {
+        delete hud;
+        hud = nullptr;
+    }
+
+    if (scene != nullptr) {
+        delete scene;
+        scene = nullptr;
+    }
+
+    if (player != nullptr) {
+        delete player;
+        player = nullptr;
+    }
 }
+
 
 // ------------------------------------------------------------------------------
 //                                  WinMain                                      
@@ -72,7 +98,7 @@ void OneBitAdventure::Finalize()
 
 int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
-    Engine* engine = new Engine();
+    Engine * engine = new Engine();
 
     // configura a janela do jogo
     engine->window->Mode(WINDOWED);

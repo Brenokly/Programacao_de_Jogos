@@ -32,10 +32,6 @@ enum OneBitObjects // Enumeração dos tipos de objetos
 
 // ------------------------------------------------------------------------------
 
-enum Characters { WARRIOR, MAGE, ARCHER, ROGUE };
-
-// ------------------------------------------------------------------------------
-
 enum Sounds { MENU, GAME, PORTA, ATAQUE, AUDIO_CLICK, MOEDA };
 
 // ------------------------------------------------------------------------------
@@ -53,6 +49,7 @@ public:
 	static Mouse * mouse;				// mouse do jogo
 	static Hud * hud;                   // hud do jogo
     static Character* player;           // personagem principal
+
 
     void Init();                        // inicializa jogo
     void Update();                      // atualiza lógica do jogo

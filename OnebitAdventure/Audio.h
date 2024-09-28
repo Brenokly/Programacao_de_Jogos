@@ -30,6 +30,7 @@ private:
     IXAudio2* audioEngine;                                  // sistema de áudio (engine)
     IXAudio2MasteringVoice* masterVoice;                    // dispositivo principal de áudio
     unordered_map<uint, Sound*> soundTable;                 // coleção de sons
+    unordered_map<uint, bool> isplaying;                    // Coleção que indica se o áudio está tocando ou não
 
 public:
     Audio();                                                // construtor
@@ -40,6 +41,7 @@ public:
     void Stop(uint id);                                     // para a reprodução do som
     void Volume(uint id, float level);                      // ajusta volume do som
     void Frequency(uint id, float level);                   // ajusta a frequência do som
+    bool isPlaying(uint id);
 }; 
 
 // ---------------------------------------------------------------------------------
