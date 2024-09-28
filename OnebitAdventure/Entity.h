@@ -60,6 +60,7 @@ protected:
 	bool isHit;							// Flag para indicar se o personagem já atacou
 	bool isDead;						// Flag para indicar se o personagem está morto
 	bool isMoving;						// verifica se está executando um movimento
+	bool itMoved;						// verifica se a entidade se moveu
 
 	// Atributos de combate
 	int level;
@@ -86,7 +87,7 @@ protected:
 
 public:
 	Entity();
-	virtual ~Entity() = 0;								// Virtual puro
+	virtual ~Entity();									// Virtual puro
 
 	void Move(Direction direction);						// define a direção do próximo movimento
 	void MoveTo(float x, float y, float z) override;	// move a entidade para a posição (x, y, z)
@@ -139,7 +140,7 @@ inline bool Entity::IsHit() const
 
 inline bool Entity::IsMoving() const
 {
-	return isMoving;
+	return itMoved;
 }
 
 inline bool Entity::IsDead() const

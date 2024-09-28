@@ -18,18 +18,10 @@ void Varredura::InitializeBBox()
 
 Varredura::Varredura(float x, float y)
 {
-	int width = Level1::player->GetWidth();
-	int height = Level1::player->GetHeight();
-
-	//--------------------------------------------------------------------------------------------
-	// Inicializa TileSet com a animação dos alertas
-
-	alerts = new TileSet("Resources/bosses/smallWarning.png", width * 2, height, width, height, 2, 2);
-	animAlerts = new Animation(alerts, 0.2f, false);
-
-	uint SeqAlerts[2] = { 0, 1 };
-	animAlerts->Add(0, SeqAlerts, 2);
-	animAlerts->Select(1);
+	// ------------------------------------------------------------------------------------------
+	// Inicializando a largura e altura
+	width = Level1::player->GetWidth();
+	height = Level1::player->GetHeight();
 
 	//--------------------------------------------------------------------------------------------
 	// Inicializa a animação do ataque
@@ -49,14 +41,31 @@ Varredura::Varredura(float x, float y)
     mixed = new Mixed();
     InitializeBBox();
 
+	//--------------------------------------------------------------------------------------------
 	// Inicialização de variáveis auxiliares
+
 	type = BOSSATACK;
 	timer = new Timer();
+	timer->Start();
+	contador = 4;
+
+	// Cria os alertas (Serão 7 para esse ataque)
+	CreateAlert(SMALLWARNING, x + (width * 2), y + height, 1);			// primeiro alerta (canto direito)
+	CreateAlert(SMALLWARNING, x + (width * 2), y + (height * 2), 1);	// segundo alerta 
+	CreateAlert(SMALLWARNING, x + (width * 1), y + (height * 2), 1);	// terceiro alerta
+	CreateAlert(SMALLWARNING, x				 , y + (height * 2), 1);	// quarto alerta
+	CreateAlert(SMALLWARNING, x - (width * 1), y + (height * 2), 1);	// quinto alerta
+	CreateAlert(SMALLWARNING, x - (width * 2), y + (height * 2), 1);	// sexto alerta
+	CreateAlert(SMALLWARNING, x - (width * 2), y + height, 1);			// sétimo alerta (canto direito)
+
+	// Define quais próximos alertas estão prestes a "atacar"
+	alerts[0]->UpdateAnimation();
+	alerts[1]->UpdateAnimation();
 
 	//--------------------------------------------------------------------------------------------
 	// Inicializa a posição do ataque
 
-	MoveTo(x, y, Layer::FRONT);
+	MoveTo(x, y + (height * 1.5), Layer::FRONT);
 }
 
 // ------------------------------------------------------------------------------
@@ -65,30 +74,51 @@ Varredura::~Varredura()
 {
 	delete anim;
 	delete tileSet;
+	delete timer;
 }
 
 // ------------------------------------------------------------------------------
 
 void Varredura::Update()
 {
+	DrawAlerts();
+	 
     if (timer->Elapsed(0.2f) && Level1::player->IsMoving()) {
-        movementPlayer = true;
-	}
-	else {
-		movementPlayer = false;
-	}
+		contador--;
 
-    if (movementPlayer) {
-        anim->NextFrame();
+		if (contador == 3) {
+			anim->Select(0);
 
-		if (isDelete && movementPlayer) {
+			// Lógica de criar a primeira bbox do atack
+
+			Rect* rect = new Rect(
+				x - tileSet->TileWidth() / 8.5f,
+				y - tileSet->TileHeight() / 2.2f,
+				x + tileSet->TileWidth() / 8.5f,
+				y + tileSet->TileHeight() / 2.3f);
+
+			rect->MoveTo(window->CenterX(), window->CenterY());
+
+			mixed->Insert(rect);
+		}
+		else {
+			anim->NextFrame();
+			mixed->Insert(new Rect(
+				x - tileSet->TileWidth() / 4.0f,
+				y - tileSet->TileHeight() / 4.0f,
+				x + tileSet->TileWidth() / 4.0f,
+				y + tileSet->TileHeight() / 4.0f));
+		}
+
+		if (isDelete) {
 			Level1::scene->Delete();
 		}
 
         if (anim->Frame() == 2) {
             isDelete = true;
-            timer->Start();
         }
+
+		timer->Reset();
     }
 }
 
@@ -96,7 +126,9 @@ void Varredura::Update()
 
 void Varredura::Draw()
 {
-	anim->Draw(anim->Frame(),x, y, Layer::FRONT, 1.0f, 0.0f, Color(1.0f,1.0f,1.0f,1.0f));
+	if (contador != 4) {
+		anim->Draw(anim->Frame(), x, y, Layer::FRONT, 1.0f, 0.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 }
 
 // ------------------------------------------------------------------------------

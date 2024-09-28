@@ -47,7 +47,7 @@ public:
     // Construtor e Destrutor
 
     Enemy();                                            // Construtor
-    virtual ~Enemy() = 0;                               // Destrutor virtual puro
+    virtual ~Enemy();                                   // Destrutor virtual puro
 
     // --------------------------------------------------------------------------------------------
     // Métodos Virtuais Puras

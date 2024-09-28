@@ -119,7 +119,7 @@ void Hydra::Update()
     UpdateAnimation();                                        // Atualiza a animação do inimigo
 
     if (window->KeyPress(VK_SPACE)) {
-        Level1::scene->Add(new Varredura(x, y + width * 1.8), MOVING);
+        Level1::scene->Add(new Varredura(x, y), MOVING);
     }
 }
 

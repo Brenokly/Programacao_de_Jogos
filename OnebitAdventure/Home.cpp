@@ -50,7 +50,7 @@ void Home::Draw()
 
 void Home::Finalize()
 {
-    delete backg;
+	delete backg;	  // libera memória da animação
 	delete tileBackg; // libera memória do tile set e da imagem
 }
 

@@ -7,9 +7,11 @@
 // ------------------------------------------------------------------------------
 // Inclusões de Arquivos
 
+#include <vector>                       // Para usar std::vector
 #include "TileSet.h"                    // Folha de sprite
 #include "Animation.h"                  // Animações de sprites
 #include "Object.h"						// Classe base para objetos
+#include "Alerts.h"						// Alertas
 
 // ------------------------------------------------------------------------------
 
@@ -22,21 +24,20 @@ protected:
 	TileSet* tileSet;							// Folha de sprite
 	Animation* anim;							// Animação de sprite
 
-	TileSet* alerts;							// Folha de sprite
-	Animation* animAlerts;						// Animação de sprite
-
 	// --------------------------------------------------------------------------------------------
 	// Atributos de Dimensão e Movimentação
 
-	bool movementPlayer;						// Indica se o player se moveu
 	bool isDelete;								// Indica se a animação do ataque já finalizou
 	bool isDamage;								// Indica se o ataque causou dano
+	int contador;								// Contador de movimento do player
+	float width, height;						// Largura e altura	
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de Colisão
 
 	Timer* timer;								// Temporizador de duração do ataque
 	Mixed* mixed;								// Caixa de colisão mista
+	std::vector<Alerts*> alerts;                // Vetor de Alertas
 
 	// --------------------------------------------------------------------------------------------
 	// Métodos Protegidos
@@ -44,14 +45,19 @@ protected:
 	virtual void InitializeBBox() = 0;			// Inicializa a caixa de colisão (BBox)
 public:
 	Attack();									// Construtor
-	virtual ~Attack() = 0;						// Destrutor virtual puro
+	virtual ~Attack();							// Destrutor virtual puro
 
 	// --------------------------------------------------------------------------------------------
 
+	// Método para criar Alertas
+	void DrawAlerts();
+	void RemoveAlert(size_t index);
+	void CreateAlert(AlertType alertType, float x, float y, int scala);
 	void UpdateAnimation();						// Atualiza a animação do ataque
 	virtual void OnCollision(Object* obj) = 0;	// Resolução da colisão
-	virtual void Update();				        // Atualiza o estado do ataque
-	virtual void Draw();                        // Desenha o ataque
+	virtual void Update() = 0;				    // Atualiza o estado do ataque
+	virtual void Draw() = 0;                    // Desenha o ataque
+
 };
 
 #endif

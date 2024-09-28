@@ -111,6 +111,9 @@ void Ghost::OnCollision(Object* obj)
 	else if (type == ENEMY) {
 		Move(BACK);
 	}
+	else if (type == BOSSATACK) {
+		Move(BACK);
+	}
 }
 
 // ---------------------------------------------------------------------------------

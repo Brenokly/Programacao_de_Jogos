@@ -56,7 +56,8 @@ void Entity::Move(Direction direction)
         targetY = prevY = y;
         break;
     }
-    isHit = true;
+	isHit = true;                   // Flag para indicar que o personagem atacou
+    itMoved = true;                 // Flag para indicar melhor o movimento do player
 }
 
 // O movimento da câmera consiste em aplicar uma força que puxa para baixo todas as entidades,
