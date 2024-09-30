@@ -27,13 +27,13 @@ void Select::Init()
 
     scene = new Scene();
     scene->Add(OneBitAdventure::mouse, MOVING);
-    scene->Add(new Card(window->CenterX(), window->CenterY(), cardWidth, cardHeight), STATIC);
+    //scene->Add(new Card(window->CenterX(), window->CenterY(), cardWidth, cardHeight), STATIC);
 
     // Adiciona 5 cards para teste
-    /*for (float x = window->CenterX(); x <= 5.0f * dist; x += dist)
+    for (float x = window->CenterX(); x <= 5.0f * dist; x += dist)
     {
         scene->Add(new Card(x, window->CenterY(), cardWidth, cardHeight), STATIC);
-    }*/
+    }
 
     character = WARRIOR;
 }

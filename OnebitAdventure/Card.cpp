@@ -10,14 +10,15 @@ Card::Card(float x, float y, float width, float height, bool created)
 
 	speed = new Vector();
 
-	MoveTo(x, y, Layer::UPPER);
 	BBox(new Rect
 	(
-		X() - width / 2.0f,
-		Y() - height / 2.0f,
-		X() + width / 2.0f,
-		Y() + height / 2.0f
+		x - width / 2.0f,
+		y - height / 2.0f,
+		x + width / 2.0f,
+		y + height / 2.0f
 	));
+
+	MoveTo(x, y, Layer::FRONT);
 }
 
 Card::~Card()
