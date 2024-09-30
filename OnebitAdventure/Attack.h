@@ -7,7 +7,7 @@
 // ------------------------------------------------------------------------------
 // Inclusões de Arquivos
 
-#include <vector>                       // Para usar std::vector
+#include <deque>						// Deque
 #include "TileSet.h"                    // Folha de sprite
 #include "Animation.h"                  // Animações de sprites
 #include "Object.h"						// Classe base para objetos
@@ -30,14 +30,15 @@ protected:
 	bool isDelete;								// Indica se a animação do ataque já finalizou
 	bool isDamage;								// Indica se o ataque causou dano
 	int contador;								// Contador de movimento do player
-	float width, height;						// Largura e altura	
+	float width, height;						// Largura e altura
+	float baseDamage;							// Guarda o dano base do ataque do boss
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de Colisão
 
 	Timer* timer;								// Temporizador de duração do ataque
 	Mixed* mixed;								// Caixa de colisão mista
-	std::vector<Alerts*> alerts;                // Vetor de Alertas
+	std::deque<Alerts*> alerts;					// Deque de alertas
 
 	// --------------------------------------------------------------------------------------------
 	// Métodos Protegidos
@@ -51,7 +52,6 @@ public:
 
 	// Método para criar Alertas
 	void DrawAlerts();
-	void RemoveAlert(size_t index);
 	void CreateAlert(AlertType alertType, float x, float y, int scala);
 	void UpdateAnimation();						// Atualiza a animação do ataque
 	virtual void OnCollision(Object* obj) = 0;	// Resolução da colisão

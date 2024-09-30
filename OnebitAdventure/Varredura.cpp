@@ -16,7 +16,7 @@ void Varredura::InitializeBBox()
 
 // ------------------------------------------------------------------------------
 
-Varredura::Varredura(float x, float y)
+Varredura::Varredura(float x, float y, float baseDamage)
 {
 	// ------------------------------------------------------------------------------------------
 	// Inicializando a largura e altura
@@ -47,7 +47,9 @@ Varredura::Varredura(float x, float y)
 	type = BOSSATACK;
 	timer = new Timer();
 	timer->Start();
+	isDamage = true;
 	contador = 4;
+	this->baseDamage = baseDamage;
 
 	// Cria os alertas (Serão 7 para esse ataque)
 	CreateAlert(SMALLWARNING, x + (width * 2), y + height, 1);			// primeiro alerta (canto direito)
@@ -90,24 +92,64 @@ void Varredura::Update()
 			anim->Select(0);
 
 			// Lógica de criar a primeira bbox do atack
-
 			Rect* rect = new Rect(
 				x - tileSet->TileWidth() / 8.5f,
 				y - tileSet->TileHeight() / 2.2f,
-				x + tileSet->TileWidth() / 8.5f,
+				x + tileSet->TileWidth() / 10.5f,
 				y + tileSet->TileHeight() / 2.3f);
 
-			rect->MoveTo(window->CenterX(), window->CenterY());
+			rect->MoveTo(0 + (width * 2), 0);
 
 			mixed->Insert(rect);
+
+			// Define quais próximos alertas estão prestes a "atacar"
+			alerts[2]->UpdateAnimation();
+			alerts[3]->UpdateAnimation();
+
+			// Remove os alertas que já atacaram
+			alerts[0]->draw = false;
+			alerts[1]->draw = false;
 		}
 		else {
 			anim->NextFrame();
-			mixed->Insert(new Rect(
-				x - tileSet->TileWidth() / 4.0f,
-				y - tileSet->TileHeight() / 4.0f,
-				x + tileSet->TileWidth() / 4.0f,
-				y + tileSet->TileHeight() / 4.0f));
+
+			if (contador == 2) {
+				Rect* rect = new Rect(
+					x - tileSet->TileWidth() / 3.6f,
+					y - tileSet->TileHeight() / 5.0f,
+					x + tileSet->TileWidth() / 3.6f,
+					y + tileSet->TileHeight() / 5.0f);
+
+				rect->MoveTo(0, 0 + 26);
+
+				mixed->Insert(rect);
+
+				// Define quais próximos alertas estão prestes a "atacar"
+				alerts[4]->UpdateAnimation();
+				alerts[5]->UpdateAnimation();
+				alerts[6]->UpdateAnimation();
+
+				// Remove os alertas que já atacaram
+				alerts[2]->draw = false;
+				alerts[3]->draw = false;
+			}
+			else if (contador == 1) {
+				Rect* rect = new Rect(
+					x - tileSet->TileWidth() / 10.5f,
+					y - tileSet->TileHeight() / 2.2f,
+					x + tileSet->TileWidth() / 8.5f,
+					y + tileSet->TileHeight() / 2.3f);
+
+				rect->MoveTo(0 - (width * 2), 0);
+
+				mixed->Insert(rect);
+
+
+				// Remove os alertas que já atacaram
+				alerts[4]->draw = false;
+				alerts[5]->draw = false;
+				alerts[6]->draw = false;
+			}
 		}
 
 		if (isDelete) {
@@ -127,7 +169,7 @@ void Varredura::Update()
 void Varredura::Draw()
 {
 	if (contador != 4) {
-		anim->Draw(anim->Frame(), x, y, Layer::FRONT, 1.0f, 0.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+		anim->Draw(anim->Frame(), x, y, Layer::BACK, 1.0f, 0.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }
 
@@ -137,7 +179,24 @@ void Varredura::OnCollision(Object* obj)
 {
     if (isDamage) {
 		if (obj->Type() == PLAYER) {
-            Level1::player->SetDamage(200);
+
+			// Verifica se o player se encontra no centro do ataque, se sim, aplica 300% do dano base da hydra
+			if (Level1::player->X() >= (x - width) && Level1::player->X() + 20 <= (x + width)) {
+
+				Level1::player->SetDamage(baseDamage * 3);  // Aplica 300% do dano base
+			}
+			else {
+
+				// Está nas laterais do ataque, logo, aplica 200% do dano base da hydra
+				Level1::player->SetDamage(baseDamage * 2);  // Aplica 200% do dano base
+
+			}
+
+			// Dano que o inimigo causou
+			((Character*)obj)->text.insert({ std::to_string(Level1::player->GetDamage()), Color(0.941f, 0.318f, 0.459f, 1.0f)});
+			
+
+			isDamage = false;
 		}
     }
 }

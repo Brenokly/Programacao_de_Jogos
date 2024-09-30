@@ -32,6 +32,7 @@ public:
 	void OnCollision(Object* obj) override;								// resolução da colisão
 
 	// Métodos de Ataque
+	void Ataque1();
 	void Ataque2();
 	void Ataque3();
 

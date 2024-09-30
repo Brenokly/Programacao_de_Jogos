@@ -55,9 +55,11 @@ Hydra::Hydra(float col, float line) : Boss() // Chamada do construtor da classe 
     // --------------------------------------------------------------------------------------------
     // Inicializa variáveis de status do boss Hydra (nível, vida e ataque)
 
-    level = 1;  // Ajuste o nível conforme necessário
+    level = 1;                                  // Ajuste o nível conforme necessário
+
     maxLife = (int)(120 * pow(level, 1.697));   // Vida máxima da Hydra
-    life = maxLife;  // Vida atual da Hydra
+    life = maxLife;                             // Vida atual da Hydra
+
     attack = (int)(2.72 * pow(level, 1.644));   // Dano da Hydra cresce exponencialmente
 
     // --------------------------------------------------------------------------------------------
@@ -93,34 +95,30 @@ Hydra::~Hydra()
 
 void Hydra::Update()
 {
-    //if (Level1::player->IsMoving())
-    //{
-    //    HandleMovement(100.0f);                             // Define a direção de movimento com 100% de chance de seguir o jogador
-    //}
+    if (Level1::player->IsMoving())
+    {
+        HandleMovement(100.0f);                             // Define a direção de movimento com 100% de chance de seguir o jogador
+    }
 
-    //CameraMovement();									    // Atualiza a movimentação da câmera
-    //Movement();											    // Atualiza a movimentação do inimigo
+    CameraMovement();									    // Atualiza a movimentação da câmera
+    Movement();											    // Atualiza a movimentação do inimigo
 
-    //ConstrainToScreen();                                    // Garante que o inimigo não ultrapasse os limites da tela
+    ConstrainToScreen();                                    // Garante que o inimigo não ultrapasse os limites da tela
 
-    //// Se o inimigo está a um bloco de distância do jogador, é exibido a vida do inimigo
-    //if (Distance(Level1::player) <= height + 2.25f)
-    //{
-    //    DisplayEnemyHealth();
-    //}
+    // Se o inimigo está a um bloco de distância do jogador, é exibido a vida do inimigo
+    if (Distance(Level1::player) <= height + 2.25f)
+    {
+        DisplayEnemyHealth();
+    }
 
-    //// Verifica se o Boss morreu após receber o dano
-    //if (life <= 0) {
+    // Verifica se o Boss morreu após receber o dano
+    if (life <= 0) {
 
-    //    Level1::scene->Remove(this, MOVING);                // Remove o boss da cena
-    //    Level1::player->SetXp(100 * level);	              // Adiciona a experiência ao player
-    //}
+        Level1::scene->Remove(this, MOVING);                // Remove o boss da cena
+        Level1::player->SetXp(100 * level);	              // Adiciona a experiência ao player
+    }
 
     UpdateAnimation();                                        // Atualiza a animação do inimigo
-
-    if (window->KeyPress(VK_SPACE)) {
-        Level1::scene->Add(new Varredura(x, y), MOVING);
-    }
 }
 
 void Hydra::Draw()
@@ -138,33 +136,42 @@ void Hydra::Draw()
 
 void Hydra::OnCollision(Object* obj)
 {
-    //uint type = obj->Type();
+	uint type = obj->Type();						// Tipo do objeto colidido
 
-    //// Se o objeto colidido for o player
-    //if (type == PLAYER)
-    //{
-    //    if (!isHit) return;
+    // Se o objeto colidido for o player
+    if (type == PLAYER)
+    {
+        if (!isHit) return;
 
-    //    Entity* player = (Entity*)(obj);
+        Entity* player = (Entity*)(obj);
 
-    //    float targetDist = TargetDistance(player);	// Diferença entre os targets
+        float targetDist = TargetDistance(player);	// Diferença entre os targets
 
-    //    // Se o ghost e o player tiverem o mesmo destino (targetX e targetY)
-    //    if (targetDist < 4.0f || direction != STILL)
-    //    {
-    //        player->SetDamage(attack);		        // Ataca o player
+        // Se o ~inimigo e o player tiverem o mesmo destino (targetX e targetY)
+        if (targetDist < 4.0f || direction != STILL)
+        {
+            player->SetDamage(attack);		        // Ataca o player
 
-    //        // Dano que o inimigo causou
-    //        ((Character*)player)->text.insert({ std::to_string(player->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
+            // Dano que o inimigo causou
+            ((Character*)player)->text.insert({ std::to_string(player->GetDamage()), Color(1.0f, 0.0f, 0.0f, 1.0f) });
 
-    //        Move(BACK);								// Volta o ghost para trás
-    //    }
+            Move(BACK);								// Volta o boss para trás
+        }
 
-    //    isHit = false;
-    //}
-    //else if (type == ENEMY) {
-    //    Move(BACK);
-    //}
+        isHit = false;
+    }
+    else if (type == ENEMY) {
+        Move(BACK);
+    }
+}
+
+//-------------------------------------------------------------------------------
+
+void Hydra::Ataque1() {
+
+    if (window->KeyPress(VK_SPACE)) {
+        Level1::scene->Add(new Varredura(x, y, attack), MOVING);
+    }
 }
 
 // ------------------------------------------------------------------------------

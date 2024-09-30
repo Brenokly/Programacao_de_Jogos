@@ -42,7 +42,8 @@ Boss::Boss() : Enemy() // Chamada do construtor da classe base
 	// --------------------------------------------------------------------------------------------
 	// Variáveis auxiliares
 
-	contadorMovimento = 0; // Inicializa o contador de movimento
+	type = BOSS;            // Define o tipo do inimigo como BOSS
+	contadorMovimento = 0;  // Inicializa o contador de movimento
 }
 
 // ------------------------------------------------------------------------------

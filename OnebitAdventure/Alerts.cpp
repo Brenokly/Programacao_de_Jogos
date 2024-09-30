@@ -16,6 +16,7 @@ Alerts::Alerts(AlertType alertType, float x, float y, float scala)
 	//--------------------------------------------------------------------------------------------
 	// Variáveis auxiliares
 	nextFrame = false;
+	draw = true;
 	type = alertType;
 	this->x = x;
 	this->y = y;

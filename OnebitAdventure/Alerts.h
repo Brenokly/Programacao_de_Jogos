@@ -34,6 +34,8 @@ protected:
 	float x, y, scala;														// Posição do alerta
 
 public:
+	bool draw;																// Desenha o alerta
+
 	Alerts(AlertType alertType, float x, float y, float scala);				// Construtor
 	~Alerts();																// Destrutor
 
@@ -49,11 +51,11 @@ inline void Alerts::Draw()
 {
 	if (nextFrame) {
 		// Desenha o alerta mais claro, indicando que o ataque é o próximo
-		spriteAlerts->Draw(x ,y , Layer::FRONT, scala, 0.0f, Color(0.941f, 0.318f, 0.459f, 1.0f));
+		spriteAlerts->Draw(x ,y , Layer::MIDDLE, scala, 0.0f, Color(0.941f, 0.318f, 0.459f, 1.0f));
 	}
 	else {
 		// Desenha o alerta mais escuro, indicando que o ataque não é o próximo
-		spriteAlerts->Draw(x, y, Layer::FRONT, scala, 0.0f, Color(0.592f, 0.0f, 0.224f, 1.0f));
+		spriteAlerts->Draw(x, y, Layer::MIDDLE, scala, 0.0f, Color(0.592f, 0.0f, 0.224f, 1.0f));
 	}
 }
 

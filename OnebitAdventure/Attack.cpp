@@ -8,6 +8,10 @@
 // Construtor
 Attack::Attack() : tileSet(nullptr), anim(nullptr), isDelete(false), isDamage(false), timer(nullptr), mixed(nullptr)
 {
+	contador = 0;		// Inicializa o contador
+	width = 0;			// Inicializa a largura
+	height = 0;			// Inicializa a altura
+	baseDamage = 0.0f;	// Inicializa o dano base
 }
 
 //-------------------------------------------------------------------------------
@@ -32,17 +36,9 @@ void Attack::UpdateAnimation()
 void Attack::DrawAlerts()
 {
 	for (Alerts* alert : alerts) {
-		alert->Draw();
-	}
-}
-
-// ------------------------------------------------------------------------------
-
-// Função para remover um alerta do vetor
-void Attack::RemoveAlert(size_t index) {
-	if (index < alerts.size()) { // Verifique se o índice está dentro dos limites
-		delete alerts[index]; // Deleta o alerta e libera a memória
-		alerts.erase(alerts.begin() + index); // Remove o alerta do vetor
+		if (alert->draw) {
+			alert->Draw();
+		}
 	}
 }
 
@@ -50,7 +46,7 @@ void Attack::RemoveAlert(size_t index) {
 
 void Attack::CreateAlert(AlertType alertType, float x, float y, int scala) {
 	Alerts* newAlert = new Alerts(alertType, x, y, scala);
-	alerts.push_back(newAlert); // Adiciona o novo alerta ao vetor
+	alerts.push_back(newAlert);  // Adiciona o novo alerta ao deque
 }
 
 // ------------------------------------------------------------------------------

@@ -28,6 +28,7 @@ enum OneBitObjects // Enumeração dos tipos de objetos
 	CAMPFIRE,
     PILLAR,
     BOSSATACK,
+    BOSS
 };
 
 // ------------------------------------------------------------------------------
