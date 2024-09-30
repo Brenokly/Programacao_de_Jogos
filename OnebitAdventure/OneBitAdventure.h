@@ -10,9 +10,7 @@
 #include "Engine.h"
 #include "Game.h"
 #include "Audio.h"
-#include "Scene.h"
 #include "Mouse.h"
-#include "Hud.h"
 
 // ------------------------------------------------------------------------------
 
@@ -28,7 +26,8 @@ enum OneBitObjects // Enumeração dos tipos de objetos
 	CAMPFIRE,
     PILLAR,
     BOSSATACK,
-    BOSS
+    ITEM,
+    MOUSE
 };
 
 // ------------------------------------------------------------------------------
@@ -42,15 +41,11 @@ class Character; // Declaração antecipada da classe Character
 class OneBitAdventure : public Game
 {
 private:
-    static Game* level;                 // nível atual do jogo
+    static Game * level;                // nível atual do jogo
 
 public:
     static Audio * audio;               // sistema de áudio
-	static Scene * scene;   	        // cena do jogo
-	static Mouse * mouse;				// mouse do jogo
-	static Hud * hud;                   // hud do jogo
-    static Character* player;           // personagem principal
-
+    static Mouse * mouse;				// mouse do jogo
 
     void Init();                        // inicializa jogo
     void Update();                      // atualiza lógica do jogo
@@ -58,7 +53,7 @@ public:
     void Finalize();                    // finaliza jogo
 
     template<class T>
-    static void NextLevel()             // muda para próximo nível do jogo
+    static void NextLevel()
     {
         if (level)
         {

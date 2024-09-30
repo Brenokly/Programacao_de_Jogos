@@ -6,22 +6,48 @@
 #include "Home.h"
 #include "Level1.h"
 #include "Warrior.h"
+#include "Card.h"
+
+// ------------------------------------------------------------------------------
+
+Scene     * Select::scene   = nullptr;
+Hud       * Select::hud     = nullptr;
+Character * Select::player  = nullptr;
 
 // ------------------------------------------------------------------------------
 
 void Select::Init()
 {
-	backg = new Sprite("Resources/TelaEscolha5.png", window->Width(), window->Height());
+	backg = new Sprite("Resources/selecao.png", window->Width(), window->Height());
 
-	if (!OneBitAdventure::audio->isPlaying(MENU)) {
-		OneBitAdventure::audio->Play(MENU, true);
-	}
+    cardWidth = (backg->Width() / 1920.0f) * 360.0f;
+    cardHeight = (backg->Height() / 1080.0f) * 495.0f;
+
+    dist = cardWidth + 10.0f;
+
+    scene = new Scene();
+    scene->Add(OneBitAdventure::mouse, MOVING);
+    //scene->Add(new Card(window->CenterX(), window->CenterY(), cardWidth, cardHeight), STATIC);
+
+    // Adiciona 5 cards para teste
+    for (float x = window->CenterX(); x <= 5.0f * dist; x += dist)
+    {
+        scene->Add(new Card(x, window->CenterY(), cardWidth, cardHeight), STATIC);
+    }
+
+    character = WARRIOR;
 }
 
 // ------------------------------------------------------------------------------
 
 void Select::Update()
 {
+    scene->Update();
+    scene->CollisionDetection();
+
+    if (window->KeyPress('B'))
+        viewBbox = !viewBbox;
+
     // volta para a tela inicial
     if (window->KeyPress(VK_ESCAPE))
     {
@@ -31,35 +57,29 @@ void Select::Update()
     // passa ao primeiro nível com ENTER
     if (window->KeyPress(VK_RETURN))
     {
-        // Verifica se já existe um player alocado
-        if (OneBitAdventure::player != nullptr) {
-            // Libera o player atual antes de criar um novo
-            delete OneBitAdventure::player;
-            OneBitAdventure::player = nullptr;
-        }
+        hud = new Hud();
 
         // Cria um novo player baseado na seleção do usuário
         switch (character)
         {
         case WARRIOR:
-            OneBitAdventure::player = new Warrior(5, 7);
+            player = new Warrior(5, 7);
             break;
         case MAGE:
-            // OneBitAdventure::player = new Mage(...); // Lógica para o MAGE
+            // player = new Mage(...); // Lógica para o MAGE
             break;
         case ARCHER:
-            // OneBitAdventure::player = new Archer(...); // Lógica para o ARCHER
+            // player = new Archer(...); // Lógica para o ARCHER
             break;
         case ROGUE:
-            // OneBitAdventure::player = new Rogue(...); // Lógica para o ROGUE
+            // player = new Rogue(...); // Lógica para o ROGUE
             break;
         default:
-            OneBitAdventure::player = new Warrior(5, 7);
+            player = new Warrior(5, 7);
             break;
         }
 
         // Adiciona o novo player à cena e inicia o nível 1
-        //OneBitAdventure::scene->Add(OneBitAdventure::player, MOVING);
         OneBitAdventure::audio->Stop(MENU);
         OneBitAdventure::NextLevel<Level1>();
     }
@@ -70,13 +90,19 @@ void Select::Update()
 void Select::Draw()
 {
 	backg->Draw(window->CenterX(), window->CenterY());
+    scene->Draw();
+
+	if (viewBbox)
+		scene->DrawBBox();
 }
 
 // ------------------------------------------------------------------------------
 
 void Select::Finalize()
 {
+    scene->Remove(OneBitAdventure::mouse, MOVING);
 	delete backg;
+    delete scene;
 }
 
 // ------------------------------------------------------------------------------

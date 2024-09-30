@@ -6,12 +6,9 @@
 
 //-------------------------------------------------------------------------------
 
-Character   * OneBitAdventure::player   = nullptr;
-Scene       * OneBitAdventure::scene    = nullptr;
 Game        * OneBitAdventure::level    = nullptr;
 Audio       * OneBitAdventure::audio    = nullptr;
 Mouse       * OneBitAdventure::mouse    = nullptr;
-Hud         * OneBitAdventure::hud      = nullptr;
 
 //-------------------------------------------------------------------------------
 
@@ -25,10 +22,7 @@ void OneBitAdventure::Init()
 	audio->Add(AUDIO_CLICK, "Resources/Audios/Click.wav");
 	audio->Add(MOEDA, "Resources/Audios/Moeda.wav");
 
-    hud = new Hud();
     mouse = new Mouse();
-    scene = new Scene;
-
 	level = new Home();
 	level->Init();
 }
@@ -41,7 +35,7 @@ void OneBitAdventure::Update()
     level->Update();
 
     // atualiza mouse
-    mouse->Update();
+	mouse->Update();
 }
 
 //-------------------------------------------------------------------------------
@@ -62,12 +56,7 @@ void OneBitAdventure::Finalize()
     if (level != nullptr) {
         level->Finalize();
         delete level;
-        level = nullptr;  
-    }
-
-    if (audio != nullptr) {
-        delete audio;
-        audio = nullptr;  
+        level = nullptr;
     }
 
     if (mouse != nullptr) {
@@ -75,19 +64,9 @@ void OneBitAdventure::Finalize()
         mouse = nullptr;
     }
 
-    if (hud != nullptr) {
-        delete hud;
-        hud = nullptr;
-    }
-
-    if (scene != nullptr) {
-        delete scene;
-        scene = nullptr;
-    }
-
-    if (player != nullptr) {
-        delete player;
-        player = nullptr;
+    if (audio != nullptr) {
+        delete audio;
+        audio = nullptr;
     }
 }
 

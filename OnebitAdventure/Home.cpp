@@ -29,8 +29,8 @@ void Home::Update()
     if (window->KeyPress(VK_ESCAPE))
         window->Close();
 
-    // passa ao primeiro nível com ENTER
-    if (window->KeyPress(VK_RETURN))
+    // passa ao primeiro nível com ENTER ou com o clique do mouse
+    if (window->KeyPress(VK_RETURN) || OneBitAdventure::mouse->Click())
     {
         OneBitAdventure::NextLevel<Select>();
     }

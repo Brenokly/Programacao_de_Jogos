@@ -10,10 +10,7 @@
 #include "Object.h"                     // interface de Object
 #include "Animation.h"
 #include "Font.h"
-
-// ---------------------------------------------------------------------------------
-
-class Character;						// declaração antecipada da classe Character
+#include "Character.h"
 
 // ---------------------------------------------------------------------------------
 
@@ -27,12 +24,11 @@ enum LifeContainer
 class Hud : public Object
 {
 private:
-    // referência para o player
-    static Character* & player;
+	Character *& player;						// referência para o player
     Sprite * mainBackg = nullptr;               // sprite do background principal
     Sprite * playerHud = nullptr;               // hud para mostrar estado do jogador
-    Sprite* xpBar;							    // sprite para representar a experiência do jogador
-	TileSet* tileSet = nullptr;                 // tileset para mostrar estado do jogador
+    Sprite * xpBar;							    // sprite para representar a experiência do jogador
+	TileSet * tileSet = nullptr;                // tileset para mostrar estado do jogador
 	Animation * life = nullptr; 			    // Animação para mostrar estado do jogador
     Font * consolas = nullptr;			        // Fonte para exibir texto na tela!
 
@@ -40,12 +36,12 @@ private:
 	float height;	                            // Altura do background principal
 
 public:
-	uint tileWidth;                             // Largura de um tile
-	uint tileHeight;                            // Altura de um tile
-    float mainLeftSide;                         // Lado esquerdo do background principal
-    float mainRightSide;                        // Lado direito do background principal
-    float mainBottomSide;					    // Lado inferior do background principal
-    float offset;                               // Offset proporcional de pixels de um lado do background
+	static uint tileWidth;                      // Largura de um tile
+    static uint tileHeight;                     // Altura de um tile
+    static float mainLeftSide;                  // Lado esquerdo do background principal
+    static float mainRightSide;                 // Lado direito do background principal
+    static float mainBottomSide;				// Lado inferior do background principal
+    static float offset;                        // Offset proporcional de pixels de um lado do background
 
     Hud();                                      // construtor
     ~Hud();                                     // destrutor
@@ -58,11 +54,11 @@ public:
 	int Width();								// Retorna a largura do background principal
 	int Height();								// Retorna a altura do background principal
     int InverseLine(float y) const;
-    float Line(float y) const;
-    float Col(float x) const;
+    static float Line(float y);
+    static float Col(float x);
     bool Collision(Object* obj1, Object* obj2, int tolerance = 1);
     bool Collision(int x1, int y1, int x2, int y2, int tolerance = 1);
-}; 
+};
 
 // ---------------------------------------------------------------------------------
 
@@ -82,12 +78,12 @@ inline int Hud::InverseLine(float y) const
     return (window->Height() - y) / tileHeight;
 }
 
-inline float Hud::Line(float y) const
+inline float Hud::Line(float y)
 {
     return mainBottomSide - y * tileHeight;
 }
 
-inline float Hud::Col(float x) const
+inline float Hud::Col(float x)
 {
     return mainLeftSide + offset + tileWidth / 2.0f + x * tileWidth;
 }

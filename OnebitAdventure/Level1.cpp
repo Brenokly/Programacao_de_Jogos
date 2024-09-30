@@ -2,6 +2,7 @@
 // Inclusões
 
 #include "Level1.h"
+#include "Character.h"
 #include "Warrior.h"
 #include "Hydra.h"
 #include "Select.h"
@@ -11,27 +12,30 @@
 
 // ------------------------------------------------------------------------------
 
-Scene     *  Level1::scene   = nullptr;
-Hud       *& Level1::hud     = OneBitAdventure::hud;
-Map        * Level1::map     = nullptr;
-Character *& Level1::player  = OneBitAdventure::player;
+Scene       *  Level1::scene    = nullptr;
+Hud         *& Level1::hud      = Select::hud;
+Character   *& Level1::player   = Select::player;
 
 // ------------------------------------------------------------------------------
 
 void Level1::Init()
 {
-	OneBitAdventure::audio->Play(GAME, true);                                       // inicia música de fundo
+    this->hud = hud;													// inicializa o hud
+	this->player = player;											    // inicializa o player
 
-	scene = new Scene();                                                            // cria nova cena
-
-    std::srand(static_cast<unsigned int>(std::time(0)));
-    //map = new Map(std::rand() % 100);
-
-    Hydra* hydra = new Hydra(8, 10);
-
+	OneBitAdventure::audio->Play(GAME, true);                           // inicia música de fundo
+	
+    scene = new Scene();								                // cria nova cena
     scene->Add(hud, STATIC);
-    scene->Add(hydra, MOVING);
-	scene->Add(OneBitAdventure::player, MOVING);
+
+    // mapa deve adicionar o player
+    scene->Add(player, MOVING);
+    
+	std::srand(static_cast<unsigned int>(std::time(0)));				// semente para números aleatórios
+	map = new Map(std::rand());								            // cria um novo mapa aleatório
+
+    //Hydra* hydra = new Hydra(8, 10);
+    //scene->Add(hydra, MOVING);
     //scene->Add(new Ghost(8, 10), MOVING);
     //scene->Add(new Ghost(5, 12), MOVING);
     //scene->Add(new Ghost(2, 2), MOVING);
@@ -78,9 +82,8 @@ void Level1::Draw()
 
 void Level1::Finalize()
 {
-    scene->Remove(OneBitAdventure::player, MOVING);
-	scene->Remove(hud, STATIC);
     delete scene;
+    delete map;
 }
 
 // ------------------------------------------------------------------------------

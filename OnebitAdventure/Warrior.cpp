@@ -39,7 +39,7 @@ Warrior::Warrior(int col, int line)
     InitializeBBox();
 
 	// Inicializa a posição
-	MoveTo(Level1::hud->Col(col), Level1::hud->Line(line), Layer::MIDDLE);
+	MoveTo(Hud::Col(col), Hud::Line(line), Layer::MIDDLE);
 }
 
 // ---------------------------------------------------------------------------------

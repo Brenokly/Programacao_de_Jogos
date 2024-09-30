@@ -66,7 +66,7 @@ TileSet::TileSet(Image* image, uint numLines, uint numCols) :
 TileSet::~TileSet()
 {
     // libera memória ocupada pela imagem
-    if (image)
+    if (localImage)
     {
          delete image;
     }

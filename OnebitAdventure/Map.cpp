@@ -178,7 +178,7 @@ void Map::Generate()
     for (int y = 0; y < tamanho; ++y) {
         for (int x = 0; x < tamanho; ++x) {
 
-            uint idx = spinRoulette(fieldRoulette);
+			uint idx = spinRoulette(fieldRoulette);  // Seleciona um prop aleatório de um bioma aleatório
 			if (idx == propsLength) continue;
             
             Image * img = images[idx];
