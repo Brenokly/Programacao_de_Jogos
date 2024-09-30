@@ -1,25 +1,29 @@
 #include "Hud.h"
-#include "Level1.h"
-#include "Character.h"
+#include "Select.h"
 
 // ---------------------------------------------------------------------------------
 
-Character*& Hud::player = Level1::player;
+uint  Hud::tileWidth        = 0;
+uint  Hud::tileHeight       = 0;
+float Hud::mainLeftSide     = 0.0f;
+float Hud::mainRightSide    = 0.0f;
+float Hud::mainBottomSide   = 0.0f;
+float Hud::offset           = 0.0f;
 
 // ---------------------------------------------------------------------------------
 
-Hud::Hud()
+Hud::Hud() : player(Select::player)
 {
 	// Dimensões comuns aos 3 huds
     width = window->Width() / 3.0f;     // Largura da área central
 	height = window->Height();          // Altura da área central
 
     // Descontando as bordas laterais de 5% da largura total
-    offset = width * 0.05f;                          // Exemplo de 5% de borda em cada lado
+    offset = width * 0.05f;                                 // Exemplo de 5% de borda em cada lado
 
     // Área útil de movimento, sem contar as bordas
     tileWidth = (width - (2.0f * offset)) / 11.0f;         // Largura e passada horizontal de um tile
-    tileHeight = height / 19.0f;  				                // Altura e passada vertical de um tile
+    tileHeight = height / 19.0f;  				           // Altura e passada vertical de um tile
 
     // Imagem do background principal
     mainBackg = new Sprite("Resources/Hud/mapa.png", width, height);
@@ -68,7 +72,7 @@ Hud::~Hud()
 void Hud::Update()
 {
     // Pega a vida do player e atualiza hud da vida
-    float ratio = (float)Level1::player->GetLife() / Level1::player->GetMaxLife();
+    float ratio = (float) player->GetLife() / player->GetMaxLife();
     if (ratio >= 0.99f)
         life->Select(FULL);
     else if (ratio >= 0.75f)
@@ -87,7 +91,7 @@ void Hud::Draw()
     playerHud->Draw(window->CenterX(), window->Height() - 0.5f * playerHud->Height(), Layer::FRONT);
 
     // Desenha vida se o player estiver vivo
-    if (!((Entity*)Level1::player)->IsDead())
+    if (!((Entity*)player)->IsDead())
         life->Draw(window->CenterX(), window->Height() - 0.5f * playerHud->Height(), Layer::FRONT);
 
     DrawExperienceBar();
@@ -95,9 +99,9 @@ void Hud::Draw()
 
     // Desenha o texto do indicador de vida
     string lifeTxt = "";
-    lifeTxt.append(std::to_string(Level1::player->GetLife()));
+    lifeTxt.append(std::to_string(player->GetLife()));
     lifeTxt.append("/");
-    lifeTxt.append(std::to_string(Level1::player->GetMaxLife()));
+    lifeTxt.append(std::to_string(player->GetMaxLife()));
 
 	float positionX = mainLeftSide + offset + 0.25f * tileWidth;
     float positionY = mainBottomSide - 0.8f * tileHeight;
@@ -117,7 +121,7 @@ void Hud::DrawExperienceBar()
     float percent = (float)player->GetXp() / player->GetMaxXp();
 
     // Calcula a largura máxima da barra de experiência
-    float maxWidth = xPercent * Level1::hud->Width();
+    float maxWidth = xPercent * width;
     float currentWidth = maxWidth * percent;
 
     // Calcula a posição X e Y com base nas dimensões da tela

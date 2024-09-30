@@ -21,12 +21,12 @@ class Level1 : public Game
 {
 private:
 	bool viewBox = false;				// controle de visualização de caixas de colisão
+	Map * map;							// gerenciador do mapa do jogo
 
 public:
 	static Scene * scene;				// gerenciador de cena
 	static Hud *& hud;					// gerenciador do hud do jogo
-	static Map * map;					// gerenciador do mapa do jogo
-	static Character *& player;			// referencia para o jogador
+	static Character *& player;			// personagem do jogador
 
 	void Init();						// inicialização
 	void Update();						// atualização

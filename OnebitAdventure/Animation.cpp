@@ -77,7 +77,7 @@ void Animation::Add(uint id, uint * seq, uint seqSize)
 
 // --------------------------------------------------------------------------------
 
-void Animation::Select(uint id)
+void Animation::Select(uint id, bool timerReset)
 {
     // Retorna se a sequência não existe na tabela
     if (table.find(id) == table.end())
@@ -97,9 +97,10 @@ void Animation::Select(uint id)
         // Se o frame atual está fora da sequência
         if (frame > endFrame)
             frame = 0;
+
+        if (timerReset) timer.Reset();
     }
 }
-
 
 // ---------------------------------------------------------------------------------
 

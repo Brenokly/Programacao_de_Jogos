@@ -53,7 +53,7 @@ public:
     void Add(uint id, uint * seq, uint seqSize);
     
     // seleciona seqüência atual
-    void Select(uint id);
+    void Select(uint id, bool timerReset = false);
 
     void Draw(                                      // desenha o quadro atual da animação
         float x, float y, float z = Layer::MIDDLE,  // coordenadas da tela

@@ -271,6 +271,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Card.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
