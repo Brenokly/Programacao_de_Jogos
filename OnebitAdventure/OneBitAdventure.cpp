@@ -21,6 +21,7 @@ void OneBitAdventure::Init()
 	audio->Add(ATAQUE, "Resources/Audios/Ataque.wav", 3);
 	audio->Add(AUDIO_CLICK, "Resources/Audios/Click.wav");
 	audio->Add(MOEDA, "Resources/Audios/Moeda.wav");
+	audio->Add(MORTE, "Resources/Audios/Morte.wav");
 
     mouse = new Mouse();
 	level = new Home();

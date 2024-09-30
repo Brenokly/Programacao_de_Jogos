@@ -27,12 +27,13 @@ enum OneBitObjects // Enumeração dos tipos de objetos
     PILLAR,
     BOSSATACK,
     ITEM,
-    MOUSE
+    MOUSE,
+    BOSS,
 };
 
 // ------------------------------------------------------------------------------
 
-enum Sounds { MENU, GAME, PORTA, ATAQUE, AUDIO_CLICK, MOEDA };
+enum Sounds { MENU, GAME, PORTA, ATAQUE, AUDIO_CLICK, MOEDA, MORTE };
 
 // ------------------------------------------------------------------------------
 

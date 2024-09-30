@@ -74,10 +74,10 @@ void Warrior::OnCollision(Object* obj)
 
 		Enemy* enemy = (Enemy*)obj;
 
-		txtTimer->Start();			// Inicia o timer para o cálculo de tempo de exibição da mensagem!
+		txtTimer->Start();				// Inicia o timer para o cálculo de tempo de exibição da mensagem!
 
 		// Reinicia o timer de ataque
-		attackTimer->Reset();	// Inicia o timer para o cálculo de tempo de pausa entre os ataques!
+		attackTimer->Reset();			// Inicia o timer para o cálculo de tempo de pausa entre os ataques!
 
 		// Pega a direção em que o inimigo está se movendo
 		Direction enemyDirection = enemy->GetDirection();
@@ -128,6 +128,8 @@ void Warrior::OnCollision(Object* obj)
 
 		// Evita que o Warrior continue a ser atingido até que a próxima colisão seja registrada
 		isHit = false;
+
+		OneBitAdventure::audio->Play(ATAQUE);
 	}
 	else if (type == BOSS) {
 		if (!isHit) return;
@@ -188,6 +190,7 @@ void Warrior::OnCollision(Object* obj)
 
 		// Evita que o Warrior continue a ser atingido até que a próxima colisão seja registrada
 		isHit = false;
+		OneBitAdventure::audio->Play(ATAQUE);
 	}
 	else if (type == COIN)
 	{

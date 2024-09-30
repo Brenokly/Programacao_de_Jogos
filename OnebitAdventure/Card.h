@@ -17,6 +17,7 @@ private:
 	Font * font;
 	Vector * speed;
 	bool created;				// Indica se é um card de personagem já criado
+	Mixed* mixed;				// Caixa de colisão mista 
 
 public:
 	Card(float x, float y, float width, float height, bool created = false);

@@ -4,21 +4,39 @@
 Card::Card(float x, float y, float width, float height, bool created) 
 	: created(created)
 {
+	// --------------------------------------------------------------------
+	// Inicialização de tilesets, fontes, velocidade e bounding box
+
 	backg = new Sprite("Resources/card.png", width, height);
 	font = new Font("Resources/press12.png");
 	font->Spacing("Resources/press12.dat");
 
 	speed = new Vector();
 
-	BBox(new Rect
+	// --------------------------------------------------------------------
+	// Inicialização de variáveis de posição e bounding box
+
+	MoveTo(x, y, Layer::FRONT);
+
+	
+	mixed = new Mixed();		// Criando um novo Mixed para a BBox
+
+	Rect* rect = new Rect		// Criando um novo Rect para a BBox
 	(
 		x - width / 2.0f,
 		y - height / 2.0f,
 		x + width / 2.0f,
 		y + height / 2.0f
-	));
+	);
 
-	MoveTo(x, y, Layer::FRONT);
+	rect->MoveTo(0 - x, 0 - y);	// Movendo o Rect para a posição do objeto
+
+	mixed->Insert(rect);		// Inserindo o Rect no Mixed
+
+	BBox(mixed);				// Definindo a BBox do objeto
+
+
+	// Não me pergunte do porque só funciona com mixed, eu não sei!
 }
 
 Card::~Card()

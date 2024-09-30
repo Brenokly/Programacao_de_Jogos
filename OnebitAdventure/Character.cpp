@@ -71,6 +71,7 @@ void Character::Update()
 	// Atualiza estado de vida do jogador
     if (life <= 0)
     {
+        OneBitAdventure::audio->Play(MORTE);
         // Cria o TileSet de morte
         tileSet = new TileSet("Resources/morte.png", width, height, width, height, 1, 1);
         anim = new Animation(tileSet, 0.0f, false); 		   //
