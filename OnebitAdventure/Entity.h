@@ -41,7 +41,9 @@ protected:
 
 	// Atributos de dimensão e movimentação
 	Direction direction;				// direção do movimento
-	float width, height;				// largura e altura
+	AnimationState state;				// Estado em que a entitdade está
+	float width, height;				// largura e altura da passada
+	float tileWidth, tileHeight;		// largura e altura do tile
 	float speed;						// velocidade de movimento
 	float targetX;						// posição x do destino
 	float targetY;						// posição y do destino
@@ -61,7 +63,7 @@ protected:
 	bool isDead;						// Flag para indicar se o personagem está morto
 	bool isMoving;						// verifica se está executando um movimento
 	bool isMovingBack;					// verifica se está executando um movimento
-	bool itMoved;						// verifica se a entidade se moveu
+	bool isAttacked;					// Indica se a entidade está atacando ou não
 
 	// Atributos de combate
 	int level;
@@ -95,14 +97,25 @@ public:
 	
 	// Métodos Get
 	bool IsMoving() const;								// retorna se está executando um movimento
+	void SetIsMoving(bool isMoving);					// define se está executando um movimento
+	inline bool IsAttacked() const;						// retorna se a entidade se moveu
+	inline void SetIsAttacked(bool canMove);			// define se a entidade pode se mover
 	bool IsHit() const;									// retorna se a entidade já atacou
 	bool IsDead() const;								// retorna se a entidade está morta
+	AnimationState GetState() const;					// retorna o estado atual da animação
+	void SetTargetX(float targetX);						// define a posição x do destino
+	void SetTargetY(float targetY);						// define a posição y do destino
 	float GetTargetX() const;							// retorna a posição x do destino
 	float GetTargetY() const;							// retorna a posição y do destino
+	void SetPrevX(float prevX);							// define a posição x anterior
 	float GetPrevX() const;								// retorna a posição x anterior
+	void SetPrevY(float prevY);							// define a posição y anterior
 	float GetPrevY() const;								// retorna a posição y anterior
+	float GetTileWidth() const;							// retorna a largura do tile
+	float GetTileHeight() const;						// retorna a altura do tile
 	int GetLife() const;								// retorna vida atual
 	int GetMaxLife() const;								// retorna vida máxima
+	int GetAttack() const;								// retorna ataque
 	int GetDamage() const;								// retorna dano recebido
 	float GetWidth() const;								// retorna a largura da entidade
 	float GetHeight() const;							// retorna a altura da entidade
@@ -129,6 +142,7 @@ inline void Entity::MoveTo(float x, float y, float z)
 	targetY = prevY = y;
 }
 
+
 inline uint Entity::GetAnimSeq(Direction direction, AnimationState animState)
 {
 	return direction | animState;
@@ -141,7 +155,27 @@ inline bool Entity::IsHit() const
 
 inline bool Entity::IsMoving() const
 {
-	return itMoved;
+	return isMoving;
+}
+
+inline void Entity::SetIsMoving(bool isMoving)
+{
+	this->isMoving = isMoving;
+}
+
+inline bool Entity::IsAttacked() const
+{
+	return isAttacked;
+}
+
+inline void Entity::SetIsAttacked(bool isAttacked)
+{
+	this->isAttacked = isAttacked;
+}
+
+inline AnimationState Entity::GetState() const
+{
+	return state;
 }
 
 inline bool Entity::IsDead() const
@@ -149,9 +183,19 @@ inline bool Entity::IsDead() const
 	return isDead;
 }
 
+inline void Entity::SetTargetX(float targetX)
+{
+	this->targetX = targetX;
+}
+
 inline float Entity::GetTargetX() const
 {
 	return targetX;
+}
+
+inline void Entity::SetTargetY(float targetY)
+{
+	this->targetY = targetY;
 }
 
 inline float Entity::GetTargetY() const
@@ -159,9 +203,29 @@ inline float Entity::GetTargetY() const
 	return targetY;
 }
 
+inline void Entity::SetPrevX(float prevX)
+{
+	this->prevX = prevX;
+}
+
 inline float Entity::GetPrevX() const
 {
 	return prevX;
+}
+
+inline float Entity::GetTileWidth() const
+{
+	return tileWidth;
+}
+
+inline float Entity::GetTileHeight() const
+{
+	return tileHeight;
+}
+
+inline void Entity::SetPrevY(float prevY)
+{
+	this->prevY = prevY;
 }
 
 inline float Entity::GetPrevY() const
@@ -182,6 +246,11 @@ inline int Entity::GetMaxLife() const
 inline int Entity::GetDamage() const
 {
 	return damage;
+}
+
+inline int Entity::GetAttack() const
+{
+	return attack;
 }
 
 inline float Entity::GetWidth() const

@@ -102,13 +102,14 @@ void Ghost::OnCollision(Object* obj)
 		{
 			// Morreu
 			// Deleta o objeto
-			Level1::scene->Remove((Object*)this, MOVING);
+			OneBitAdventure::audio->Play(MORTE);					// Toca o som de morte do inimigo
+			Level1::scene->Delete((Object*)this, MOVING);
 			((Character*)player)->SetXp(20 * (level));	            // Adiciona a experiência ao player
 		}
 
 		isHit = false;
 	}
-	else if (type == ENEMY) {
+	if (type == ENEMY || type == BOSS) {
 		Move(BACK);
 	}
 	else if (type == BOSSATACK) {

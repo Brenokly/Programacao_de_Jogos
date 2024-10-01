@@ -271,6 +271,7 @@
     <ClCompile Include="OneBitAdventure.cpp" />
     <ClCompile Include="Prop.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Salto.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Card.cpp" />
@@ -304,6 +305,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Prop.h" />
+    <ClInclude Include="Salto.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Geometry.h" />

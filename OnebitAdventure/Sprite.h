@@ -38,6 +38,7 @@ struct Color
     float b;
     float a;
 
+    // Construtor com valores padrão
     Color(float red, float green, float blue, float alpha) :
         r(red), g(green), b(blue), a(alpha) {}
 };

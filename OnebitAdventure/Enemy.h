@@ -9,8 +9,8 @@
 #include "Types.h"                      // Tipos específicos da engine
 #include "Entity.h"                     // Interface base para objetos
 #include "Font.h"                       // Fonte para exibir texto na tela
-#include "OneBitAdventure.h"            // Classe principal do jogo
-#include <string>                       // Biblioteca para manipulação de strings
+#include <sstream>                      // Fluxo de string
+using std::stringstream;
 
 // ------------------------------------------------------------------------------
 // Classe Enemy : Representa um inimigo no jogo
@@ -29,6 +29,7 @@ protected:
 
     float proximityThreshold;                           // Distância para iniciar a perseguição ao jogador
     Font* press12;					                    // fonte para exibir texto na tela
+    stringstream text;                                  // texto para exibição
 
     // --------------------------------------------------------------------------------------------
     // Atributos Básicos do Inimigo
@@ -63,7 +64,7 @@ public:
 	virtual void DrawHealthText();                      // Desenha o texto de vida do inimigo
 	virtual void DrawLevel();                           // Desenha o nível do inimigo
 	virtual void DrawName();                            // Desenha o nome do inimigo   
-    virtual void DisplayEnemyHealth();                  // Exibe a vida do inimigo na tela
+    void DisplayEnemyHealth();                          // Exibe a vida do inimigo na tela
     virtual void MoveTowardsPlayer();                   // Movimenta o inimigo em direção ao jogador
 };
 

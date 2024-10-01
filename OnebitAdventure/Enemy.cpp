@@ -3,7 +3,7 @@
 
 #include "Enemy.h"
 #include "Level1.h"
-#include "Character.h"
+#include "Character.h"                     
 
 // ------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ Enemy::Enemy() : Entity()
     // --------------------------------------------------------------------------------------------
     // Inicializa variáveis de sprites e animação
 
-    lifeSprite = new Sprite("Resources/sangue.png", 86.0f, 6.0f);
+    lifeSprite = new Sprite("Resources/sangue.png", 85.0f, 6.0f);
     hudLife = new Sprite("Resources/vida.png", 104.0f, 17.0f);
 
     // --------------------------------------------------------------------------------------------
@@ -75,18 +75,18 @@ void Enemy::Update()
         DisplayEnemyHealth();
     }
 
-    UpdateAnimation();                                      // Atualiza a animação do inimigo
-
-    // Verifica se o ghost morreu após receber o dano
+    // Verifica se o inimigo morreu após receber o dano
     if (life <= 0) {
- 
+        OneBitAdventure::audio->Play(MORTE);				// Toca o som de morte do inimigo
         Level1::scene->Delete(this, MOVING);
-		Level1::player->SetXp(20 * level);	                // Adiciona a experiência ao player
+        Level1::player->SetXp(40 * level);	                // Adiciona a experiência ao player
     }
     else if (y - height / 2.0f >= window->Height())
     {
 		Level1::scene->Delete(this, MOVING);
     }
+
+    UpdateAnimation();
 }
 
 // ------------------------------------------------------------------------------
@@ -184,14 +184,14 @@ void Enemy::DisplayEnemyHealth() {
 // ------------------------------------------------------------------------------
 
 void Enemy::DrawHealthBar() {
-    float barWidth = 86.0f;
+    float barWidth = 85.0f;
     float barHeight = 6.0f;
     float percent = (float)life / maxLife;
     float currentWidth = barWidth * percent;
     float offset = x - (barWidth - currentWidth) / 2;
 
-    hudLife->Draw(x, y - (45.0f + hudLife->Height()), Layer::FRONT);
-    lifeSprite->DrawResize(offset, y - (46.0f + hudLife->Height()), currentWidth, barHeight);
+    hudLife->Draw(x, y - (45.0f + hudLife->Height()), Layer::MIDDLE);
+    lifeSprite->DrawResize(offset, y - (46.0f + hudLife->Height()), currentWidth, barHeight, Layer::FRONT);
 }
 
 // ------------------------------------------------------------------------------

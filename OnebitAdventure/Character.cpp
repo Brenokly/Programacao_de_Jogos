@@ -37,7 +37,6 @@ Character::Character() : Entity()
     maxXp = 60 + (6 * (level - 1));
     xp = 56;
 	criticalChance = 0.1f;
-    itMoved = false;
 }
 
 // ---------------------------------------------------------------------------------
@@ -112,7 +111,6 @@ void Character::HandleInput()
 {
     // Ignora a movimentação se estiver morto ou já estiver se movendo
     if (isDead || isMoving) {
-        itMoved = false;
         return;
     }
 

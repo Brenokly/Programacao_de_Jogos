@@ -1,6 +1,7 @@
 // Alerts.h
 // ------------------------------------------------------------------------------
 
+#pragma once
 #ifndef ALERTS_H
 #define ALERTS_H
 
@@ -10,60 +11,54 @@
 #include "Object.h"
 #include "TileSet.h"
 #include "Animation.h"
-#include "Sprite.h"
-
-// ------------------------------------------------------------------------------
-
-enum AlertType{BIGWARNING, SMALLWARNING};
 
 // ------------------------------------------------------------------------------
 
 class Alerts
 {
 protected:
-	// --------------------------------------------------------------------------------------------
-	// Atributos de Sprites e Animação e etc
+    // --------------------------------------------------------------------------------------------
+    // Atributos de Sprites e Animação e etc
 
-	Sprite * spriteAlerts;													// Sprite dos alertas
+    Sprite * spriteAlerts;                                       // Sprite dos alertas
+    Color * color;                                               // Cor do alerta
+    static Color defaultColor;                                   // Cor padrão vermelha
 
-	// --------------------------------------------------------------------------------------------
-	// Métodos Auxiliares
+    // --------------------------------------------------------------------------------------------
+    // Métodos Auxiliares
 
-	AlertType type;															// Tipo de alerta
-	bool nextFrame;															// Próximo frame
-	float x, y, scala;														// Posição do alerta
+    bool nextFrame;                                              // Próximo frame
+    float x, y, scala;                                           // Posição do alerta
 
 public:
-	bool draw;																// Desenha o alerta
+    bool draw;                                                   // Desenha o alerta
 
-	Alerts(AlertType alertType, float x, float y, float scala);				// Construtor
-	~Alerts();																// Destrutor
+    Alerts(float x, float y, float scala);                       // Construtor
+    ~Alerts();                                                   // Destrutor
 
-	// --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
 
-	void UpdateAnimation();													// Atualiza a animação
-	void Draw();															// Desenha o ataque
+	float GetX() const;                                          // Retorna a posição x
+	float GetY() const;                                          // Retorna a posição y
+    void UpdateAnimation(Color* color = nullptr);                // Atualiza a animação
+    void Draw();                                                 // Desenha o ataque
 };
 
 // ------------------------------------------------------------------------------
 
-inline void Alerts::Draw()
+inline float Alerts::GetX() const
 {
-	if (nextFrame) {
-		// Desenha o alerta mais claro, indicando que o ataque é o próximo
-		spriteAlerts->Draw(x ,y , Layer::MIDDLE, scala, 0.0f, Color(0.941f, 0.318f, 0.459f, 1.0f));
-	}
-	else {
-		// Desenha o alerta mais escuro, indicando que o ataque não é o próximo
-		spriteAlerts->Draw(x, y, Layer::MIDDLE, scala, 0.0f, Color(0.592f, 0.0f, 0.224f, 1.0f));
-	}
+	return x;
 }
 
-// ------------------------------------------------------------------------------
-
-inline void Alerts::UpdateAnimation()
+inline float Alerts::GetY() const
 {
-	nextFrame = true;
+	return y;
+}
+
+inline void Alerts::Draw()
+{
+	spriteAlerts->Draw(x ,y , Layer::MIDDLE, scala, 0.0f, *color);
 }
 
 #endif
