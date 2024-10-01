@@ -5,6 +5,8 @@
 #define WARRIOR_H
 
 #include "Character.h"					// interface de Player
+#include "Enemy.h"						// interface de Enemy
+#include "Boss.h"						// interface de Boss
 
 // ------------------------------------------------------------------------------
 
@@ -16,6 +18,8 @@ public:
 
 	void OnCollision(Object* obj) override;					// resolução de colisões
 	void UpdateAnimation() override;						// atualização da animação do Warrior
+	void bossTreatment(Boss *& boss);						// tratamento de colisão com o boss
+	void enemyTreatment(Enemy *& enemy);					// tratamento de colisão com inimigos
 };
 
 // ---------------------------------------------------------------------------------

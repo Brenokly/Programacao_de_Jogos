@@ -1,5 +1,6 @@
 ﻿// Character.h
 
+#pragma once
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -12,6 +13,8 @@
 #include "Font.h"
 #include <string>
 #include <unordered_map>
+#include "Enemy.h"
+#include "Boss.h"
 
 // ------------------------------------------------------------------------------
 // Classe Character : É a classe base para todos os personagens (classes) do jogo
@@ -50,10 +53,12 @@ public:
 	std::unordered_map<string, Color> text;					// unordered_map para armazenar o texto a ser exibido na tela
 
 	// Métodos de recuperação e modificação de atributos
-	int GetLevel() const;
+	int GetLevel() const;									
 	int GetMaxXp() const;
 	int GetXp() const;
 	void SetXp(int xp);										// define a experiência do jogador
+	virtual void bossTreatment(Boss *& boss) = 0;			// tratamento de colisão com o boss
+	virtual void enemyTreatment(Enemy *& enemy) = 0;		// tratamento de colisão com inimigos
 };
 
 // --------------------------------------------------------------------------------------------------

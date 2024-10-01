@@ -7,6 +7,8 @@
 // Inclusões de Arquivos
 
 #include "Boss.h"
+#include "Varredura.h"
+#include "Salto.h"
 
 // ------------------------------------------------------------------------------
 
@@ -15,14 +17,11 @@ enum HydraAtaques{ ATAQUE1, ATAQUE2,ATAQUE3 };
 class Hydra : public Boss
 {
 protected:
-	// atributos específicos do Ghost (Ghost, pelo que vi, não tem muitos atributos diferentes não!
 	// A hydra terá 3 tipos de ataques diferentes, cada um com um dano diferente e range diferente
 	// Então a minha ideia inicial é criar métodos de ataques e chamar eles no update!
 
-	TileSet* ataque1;													// TileSet da Hydra
-	Animation* animAtaque1;												// Animação do ataque
-	int seqAtaque1[3];													// Sequência de animação do ataque
-	int indexAtaque1;													// Índice do ataque
+	Varredura* varredura;
+	Salto* salto;
 
 	void InitializeBBox() override;										// Inicializa a caixa de colisão (BBox)
 public:

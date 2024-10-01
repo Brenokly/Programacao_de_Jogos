@@ -9,17 +9,20 @@ Entity::Entity()
     deltaX(0), deltaY(0), newX(0), newY(0), 
     distance(0), limiarDist(0), pullStrength(0), direction(STILL),
     life(0), maxLife(0), attack(0), defense(0), damage(0),
-	isHit(false), isDead(false), isMoving(false), level(0)
+	isHit(false), isDead(false), isMoving(false), level(0), tileHeight(0), tileWidth(0)
 {
     width = Level1::hud->tileWidth;
     height = Level1::hud->tileHeight;
 
     limiar = window->CenterY();
 
-	speed = 400.0f;  // Velocidade de movimento
+	speed = 400.0f;                 // Velocidade de movimento
 
     // Raio de distância na qual começa a desaceleração
     slowDownRadius = width * 0.3f;  // Desacelera a 30% da largura do tile
+
+	state = IDLE;                   // Estado inicial
+	isAttacked = false;             // Flag para indicar que o personagem está atacando ou não
 }
 
 Entity::~Entity()
@@ -56,8 +59,9 @@ void Entity::Move(Direction direction)
         targetY = prevY = y;
         break;
     }
+
 	isHit = true;                   // Flag para indicar que o personagem atacou
-    itMoved = true;                 // Flag para indicar melhor o movimento do player
+	state = WALK;				    // Estado de movimento
 }
 
 // O movimento da câmera consiste em aplicar uma força que puxa para baixo todas as entidades,
@@ -97,12 +101,15 @@ void Entity::Movement()
 		prevX = targetX;
         prevY = targetY;
         isMoving = false;
+        isAttacked = false;
+		state = IDLE;
         animState = IDLE;
         return;
     }
 
     isMoving = true;
     animState = WALK;
+	state = WALK;
 
     // Calcula a direção (vetor unitário)
     deltaX = (targetX - x) / distance;

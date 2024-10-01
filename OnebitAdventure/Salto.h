@@ -1,8 +1,8 @@
-// Varredura.h
+// Salto.h
 // ------------------------------------------------------------------------------
 
-#ifndef VARREDURA_H
-#define VARREDURA_H
+#ifndef SALTO_H
+#define SALTO_H
 
 // ------------------------------------------------------------------------------
 // Inclusões de Arquivos
@@ -13,26 +13,22 @@
 
 // ------------------------------------------------------------------------------
 
-class Varredura : public Attack
+class Salto : public Attack
 {
 protected:
 	// --------------------------------------------------------------------------------------------
 	// Atributos de Sprites e Animação e etc
-
-	TileSet* tileSet;								// Folha de sprite
-	Animation* anim;								// Animação de sprite
 
 	// --------------------------------------------------------------------------------------------
 	// Métodos Protegidos
 
 	void InitializeBBox() override;					// Inicializa a caixa de colisão (BBox)
 public:
-	Varredura(Boss * boss);							// Construtor
-	~Varredura();									// Destrutor
+	Salto(Boss* boss);								// Construtor
+	~Salto();										// Destrutor
 
 	// --------------------------------------------------------------------------------------------
 
-	void UpdateAnimation();							// Atualiza a animação do ataque
 	void Update() override;							// Atualiza o estado do ataque
 	void Draw() override;							// Desenha o ataque
 	void OnCollision(Object* obj) override;			// Resolução da colisão
@@ -40,11 +36,4 @@ public:
 
 // ------------------------------------------------------------------------------
 
-inline void Varredura::UpdateAnimation()
-{
-	anim->NextFrame();
-}
-
-// ------------------------------------------------------------------------------
-
-#endif // !VARREDURA_H
+#endif

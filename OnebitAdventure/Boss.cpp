@@ -44,6 +44,8 @@ Boss::Boss() : Enemy() // Chamada do construtor da classe base
 
 	type = BOSS;            // Define o tipo do inimigo como BOSS
 	contadorMovimento = 0;  // Inicializa o contador de movimento
+	state = IDLE;		   // Define o estado inicial do boss como IDLE
+	isAttacked = false;	   // Define que o boss não está sendo atacado
 }
 
 // ------------------------------------------------------------------------------

@@ -180,6 +180,9 @@
     <ClCompile Include="Card.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="Salto.cpp">
+      <Filter>Game\Arquivos de Origem\Entity\Bosses\AttackBosses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="Card.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Salto.h">
+      <Filter>Game\Arquivos de Cabeçalho\Entity\Bosses\AttackBosses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

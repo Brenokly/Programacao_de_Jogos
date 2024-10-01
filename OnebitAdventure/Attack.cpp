@@ -6,12 +6,13 @@
 // ------------------------------------------------------------------------------
 
 // Construtor
-Attack::Attack() : tileSet(nullptr), anim(nullptr), isDelete(false), isDamage(false), timer(nullptr), mixed(nullptr)
+Attack::Attack() : isDelete(false), isDamage(false), timer(nullptr), mixed(nullptr)
 {
 	contador = 0;		// Inicializa o contador
 	width = 0;			// Inicializa a largura
 	height = 0;			// Inicializa a altura
 	baseDamage = 0.0f;	// Inicializa o dano base
+	boss = nullptr;		// Inicializa o ponteiro do boss
 }
 
 //-------------------------------------------------------------------------------
@@ -22,13 +23,6 @@ Attack::~Attack()
 	for (Alerts* alert : alerts) {
 		delete alert; // Libera cada alerta do vetor
 	}
-}
-
-// ------------------------------------------------------------------------------
-
-void Attack::UpdateAnimation()
-{
-	anim->NextFrame();
 }
 
 // ------------------------------------------------------------------------------
@@ -44,9 +38,16 @@ void Attack::DrawAlerts()
 
 // ------------------------------------------------------------------------------
 
-void Attack::CreateAlert(AlertType alertType, float x, float y, int scala) {
-	Alerts* newAlert = new Alerts(alertType, x, y, scala);
+void Attack::CreateAlert(float x, float y, int scala) {
+	Alerts* newAlert = new Alerts(x, y, scala);
 	alerts.push_back(newAlert);  // Adiciona o novo alerta ao deque
+}
+
+// ------------------------------------------------------------------------------
+
+bool Attack::compareTo(int px1, int px2, int py1, int py2)
+{
+	return px1 == px2 && py1 == py2;
 }
 
 // ------------------------------------------------------------------------------
