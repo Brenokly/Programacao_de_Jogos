@@ -62,10 +62,10 @@ Hydra::Hydra(float col, float line) : Boss() // Chamada do construtor da classe 
     // --------------------------------------------------------------------------------------------
     // Inicializa variáveis de status do boss Hydra (nível, vida e ataque)
 
-    level = 1;                                  // Ajuste o nível conforme necessário
+    level = Level1::player->Progress() / 50.0f; // Ajuste o nível conforme necessário
 
     maxLife = (int)(120 * pow(level, 1.697));   // Vida máxima da Hydra
-    life = 10;                                  // Vida atual da Hydra
+    life = maxLife / 3.0f;                      // Vida atual da Hydra
 
     attack = (int)(2.72 * pow(level, 1.644));   // Dano da Hydra cresce exponencialmente
 
@@ -157,14 +157,14 @@ void Hydra::Update()
         DisplayEnemyHealth();
     }
 
+    UpdateAnimation();                                      // Atualiza a animação do inimigo
+
     // Verifica se o Boss morreu após receber o dano
     if (life <= 0) {
 
         Level1::scene->Delete(this, MOVING);                // Remove o boss da cena
         Level1::player->SetXp(100 * level);	                // Adiciona a experiência ao player
     }
-
-    UpdateAnimation();                                      // Atualiza a animação do inimigo
 }
 
 void Hydra::Draw()

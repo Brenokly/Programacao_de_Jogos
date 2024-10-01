@@ -50,8 +50,8 @@ void Level1::Update()
     }
     else
     {
-        scene->Update();
         scene->CollisionDetection();
+        scene->Update();
 
         map->Update();
     }

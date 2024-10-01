@@ -37,7 +37,8 @@ Ghost::Ghost(float col, float line) : Enemy() // Chamada do construtor da classe
     // --------------------------------------------------------------------------------------------
     // Inicializa variáveis de status do Ghost (nível, vida e ataque)
 
-    level = 1;                             // Nível do Ghost
+    level = Level1::player->Progress() / 50.0f; // Nível do Ghost
+    if (level == 0) level = 1;
     maxLife = 5 + (10 * (level - 1));      // Vida máxima do Ghost por nível
     life = maxLife;                        // Vida atual do Ghost
     attack = 3 + (2 * (level - 1));        // Dano de ataque do Ghost
@@ -97,19 +98,16 @@ void Ghost::OnCollision(Object* obj)
 			Move(BACK);								// Volta o ghost para trás
 		}
 
-		// Verifica se o ghost morreu após receber o dano
-		if (life <= 0)
-		{
-			// Morreu
-			// Deleta o objeto
-			OneBitAdventure::audio->Play(MORTE);					// Toca o som de morte do inimigo
-			Level1::scene->Delete((Object*)this, MOVING);
-			((Character*)player)->SetXp(20 * (level));	            // Adiciona a experiência ao player
-		}
-
 		isHit = false;
+
+        // Verifica se o ghost morreu após receber o dano
+        if (life <= 0) {
+            OneBitAdventure::audio->Play(MORTE);				// Toca o som de morte do inimigo
+            Level1::scene->Delete(this, MOVING);
+            Level1::player->SetXp(40 * level);	                // Adiciona a experiência ao player
+        }
 	}
-	if (type == ENEMY || type == BOSS) {
+	else if (type == ENEMY || type == BOSS) {
 		Move(BACK);
 	}
 	else if (type == BOSSATACK) {

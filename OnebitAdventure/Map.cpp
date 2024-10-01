@@ -88,10 +88,10 @@ void Map::InitializeBiomes() {
         0.0f,  // pilar
         0.0f,  // pilar2
         0.0f,  // rock
-        0.1f,  // tree
-        0.1f,  // tree2
+        0.25f,  // tree
+        0.25f,  // tree2
         0.0f,  // wall
-        0.5f, // espaço vazio
+        0.35f, // espaço vazio
         0.03f  // ghost
     };
     forest.BuildRoulette();
@@ -378,10 +378,14 @@ void Map::Update()
     // Atualiza o progresso
 	bossProgress = Level1::player->Progress() % 100;
 
+    // Reseta area do boss quando o player passar
+    if (bossProgress == 0)
+        bossArea = false;
+
     // Se o player chegar nos 100 tiles e o boss não foi gerado ainda
     if (bossProgress == 99 && !bossArea) 
     {
-        bossArea = true;
+		bossArea = true;	// Marca a área do boss
         // Gera o boss hydra
 
         // Posiciona a hydra na coluna 5
@@ -481,6 +485,7 @@ void Map::GenerateStructuresField(intMatrix& chunk, size_t i, size_t j) {
 
     // Gera cercas ou cercas podres para a esquerda ou direita
     int maxFences = leftDirection ? j : (10 - doorPosition); // Máximo de cercas que podem ser geradas
+    if (doorPosition == 0 || doorPosition == 10) return;
     size_t fenceCount = rand() % maxFences + 1; // Gera um número aleatório de cercas entre 1 e maxFences
 
     int currentX = doorPosition;

@@ -75,18 +75,12 @@ void Enemy::Update()
         DisplayEnemyHealth();
     }
 
-    // Verifica se o inimigo morreu após receber o dano
-    if (life <= 0) {
-        OneBitAdventure::audio->Play(MORTE);				// Toca o som de morte do inimigo
-        Level1::scene->Delete(this, MOVING);
-        Level1::player->SetXp(40 * level);	                // Adiciona a experiência ao player
-    }
-    else if (y - height / 2.0f >= window->Height())
-    {
-		Level1::scene->Delete(this, MOVING);
-    }
-
     UpdateAnimation();
+
+    if (y - height / 2.0f >= window->Height())
+    {
+        Level1::scene->Delete(this, MOVING);
+    }
 }
 
 // ------------------------------------------------------------------------------
