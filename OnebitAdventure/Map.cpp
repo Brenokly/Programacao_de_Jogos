@@ -7,7 +7,6 @@
 #include "Prop.h"
 #include "Types.h"
 #include "Hydra.h"
-#include "CellularAutomaton.h"
 #include <algorithm>
 
 // ------------------------------------------------------------------------------
@@ -15,6 +14,18 @@
 array<Image*, Map::propsLength> Map::images;
 vector<Map::Biome> Map::biomes(4);
 Map::intMatrix Map::firstChunk;
+
+// ------------------------------------------------------------------------------
+
+// Função lambda que retorna o minimo
+auto minLambda = [](int a, int b) {
+    return (a < b) ? a : b;
+};
+
+// Função lambda que retorna o maximo
+auto maxLambda = [](int a, int b) {
+    return (a > b) ? a : b;
+};
 
 // ------------------------------------------------------------------------------
 
@@ -46,8 +57,8 @@ void Map::InitializeBiomes() {
         0.01f,  // chest
         0.05f,  // coin
         0.0f,  // door
-        0.025f, // fence
-        0.025f, // fenceRotten
+        0.01f, // fence
+        0.01f, // fenceRotten
         0.175f, // grass
         0.087f, // grass2
         0.0f,  // pilar
@@ -57,7 +68,7 @@ void Map::InitializeBiomes() {
         0.01f, // tree2
         0.0f,  // wall
         0.5f,  // espaço vazio
-        0.086f, // ghost
+        0.03f, // ghost
     };
     field.BuildRoulette();
     biomes[0] = field;
@@ -81,7 +92,7 @@ void Map::InitializeBiomes() {
         0.1f,  // tree2
         0.0f,  // wall
         0.5f, // espaço vazio
-        0.066f  // ghost
+        0.03f  // ghost
     };
     forest.BuildRoulette();
     biomes[1] = forest;
@@ -91,7 +102,7 @@ void Map::InitializeBiomes() {
     ruin.weights = {
         0.0f,  // box
         0.0f,  // campfire
-        0.01f, // chest
+        0.0f, // chest
         0.05f,  // coin
         0.01f, // door
         0.0f,  // fence
@@ -105,7 +116,7 @@ void Map::InitializeBiomes() {
         0.0f,  // tree2
         0.01f, // wall
         0.35f,  // espaço vazio
-        0.06f   // ghost
+        0.03f   // ghost
     };
     ruin.BuildRoulette();
     biomes[2] = ruin;
@@ -194,6 +205,17 @@ void Map::InitializeFirstChunk()
     firstChunk.at(10).at(10) = ROCK;
 }
 
+void Map::InitializeAutomatons()
+{
+	// Inicializa a fila de autômatos celulares com 50 autômatos
+    for (int i = 0; i < 50; ++i)
+    {
+        CellularAutomaton automaton(11, chunkSize, 0.9f);   // Cria um automato celular
+        automaton.Run(5);						            // Executa o automato por 5 gerações
+        automatons.push(automaton);                         // Adiciona o automato na fila
+    }
+}
+
 uint Map::SpinRoulette(const vector<PropInterval>& roulette)
 {
     doubleDistribution dist(0.0, 1.0);
@@ -205,7 +227,7 @@ uint Map::SpinRoulette(const vector<PropInterval>& roulette)
         }
     }
 
-	return 15;  // Retorna espaço vazio
+	return EMPTY;  // Retorna espaço vazio
 }
 
 Map::intMatrix Map::GenerateBiome(int biome)
@@ -215,45 +237,99 @@ Map::intMatrix Map::GenerateBiome(int biome)
     intMatrix chunk;
 
     // Se o bioma selecionado for FOREST, gera o bioma totalmente aleatorio
-    if (idx == 1)
+    if (idx == FOREST)
     {
-        chunk = intMatrix(chunkSize, vector<uint>(11, 15));  // Cria uma matriz vazia
+        if (automatons.empty())
+            InitializeAutomatons();
+
+        chunk = automatons.front().GetMap();  // Pega um automato da fila
+        automatons.pop();					  // Remove o automato da fila
 
         // Gera a matriz de props do chunk
-        for (size_t i = 0; i < chunk.size(); ++i)
-        {
-            for (size_t j = 0; j < chunk.at(i).size(); j++)
-            {
-                // Gira a roleta e seleciona um prop
-                chunk.at(i).at(j) = SpinRoulette(biomes.at(idx).roulette);
-            }
-        }
-    }
-    else
-    {
-        // Caso contrário, usa um automato celular para gerar as estruturas
-		CellularAutomaton automaton(11, chunkSize, 0.9f); // Cria um automato celular
-		automaton.Run(5);						   // Executa o automato por 5 gerações
-        chunk = automaton.GetMap();				   // Pega a matriz gerada pelo automato
+        for (size_t i = 0; i < chunk.size(); ++i) {
+            for (size_t j = 0; j < chunk.at(i).size(); j++) {
 
-		// Converte 1's em props aleatórios e 0's em espaço vazio
-		for (size_t i = 0; i < chunk.size(); ++i)
-		{
-			for (size_t j = 0; j < chunk.at(i).size(); j++)
-			{
-                if (chunk.at(i).at(j) == 1)
+				uint cell = chunk.at(i).at(j);  // Seleciona a célula
+                if (cell == 1)  // Se for 1, gera um prop aleatório
                 {
                     // Gira a roleta e seleciona um prop
                     chunk.at(i).at(j) = SpinRoulette(biomes.at(idx).roulette);
                 }
                 else
                 {
-					chunk.at(i).at(j) = 15;  // Espaço vazio
+                    chunk.at(i).at(j) = EMPTY;
+                }
+            }
+        }
+
+		//GenerateStructuresForest(chunk);    // Gera as estruturas do bioma FOREST
+    }
+    else if (idx == FIELD)
+    {
+        if (automatons.empty()) 
+            InitializeAutomatons();
+
+        chunk = automatons.front().GetMap();  // Pega um automato da fila
+		automatons.pop();					  // Remove o automato da fila
+
+		// Converte 1's em props aleatórios e 0's em espaço vazio
+		for (size_t i = 0; i < chunk.size(); ++i) {
+			for (size_t j = 0; j < chunk.at(i).size(); ++j) {
+
+				uint cell = chunk.at(i).at(j);  // Seleciona a célula
+				if (cell == 1)  // Se for 1, gera um prop aleatório
+                {
+                    // Gira a roleta e seleciona um prop
+                    uint prop = SpinRoulette(biomes.at(idx).roulette);
+                    if (prop == FENCE || prop == FENCEROTTEN) {
+                        // Se for uma cerca, gera estrutura
+						chunk.at(i).at(j) = prop;
+                        GenerateStructuresField(chunk, i, j); // implementar logica
+                    }
+                    else {
+                        chunk.at(i).at(j) = prop;  // Prop aleatório
+                    }
+                }
+				else if (cell == 0)  // Se for 0, gera espaço vazio
+                {
+					chunk.at(i).at(j) = EMPTY;  // Espaço vazio
                 }
 			}
 		}
+    }
+    else if (idx == RUIN)
+    {
+        // Caso contrário, usa um automato celular para gerar as estruturas
+        if (automatons.empty())
+            InitializeAutomatons();
 
-		GenerateStructuresRuin(chunk);      	   // Gera as estruturas do bioma RUIN
+        chunk = automatons.front().GetMap();  // Pega um automato da fila
+        automatons.pop();					  // Remove o automato da fila
+
+        // Converte 1's em props aleatórios e 0's em espaço vazio
+        for (size_t i = 0; i < chunk.size(); ++i) {
+            for (size_t j = 0; j < chunk.at(i).size(); ++j) {
+
+                uint cell = chunk.at(i).at(j);  // Seleciona a célula
+                if (cell == 1)  // Se for 1, gera um prop aleatório
+                {
+                    // Gira a roleta e seleciona um prop
+                    uint prop = SpinRoulette(biomes.at(idx).roulette);
+                    if (prop == DOOR) {
+                        // Se for uma porta, gera estrutura
+                        chunk.at(i).at(j) = prop;
+                        GenerateStructuresRuin(chunk, i, j);
+                    }
+                    else {
+                        chunk.at(i).at(j) = prop;  // Prop aleatório
+                    }
+                }
+                else if (cell == 0)  // Se for 0, gera espaço vazio
+                {
+                    chunk.at(i).at(j) = EMPTY;  // Espaço vazio
+                }
+            }
+        }
     }
 
     return chunk;
@@ -261,7 +337,7 @@ Map::intMatrix Map::GenerateBiome(int biome)
 
 // ------------------------------------------------------------------------------
 
-Map::Map(uint seed) : rng(seed)
+Map::Map(uint seed) : rng(seed), bossProgress(0), bossArea(false)
 {
     // Inicializa as propriedades do mapa
 	lastPos = Hud::Line(0);         // Posição inicial na primeira linha
@@ -269,37 +345,14 @@ Map::Map(uint seed) : rng(seed)
     InitializeImages();
     InitializeBiomes();
 	InitializeFirstChunk();
+    InitializeAutomatons();
 
-    // Gera os chunks do mapa
+    // Gera dois chunks, o inicial e um aleatorio
     // Primeiro chunk é sempre igual
     Generate(firstChunk);
     lastPos = Hud::Line(11);		// Atualiza a última posição
 
-    // Gera os demais chunks do mapa
-    for (int i = 0; i < 20; ++i) {
-        Generate(GenerateBiome());
-    }
-
-    // Gera o boss hydra no final do mapa
-    Hydra* hydra = new Hydra(5, 0);                     // Posiciona a hydra na coluna 5
-    hydra->MoveTo(hydra->X(), lastPos - 2.0f * hydra->GetHeight(), Layer::MIDDLE); // Ajusta a posição y para que fique no final do mapa
-	Level1::scene->Add(hydra, MOVING);				    // Adiciona a hydra na cena
-    
-    // Gera cenário do boss
-    Generate(GenerateBiome(3));
-    intMatrix mat = intMatrix(chunkSize, vector<uint>(11, 15));
-    mat.at(0).at(0) = WALL;
-    mat.at(0).at(1) = WALL;
-    mat.at(0).at(2) = WALL;
-    mat.at(0).at(3) = WALL;
-    mat.at(0).at(4) = WALL;
-    mat.at(0).at(5) = WALL;
-    mat.at(0).at(6) = WALL;
-    mat.at(0).at(7) = WALL;
-    mat.at(0).at(8) = WALL;
-    mat.at(0).at(9) = WALL;
-    mat.at(0).at(10) = WALL;
-    Generate(mat);
+    Generate(GenerateBiome());      // Gera um bioma aleatorio
 }
 
 // ------------------------------------------------------------------------------
@@ -314,10 +367,49 @@ Map::~Map()
 void Map::Update()
 {
 	// Atualiza o mapa
-    // Se o player passar de uma certa posição, gera um novo chunk
-	if (Level1::player->Y() + lastPos * -1 < 22.0f * Level1::player->GetHeight()) {
-        OneBitAdventure::audio->Play(MENU);
+
+	lastPos = lastProp->Y() - Level1::hud->tileHeight;  // Atualiza a última posição
+
+    // Se o player estiver próximo do final do chunk, gera um novo chunk
+	if (lastPos > -500.0f) {
+        Generate(GenerateBiome());
 	}
+
+    // Atualiza o progresso
+	bossProgress = Level1::player->Progress() % 100;
+
+    // Se o player chegar nos 100 tiles e o boss não foi gerado ainda
+    if (bossProgress == 99 && !bossArea) 
+    {
+        bossArea = true;
+        // Gera o boss hydra
+
+        // Posiciona a hydra na coluna 5
+        Hydra* hydra = new Hydra(5, 0);
+
+        // Ajusta a posição y
+        lastPos = lastPos - 2.0f * hydra->GetHeight();
+        hydra->MoveTo(hydra->X(), lastPos - 2.0f * hydra->GetHeight(), Layer::MIDDLE);
+        Level1::scene->Add(hydra, MOVING);
+
+		// Gera cenário do boss com gramas e pedras
+        Generate(GenerateBiome(3));
+
+        // Gera muros ao final do mapa
+        intMatrix mat = intMatrix(chunkSize, vector<uint>(11, 15));
+        mat.at(0).at(0) = WALL;
+        mat.at(0).at(1) = WALL;
+        mat.at(0).at(2) = WALL;
+        mat.at(0).at(3) = WALL;
+        mat.at(0).at(4) = WALL;
+        mat.at(0).at(5) = WALL;
+        mat.at(0).at(6) = WALL;
+        mat.at(0).at(7) = WALL;
+        mat.at(0).at(8) = WALL;
+        mat.at(0).at(9) = WALL;
+        mat.at(0).at(10) = WALL;
+        Generate(mat);
+    }
 }
 
 // ------------------------------------------------------------------------------
@@ -325,22 +417,17 @@ void Map::Update()
 void Map::Generate(const intMatrix& chunk)
 {
     // Gera um chunk, percorrendo cada linha e coluna da matriz gerando os props e inimigos
-    for (int y = 0; y < chunk.size(); ++y) 
-    {
-        for (int x = 0; x < chunk.at(y).size(); ++x) 
-        {
-			uint idx = chunk.at(y).at(x);	    // Seleciona um prop/inimigo do chunk
+    for (int y = 0; y < chunk.size(); ++y) {
+        for (int x = 0; x < chunk.at(y).size(); ++x) {
+
+			uint idx = chunk.at(y).at(x);	    // Seleciona o indice do chunk
 			if (idx == 15) continue;		    // Se for espaço vazio, pula para o próximo
             
             // Gera um ghost
-            if (idx == 16)
-            {
-                if (lastPos > -500.0f && lastPos < 0.0f)
-                {
-                    Ghost* ghost = new Ghost(x, -lastPos);
-                    ghost->MoveTo(ghost->X(), lastPos, Layer::MIDDLE);
-                    Level1::scene->Add(ghost, MOVING);
-                }
+            if (idx == 16) {
+                Ghost* ghost = new Ghost(x, -lastPos);
+                ghost->MoveTo(ghost->X(), lastPos, Layer::MIDDLE);
+                Level1::scene->Add(ghost, MOVING);
                 continue;
             }
             
@@ -354,7 +441,8 @@ void Map::Generate(const intMatrix& chunk)
             case 2: type = OneBitObjects::CHEST; break;
             case 3: type = OneBitObjects::COIN; break;
             case 4: type = OneBitObjects::DOOR; break;
-            case 9: case 10: type = OneBitObjects::PILLAR; break;
+            case 9: type = OneBitObjects::PILLAR; break;
+            case 10: type = OneBitObjects::PILLAR2; break;
             default: type = PROP;
             }
 
@@ -365,132 +453,159 @@ void Map::Generate(const intMatrix& chunk)
             bool bbox = idx != 7 && idx != 8 && idx != 11;  // Gramas e pedras não possuem bbox
 
             // Adiciona o prop gerado na cena
-            Level1::scene->Add(new Prop(type, img, col, line, interactable, bbox), STATIC);
+            lastProp = new Prop(type, img, col, line, interactable, bbox);
+            Level1::scene->Add(lastProp, STATIC);
         }
         lastPos -= Level1::hud->tileHeight;     // Passa para a próxima linha
     }
 }
 
-void Map::GenerateStructuresField(intMatrix& chunk)
-{
+void Map::GenerateStructuresField(intMatrix& chunk, size_t i, size_t j) {
+    bool leftDirection;
+
+    // Se a cerca estiver na esquerda, gera cercas à direita
+    if (j == 0) {
+        leftDirection = false; // Direção direita
+    }
+    else if (j == 10) { // se estiver da direita, gera cercas à esquerda
+        leftDirection = true; // Direção esquerda
+    }
+    else {
+        // Determina aleatoriamente a direção: 0 = esquerda, 1 = direita
+        leftDirection = rand() % 2 == 0;
+    }
+
+    // Define a posição da porta
+    size_t doorPosition = leftDirection ? j - 1 : j + 1; // Posiciona a porta
+    chunk.at(i).at(doorPosition) = DOOR;
+
+    // Gera cercas ou cercas podres para a esquerda ou direita
+    int maxFences = leftDirection ? j : (10 - doorPosition); // Máximo de cercas que podem ser geradas
+    size_t fenceCount = rand() % maxFences + 1; // Gera um número aleatório de cercas entre 1 e maxFences
+
+    int currentX = doorPosition;
+    if (leftDirection) {
+        // Gera cercas para a esquerda
+        while (fenceCount > 0 && currentX > 0) {
+            chunk.at(i).at(--currentX) = (fenceCount % 3 == 0) ? FENCEROTTEN : FENCE; // Alterna entre cercas e cercas podres
+            fenceCount--;
+        }
+    }
+    else {
+        // Gera cercas para a direita
+        while (fenceCount > 0 && currentX < 10) {
+            chunk.at(i).at(++currentX) = (fenceCount % 3 == 0) ? FENCEROTTEN : FENCE; // Alterna entre cercas e cercas podres
+            fenceCount--;
+        }
+    }
 }
 
-void Map::GenerateStructuresForest(intMatrix& chunk)
+void Map::GenerateStructuresForest(intMatrix& chunk, size_t i, size_t j)
 {
+
 }
 
-void Map::GenerateStructuresRuin(intMatrix& chunk) {
-    // Função lambda que retorna o minimo
-	auto minLambda = [](int a, int b) {
-		return (a < b) ? a : b;
-    };
+void Map::GenerateStructuresRuin(intMatrix& chunk, size_t i, size_t j)
+{
+    // Se a porta estiver em um canto, apaga ela e coloca uma parede
+    if (i == 0 || i == 21 || j == 0 || j == 10) {
+        chunk.at(i).at(j) = WALL;
+        return;
+    }
 
-    // Função lambda que retorna o maximo
-    auto maxLambda = [](int a, int b) {
-        return (a > b) ? a : b;
-    };
+    // Limpa o caminho acima e abaixo da porta
+    if (i > 0 && chunk.at(i - 1).at(j) != DOOR) {
+        chunk.at(i - 1).at(j) = EMPTY;  // Limpa acima
+    }
+    if (i < chunk.size() - 1 && chunk.at(i + 1).at(j) != DOOR) {
+        chunk.at(i + 1).at(j) = EMPTY;  // Limpa abaixo
+    }
 
-    for (int y = 0; y < chunk.size(); ++y) {
-        for (int x = 0; x < chunk.at(y).size(); ++x) {
-            // Verifica se o prop atual é uma porta
-            if (chunk.at(y).at(x) == DOOR) {
-                // Se a porta estiver em um canto, apaga ela e coloca uma parede
-                if (x == 0 || x == 10 || y == 0 || y == 21) {
-                    chunk.at(y).at(x) = WALL;
-                    continue;
+    int currentX = j;
+    int currentY = i;
+
+    // Gera paredes à esquerda da porta
+    int leftWallCount = minLambda(rand() % 4 + 1, j); // Gera entre 1 e 4 paredes
+    int leftCount = leftWallCount;
+    while (leftWallCount > 0) {
+        chunk.at(currentY).at(--currentX) = WALL;
+        leftWallCount--;
+    }
+
+    // Gera paredes para cima a partir da última parede gerada
+    int topWallCount = rand() % 5 + 2;  // Gera entre 2 e 6 paredes para cima
+    topWallCount = minLambda(topWallCount, currentY);  // Garante que não ultrapasse o limite superior
+    int topCount = topWallCount;
+    while (topWallCount > 0) {
+        chunk.at(--currentY).at(currentX) = WALL;
+        topWallCount--;
+    }
+
+    // Gera paredes à direita a partir da última parede gerada
+    int rightWallCount = maxLambda(leftCount + 1, rand() % (10 - currentX)); // Garante pelo menos leftCount + 1 paredes
+
+    bool porta = false;
+    while (rightWallCount > 0) {
+        // Se ainda não gerou uma porta na parte de cima, gera uma chance de 25%
+        if (!porta) {
+            int random = rand() % 4; // 25% de chance de gerar uma porta
+            if (random == 0) { // Gera a porta
+                chunk.at(currentY).at(++currentX) = DOOR; // Adiciona a porta
+                porta = true;
+
+                // Após gerar a porta da parte superior da estrutura, garante que a parte superior e inferior da porta esteja vazia
+                if (currentY > 0) {
+                    chunk.at(currentY - 1).at(currentX) = EMPTY; // Limpa acima da porta
                 }
-
-                // Limpa o caminho acima e abaixo da porta
-                if (y > 0 && chunk.at(y - 1).at(x) != DOOR) {
-                    chunk.at(y - 1).at(x) = EMPTY;  // Limpa acima
+                if (currentY < chunk.size() - 1) {
+                    chunk.at(currentY + 1).at(currentX) = EMPTY; // Limpa abaixo da porta
                 }
-                if (y < chunk.size() - 1 && chunk.at(y + 1).at(x) != DOOR) {
-                    chunk.at(y + 1).at(x) = EMPTY;  // Limpa abaixo
-                }
+            }
+            else {
+                chunk.at(currentY).at(++currentX) = WALL; // Adiciona uma parede
+            }
+        }
+        else {
+            // Se a porta já foi gerada, apenas adiciona paredes à direita
+            chunk.at(currentY).at(++currentX) = WALL; // Gera parede
+        }
+        rightWallCount--; // Decrementa o contador
+    }
 
-                int currentX = x;
-                int currentY = y;
+    // Gera paredes para baixo a partir da última parede gerada
+    while (currentY < i) { // Volta para baixo até a linha original
+        chunk.at(++currentY).at(currentX) = WALL;
+    }
 
-                // Gera paredes à esquerda da porta
-                int leftWallCount = minLambda(rand() % 4 + 1, x); // Gera entre 1 e 4 paredes
-                int leftCount = leftWallCount;
-                while (leftWallCount > 0) {
-                    chunk.at(currentY).at(--currentX) = WALL;
-                    leftWallCount--;
-                }
+    // Volta para a esquerda a partir da última parede gerada para se conectar com a porta
+    while (currentX > j + 1) { // Conecta a parede de volta à porta
+        chunk.at(currentY).at(--currentX) = WALL;
+    }
 
-                // Gera paredes para cima a partir da última parede gerada
-                int topWallCount = rand() % 5 + 2;  // Gera entre 2 e 6 paredes para cima
-				topWallCount = minLambda(topWallCount, currentY);  // Garante que não ultrapasse o limite superior
-                while (topWallCount > 0) {
-                    chunk.at(--currentY).at(currentX) = WALL;
-                    topWallCount--;
-                }
+    // Gera moedas dentro da estrutura
+    int coinCount = rand() % 5 + 1; // Gera entre 1 e 5 moedas
+    while (coinCount > 0) {
+        int coinX = rand() % (leftCount + 1) + (j - leftCount); // Entre o limite esquerdo e j
+        int coinY = rand() % (topCount + 1) + (i - topCount); // Entre o limite superior e i
 
-                // Gera paredes à direita a partir da última parede gerada
-                int rightWallCount = maxLambda(leftCount + 1, rand() % (10 - currentX) + 1); // Garante pelo menos leftCount + 1 paredes
-                bool porta = false;
+        chunk.at(coinY).at(coinX) = COIN; // Adiciona a moeda
+        coinCount--;
+    }
 
-                while (rightWallCount > 0) {
-                    // Se ainda não gerou uma porta na parte de cima, gera uma chance de 25%
-                    if (!porta) {
-                        int random = rand() % 4; // 25% de chance de gerar uma porta
-                        if (random == 0) { // Gera a porta
-                            chunk.at(currentY).at(++currentX) = DOOR; // Adiciona a porta
-                            porta = true;
+    // Calcula uma chance de gerar um baú dentro da estrutura
+    int randomChest = rand() % 2; // 50% de chance de gerar um baú
+    if (randomChest == 0) {
+        bool chestGenerated = false;
+        while (!chestGenerated) {
+            int chestX = rand() % (leftCount + 1) + (j - leftCount); // Entre o limite esquerdo e j
+            int chestY = rand() % (topCount + 1) + (i - topCount); // Entre o limite superior e i
 
-                            // Após gerar a porta da parte superior da estrutura, garante que a parte superior e inferior da porta esteja vazia
-                            if (currentY > 0) {
-                                chunk.at(currentY - 1).at(currentX) = EMPTY; // Limpa acima da porta
-                            }
-                            if (currentY < chunk.size() - 1) {
-                                chunk.at(currentY + 1).at(currentX) = EMPTY; // Limpa abaixo da porta
-                            }
-                        }
-                        else {
-                            chunk.at(currentY).at(++currentX) = WALL; // Adiciona uma parede
-                        }
-                    }
-                    else {
-                        // Se a porta já foi gerada, apenas adiciona paredes à direita
-                        chunk.at(currentY).at(++currentX) = WALL; // Gera parede
-                    }
-                    rightWallCount--; // Decrementa o contador
-                }
-
-                // Gera paredes para baixo a partir da última parede gerada
-                while (currentY > y) {
-                    chunk.at(--currentY).at(currentX) = WALL;
-                }
-
-                // Volta para a esquerda a partir da última parede gerada para se conectar com a porta
-                while (currentX - 1 != x) {
-                    chunk.at(currentY).at(--currentX) = WALL;
-                }
-
-                // Preenche com moedas e baús aleatoriamente dentro da estrutura
-                //int coinCount = 5;  // Número de moedas
-                //for (int i = 0; i < coinCount; ++i) {
-                //    int randX = x + (rand() % (rightWallCount + 1)) - (rand() % (leftWallCount + 1));  // Posição aleatória horizontal
-                //    int randY = y + (rand() % (bottomWallCount + 1)) - (rand() % (topWallCount + 1));   // Posição aleatória vertical
-
-                //    // Verifica os limites antes de colocar uma moeda
-                //    if (randX >= 0 && randY >= 0 && randX < chunk.at(y).size() && randY < chunk.size()) {
-                //        if (chunk.at(randY).at(randX) == EMPTY) {  // Se for espaço vazio
-                //            chunk.at(randY).at(randX) = COIN;  // Coloca uma moeda
-                //        }
-                //    }
-                //}
-
-                // Adiciona um baú em uma posição aleatória dentro da estrutura
-                //int chestPosX = x + (rand() % (rightWallCount + 1)) - (rand() % (leftWallCount + 1));
-                //int chestPosY = y + (rand() % (bottomWallCount + 1)) - (rand() % (topWallCount + 1));
-
-                //if (chestPosX >= 0 && chestPosY >= 0 && chestPosX < chunk.at(y).size() && chestPosY < chunk.size()) {
-                //    if (chunk.at(chestPosY).at(chestPosX) == EMPTY) {  // Se for espaço vazio
-                //        chunk.at(chestPosY).at(chestPosX) = CHEST;  // Coloca um baú
-                //    }
-                //}
+            // Certifica-se de que o local não está ocupado por uma parede, moeda ou porta
+			int up = chestY - 1, down = chestY + 1; // Verifica acima e abaixo do baú
+            if (up < 0 || down > 21) break;
+            if (chunk.at(up).at(chestX) != DOOR && chunk.at(down).at(chestX) != DOOR) {
+                chunk.at(chestY).at(chestX) = CHEST; // Adiciona o baú
+                chestGenerated = true;
             }
         }
     }

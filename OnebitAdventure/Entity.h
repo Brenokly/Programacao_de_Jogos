@@ -142,7 +142,6 @@ inline void Entity::MoveTo(float x, float y, float z)
 	targetY = prevY = y;
 }
 
-
 inline uint Entity::GetAnimSeq(Direction direction, AnimationState animState)
 {
 	return direction | animState;

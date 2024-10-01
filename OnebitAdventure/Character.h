@@ -56,6 +56,7 @@ public:
 	std::unordered_map<string, Color> text;					// unordered_map para armazenar o texto a ser exibido na tela
 
 	// Métodos de recuperação e modificação de atributos
+	int Progress() const;									// retorna o progresso do player
 	int GetLevel() const;									
 	int GetMaxXp() const;
 	int GetXp() const;
@@ -66,6 +67,11 @@ public:
 
 // --------------------------------------------------------------------------------------------------
 // Métodos Inline
+
+inline int Character::Progress() const
+{
+	return progress;
+}
 
 inline int Character::GetLevel() const
 {

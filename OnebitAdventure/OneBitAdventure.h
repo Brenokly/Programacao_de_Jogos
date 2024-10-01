@@ -25,6 +25,7 @@ enum OneBitObjects // Enumeração dos tipos de objetos
     COIN,
 	CAMPFIRE,
     PILLAR,
+    PILLAR2,
     BOSSATACK,
     ITEM,
     MOUSE,

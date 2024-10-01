@@ -119,29 +119,31 @@ void Hydra::Update()
 {
     float distance = PrevDistance(Level1::player);
 
-    if (moveTimer->Elapsed(0.3f) && Level1::player->IsMoving()) {
-        if (rand() % 100 < 90 && contadorMovimento == 0 && !isAttacked) {
-            HandleMovement(100.0f);
-        }
-        else if (rand() % 100 < 70 && contadorMovimento == 0 && !isAttacked) {
-            Ataque2();
-        }
-        else if (rand() % 100 <= 60 && contadorMovimento == 0 && !isAttacked) {
-            if (distance < (2.4f * height) && Level1::player->X() >= x - width && Level1::player->X() <= x + width) {
-                contadorMovimento = 4;
-                Ataque1();
+    if (y > 0) {
+        if (moveTimer->Elapsed(0.3f) && Level1::player->IsMoving()) {
+            if (rand() % 100 < 90 && contadorMovimento == 0 && !isAttacked) {
+                HandleMovement(100.0f);
             }
-        }
-        else if (contadorMovimento > 0) {
-            contadorMovimento--;
-
-            if (contadorMovimento == 0) {
-				isAttacked = false;
-				isMoving = false;
+            else if (rand() % 100 < 70 && contadorMovimento == 0 && !isAttacked) {
+                Ataque2();
             }
-        }
+            else if (rand() % 100 <= 60 && contadorMovimento == 0 && !isAttacked) {
+                if (distance < (2.4f * height) && Level1::player->X() >= x - width && Level1::player->X() <= x + width) {
+                    contadorMovimento = 4;
+                    Ataque1();
+                }
+            }
+            else if (contadorMovimento > 0) {
+                contadorMovimento--;
 
-        moveTimer->Reset();
+                if (contadorMovimento == 0) {
+                    isAttacked = false;
+                    isMoving = false;
+                }
+            }
+
+            moveTimer->Reset();
+        }
     }
 
     CameraMovement();									    // Atualiza a movimentação da câmera
@@ -216,8 +218,9 @@ void Hydra::OnCollision(Object* obj)
 
         isHit = false;
     }
-    else {
-        Move(BACK);
+    else if (type != ENEMY)
+    {
+        Level1::scene->Delete(obj, STATIC);
     }
 }
 

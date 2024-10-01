@@ -24,7 +24,7 @@ void Level1::Init()
     this->hud = hud;													// inicializa o hud
 	this->player = player;											    // inicializa o player
 
-	//OneBitAdventure::audio->Play(GAME, true);                           // inicia música de fundo
+	OneBitAdventure::audio->Play(GAME, true);                           // inicia música de fundo
 	
     scene = new Scene();								                // cria nova cena
     scene->Add(hud, STATIC);

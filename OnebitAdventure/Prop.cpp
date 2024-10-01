@@ -51,6 +51,10 @@ Prop::Prop(uint type, Image *& image, float col, float line, bool interactable, 
 	{
 		MoveTo(col, line, Layer::MIDDLE - 0.1f);
 	}
+	else if (type == PILLAR2)
+	{
+		MoveTo(col, line, Layer::MIDDLE - 0.2f);
+	}
 	else
 	{
 		MoveTo(col, line, Layer::LOWER);
@@ -70,7 +74,7 @@ Prop::~Prop()
 
 void Prop::InitializeBBox()
 {
-	if (type == PILLAR)
+	if (type == PILLAR || type == PILLAR2)
 	{
 		Mixed* mixed = new Mixed();
 		Rect * rect = new Rect(

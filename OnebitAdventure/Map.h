@@ -5,6 +5,8 @@
 
 #include "Image.h"
 #include "Types.h"
+#include "Prop.h"
+#include "CellularAutomaton.h"
 #include <array>
 #include <cstdlib>
 #include <ctime>
@@ -12,11 +14,13 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <queue>
 
 // ------------------------------------------------------------------------------
 
 using std::array;
 using std::vector;
+using std::queue;
 
 // ------------------------------------------------------------------------------
 
@@ -107,15 +111,24 @@ private:
     const uint EMPTY = 15;
     const uint GHOST = 16;
 
-    const int chunkSize = 22;      // Número de linhas de cada chunk
-    const int nChunks = 20;        // Quantidade de chunks no mapa
-    float lastPos;                 // Posição do último prop desenhado
+    const uint FIELD = 0;
+    const uint FOREST = 1;
+    const uint RUIN = 2;
+	const uint BOSS = 3;
+
+    const int chunkSize = 22;       // Número de linhas de cada chunk
+    const int nChunks = 20;         // Quantidade de chunks no mapa
+	Prop* lastProp;                 // Último prop desenhado
+    float lastPos;                  // Posição do último prop desenhado
+    int bossProgress;               // Verifica o progresso do player para gerar o boss
+	bool bossArea;                  // Verifica se o player está na área do boss
 
 public:
     static const int propsLength = 15;                  // Tamanho do vetor de props
     static array<Image*, propsLength> images;           // Vetor de imagens de props
     static vector<Biome> biomes;                        // Vetor de biomas
     static intMatrix firstChunk;                        // Primeiro chunk do mapa
+    queue<CellularAutomaton> automatons;                // Fila de autômatos celulares
 
     Map(uint seed);
     ~Map();
@@ -125,13 +138,15 @@ public:
     void InitializeImages();                            // Inicializa o vetor de imagens de props
     void InitializeBiomes();                            // Inicializa o vetor de biomas
     void InitializeFirstChunk();                        // Inicializa o primeiro chunk
+	void InitializeAutomatons();                        // Initializa a lista de autômatos celulares
+
     intMatrix GenerateBiome(int biome = 4);             // Escolhe um bioma aleatório
     uint SpinRoulette(const vector<PropInterval>& roulette);  // Gira a roleta e seleciona um prop
     void Generate(const intMatrix& chunk);              // Gera um chunk a partir da matriz de props
 
-	void GenerateStructuresField(intMatrix& chunk);     // Gera campos
-	void GenerateStructuresForest(intMatrix& chunk);    // Gera florestas
-	void GenerateStructuresRuin(intMatrix& chunk);      // Gera ruínas
+	void GenerateStructuresField(intMatrix& chunk, size_t i, size_t j);     // Gera estruturas de campos
+	void GenerateStructuresForest(intMatrix& chunk, size_t i, size_t j);  // Gera estruturas de florestas
+	void GenerateStructuresRuin(intMatrix& chunk, size_t i, size_t j);      // Gera estruturas de ruínas
 };
 
 // ------------------------------------------------------------------------------

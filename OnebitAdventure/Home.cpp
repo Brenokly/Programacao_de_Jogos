@@ -17,7 +17,7 @@ void Home::Init()
     backg = new Animation(tileBackg, 0.6f, true);
 
     if (!OneBitAdventure::audio->isPlaying(MENU)) {
-        //OneBitAdventure::audio->Play(MENU, true);
+        OneBitAdventure::audio->Play(MENU, true);
     }
 }
 
