@@ -29,6 +29,9 @@ Character::Character() : Entity()
     press12->Spacing("Resources/press12.dat");
 
     progress = 0;
+    down = 0;
+    isMovingUp = false;
+    isMovingDown = false;
     coins = 0;
     level = 1;
     maxXp = 60 + (6 * (level - 1));
@@ -55,6 +58,27 @@ void Character::Update()
     CameraMovement();           // Aplica a movimentação da câmera
     Movement();                 // Executa a movimentação
 
+    // Lógica de contagem do progresso do player
+    if (isMovingBack)
+    {
+        isMovingUp = isMovingDown = false;
+    }
+    
+    if (isMovingUp && !isMoving) {
+        if (down > 0) {
+            down--;
+        }
+        else {
+            progress++;
+        }
+        isMovingUp = false;
+    }
+    else if (isMovingDown && !isMoving)
+    {
+        down++;
+        isMovingDown = false;
+    }
+
     UpdateAnimation();
 
 	ConstrainToScreen();        // Limita o personagem à tela
@@ -71,6 +95,7 @@ void Character::Update()
 	// Atualiza estado de vida do jogador
     if (life <= 0)
     {
+        OneBitAdventure::audio->Stop(GAME);
         OneBitAdventure::audio->Play(MORTE);
         // Cria o TileSet de morte
         tileSet = new TileSet("Resources/morte.png", width, height, width, height, 1, 1);
@@ -93,9 +118,11 @@ void Character::HandleInput()
 
     if ((window->KeyDown('W') || window->KeyDown(VK_UP))) {
         Move(UP);
+        isMovingUp = true;
     }
     else if ((window->KeyDown('S') || window->KeyDown(VK_DOWN))) {
         Move(DOWN);
+        isMovingDown = true;
     }
     else if ((window->KeyDown('A') || window->KeyDown(VK_LEFT))) {
         Move(LEFT);
@@ -109,6 +136,9 @@ void Character::HandleInput()
 
 void Character::Draw()
 {
+    // Desenha o progresso
+    press12->Draw(window->CenterX() - 10.0f, 20.0f, std::to_string(progress));
+
     // Desenha o sprite do player na cor vermelha por um tempo se tiver recebido dano
     if (damageTimer->Elapsed(0.25f)) {
         anim->Draw(x, y);

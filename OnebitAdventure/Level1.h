@@ -8,12 +8,12 @@
 
 #include "Scene.h"
 #include "Hud.h"
-#include "Map.h"
 #include "Game.h"
 
 // ------------------------------------------------------------------------------
 
 class Character;		// declaração antecipada da classe Character
+class Map;				// declaração antecipada da classe Map
 
 // ------------------------------------------------------------------------------
 

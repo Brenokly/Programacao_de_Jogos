@@ -195,16 +195,18 @@ void Warrior::OnCollision(Object* obj)
 	else if (type == COIN)
 	{
 		Level1::scene->Delete(obj, STATIC);
+		OneBitAdventure::audio->Play(MOEDA);
+		coins++;
 	}
 	else if (type != DOOR && type != BOSSATACK)
 	{
 		// Se o objeto colidido for diferente de uma porta, o Warrior volta para a posição anterior
 		Move(BACK);
-
-		if (type == BOX)
-		{
-			// Implementar interação com a caixa: sprite de vida e itens dropados
-		}
+	}
+	else if (type == BOX)
+	{
+		// Implementar interação com a caixa: sprite de vida e itens dropados
+		Move(BACK);
 	}
 }
 

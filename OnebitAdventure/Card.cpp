@@ -29,7 +29,7 @@ Card::Card(float x, float y, float width, float height, bool created)
 		y + height / 2.0f
 	);
 
-	rect->MoveTo(0 - x, 0 - y);	// Movendo o Rect para a posição do objeto
+	rect->MoveTo(-x, -y);	// Movendo o Rect para a posição do objeto
 
 	mixed->Insert(rect);		// Inserindo o Rect no Mixed
 
@@ -66,4 +66,8 @@ void Card::Draw()
 void Card::OnCollision(Object* obj)
 {
 	OneBitAdventure::mouse->SetHover();
+	if (OneBitAdventure::mouse->Click())
+	{
+
+	}
 }

@@ -19,7 +19,7 @@ private:
 public:
 	bool interactable;												// Flag para indicar se o objeto é interagível
 
-	Prop(uint type, Image * image, float col, float line, bool interactable, bool bbox = true);
+	Prop(uint type, Image *& image, float col, float line, bool interactable, bool bbox = true);
 	~Prop();
 
 	void Update() override;

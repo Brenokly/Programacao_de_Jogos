@@ -160,7 +160,7 @@ void Hydra::OnCollision(Object* obj)
 
         isHit = false;
     }
-    else if (type == ENEMY) {
+    else {
         Move(BACK);
     }
 }

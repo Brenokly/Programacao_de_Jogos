@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------------
 
-Prop::Prop(uint type, Image* image, float col, float line, bool interactable, bool bbox)
+Prop::Prop(uint type, Image *& image, float col, float line, bool interactable, bool bbox)
 	: Entity(), interactable(interactable)
 {
 	this->type = type;
@@ -70,12 +70,27 @@ Prop::~Prop()
 
 void Prop::InitializeBBox()
 {
-	BBox(new Rect(
-		x - width / 2.4f,
-		y - height / 2.3f,
-		x + width / 2.4f,
-		y + height / 2.3f)
-	);
+	if (type == PILLAR)
+	{
+		Mixed* mixed = new Mixed();
+		Rect * rect = new Rect(
+			x - width / 2.4f,
+			y - height / 2.3f,
+			x + width / 2.4f,
+			y + height / 2.3f);
+		rect->MoveTo(-x, height);
+		mixed->Insert(rect);
+		BBox(mixed);
+	}
+	else
+	{
+		BBox(new Rect(
+			x - width / 2.4f,
+			y - height / 2.3f,
+			x + width / 2.4f,
+			y + height / 2.3f)
+		);
+	}
 }
 
 // ----------------------------------------------------------------------------------
@@ -86,8 +101,17 @@ void Prop::Update()
 
 	UpdateAnimation();
 
-	if (y - (height / 2.0f) >= window->Height()) {
-		Level1::scene->Delete();
+	if (type == PILLAR)
+	{
+		if (y - 1.5f * height >= window->Height()) {
+			Level1::scene->Delete();
+		}
+	}
+	else
+	{
+		if (y - (height / 2.0f) >= window->Height()) {
+			Level1::scene->Delete();
+		}
 	}
 }
 
@@ -102,6 +126,7 @@ void Prop::UpdateAnimation()
 		{
 			// Fecha a porta
 			anim->Select(0);
+			OneBitAdventure::audio->Play(PORTA);
 		}
 	}
 
@@ -126,6 +151,7 @@ void Prop::OnCollision(Object* obj)
 			{
 				// Abre a porta
 				anim->Select(1);
+				OneBitAdventure::audio->Play(PORTA);
 			}
 		}
 	}

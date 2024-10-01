@@ -247,7 +247,9 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Biome.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="CellularAutomaton.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -287,7 +289,9 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="Biome.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="CellularAutomaton.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />

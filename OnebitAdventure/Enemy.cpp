@@ -75,14 +75,18 @@ void Enemy::Update()
         DisplayEnemyHealth();
     }
 
+    UpdateAnimation();                                      // Atualiza a animação do inimigo
+
     // Verifica se o ghost morreu após receber o dano
     if (life <= 0) {
  
-        Level1::scene->Remove(this, MOVING);
+        Level1::scene->Delete(this, MOVING);
 		Level1::player->SetXp(20 * level);	                // Adiciona a experiência ao player
     }
-
-    UpdateAnimation();                                      // Atualiza a animação do inimigo
+    else if (y - height / 2.0f >= window->Height())
+    {
+		Level1::scene->Delete(this, MOVING);
+    }
 }
 
 // ------------------------------------------------------------------------------

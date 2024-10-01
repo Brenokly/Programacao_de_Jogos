@@ -64,6 +64,12 @@
     <Filter Include="Game\Arquivos de Cabeçalho\Entity\Bosses\AttackBosses">
       <UniqueIdentifier>{39fefd45-ea0b-41e6-9006-dff05b383b56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Arquivos de Origem\Map">
+      <UniqueIdentifier>{1e665915-bb81-4aec-b11c-7d319cd094c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Arquivos de Cabeçalho\Map">
+      <UniqueIdentifier>{baddcf93-e866-4d1a-a9c9-30185882d861}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -132,12 +138,6 @@
     <ClCompile Include="Character.cpp">
       <Filter>Game\Arquivos de Origem\Entity\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Chunk.cpp">
-      <Filter>Game\Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Game\Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Game\Arquivos de Origem\Entity</Filter>
     </ClCompile>
@@ -179,6 +179,18 @@
     </ClCompile>
     <ClCompile Include="Card.cpp">
       <Filter>Game\Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Biome.cpp">
+      <Filter>Game\Arquivos de Origem\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="CellularAutomaton.cpp">
+      <Filter>Game\Arquivos de Origem\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Game\Arquivos de Origem\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Game\Arquivos de Origem\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,12 +272,6 @@
     <ClInclude Include="Prop.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity\Prop</Filter>
     </ClInclude>
-    <ClInclude Include="Chunk.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Game\Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Game\Arquivos de Cabeçalho\Entity</Filter>
     </ClInclude>
@@ -304,6 +310,18 @@
     </ClInclude>
     <ClInclude Include="Card.h">
       <Filter>Game\Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Biome.h">
+      <Filter>Game\Arquivos de Cabeçalho\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="CellularAutomaton.h">
+      <Filter>Game\Arquivos de Cabeçalho\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Game\Arquivos de Cabeçalho\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Game\Arquivos de Cabeçalho\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

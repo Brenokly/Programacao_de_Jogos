@@ -26,6 +26,9 @@ protected:
 
 	// Atributos básicos de todo jogador
 	int progress;											// quantos tiles andou
+	int down;												// quantas vezes desceu
+	bool isMovingUp;										// se moveu para cima
+	bool isMovingDown;										// se moveu para baixo
 	int coins;												// moedas capturadas
 	int level;												// nível do jogador
 	int xp;													// experiência do jogador

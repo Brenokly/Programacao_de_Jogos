@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "Ghost.h"
+#include "Map.h"
 
 // ------------------------------------------------------------------------------
 
@@ -23,27 +24,14 @@ void Level1::Init()
     this->hud = hud;													// inicializa o hud
 	this->player = player;											    // inicializa o player
 
-	OneBitAdventure::audio->Play(GAME, true);                           // inicia música de fundo
+	//OneBitAdventure::audio->Play(GAME, true);                           // inicia música de fundo
 	
     scene = new Scene();								                // cria nova cena
     scene->Add(hud, STATIC);
-
-    // mapa deve adicionar o player
     scene->Add(player, MOVING);
     
 	std::srand(static_cast<unsigned int>(std::time(0)));				// semente para números aleatórios
 	map = new Map(std::rand());								            // cria um novo mapa aleatório
-
-    //Hydra* hydra = new Hydra(8, 10);
-    //scene->Add(hydra, MOVING);
-    //scene->Add(new Ghost(8, 10), MOVING);
-    //scene->Add(new Ghost(5, 12), MOVING);
-    //scene->Add(new Ghost(2, 2), MOVING);
-    //scene->Add(new Ghost(1, 7), MOVING);
-    //scene->Add(new Ghost(8, 14), MOVING);
-    //scene->Add(new Ghost(5, 15), MOVING);
-    //scene->Add(new Ghost(2, 12), MOVING);
-    //scene->Add(new Ghost(1, 17), MOVING);
 }
 
 // ------------------------------------------------------------------------------
@@ -64,6 +52,8 @@ void Level1::Update()
     {
         scene->Update();
         scene->CollisionDetection();
+
+        map->Update();
     }
 }
 

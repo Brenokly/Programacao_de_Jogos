@@ -17,11 +17,13 @@ void OneBitAdventure::Init()
 	audio = new Audio();
     audio->Add(MENU, "Resources/Audios/Menu.wav");
     audio->Add(GAME, "Resources/Audios/Game.wav");
-	audio->Add(PORTA, "Resources/Audios/Porta.wav");
+	audio->Add(PORTA, "Resources/Audios/Porta.wav", 3);
 	audio->Add(ATAQUE, "Resources/Audios/Ataque.wav", 3);
-	audio->Add(AUDIO_CLICK, "Resources/Audios/Click.wav");
-	audio->Add(MOEDA, "Resources/Audios/Moeda.wav");
+	audio->Add(AUDIO_CLICK, "Resources/Audios/Click.wav", 3);
+	audio->Add(MOEDA, "Resources/Audios/Moeda.wav", 3);
 	audio->Add(MORTE, "Resources/Audios/Morte.wav");
+
+    audio->Volume(MOEDA, 0.5f);
 
     mouse = new Mouse();
 	level = new Home();
