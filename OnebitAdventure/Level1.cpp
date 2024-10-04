@@ -25,10 +25,12 @@ void Level1::Init()
 	this->player = player;											    // inicializa o player
 
 	OneBitAdventure::audio->Play(GAME, true);                           // inicia música de fundo
+    //Hydra* hydra = new Hydra(5,15);
 	
     scene = new Scene();								                // cria nova cena
     scene->Add(hud, STATIC);
     scene->Add(player, MOVING);
+    //scene->Add(hydra, MOVING);
     
 	std::srand(static_cast<unsigned int>(std::time(0)));				// semente para números aleatórios
 	map = new Map(std::rand());								            // cria um novo mapa aleatório

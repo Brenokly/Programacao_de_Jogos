@@ -1,7 +1,7 @@
-// Varredura.cpp
+ï»¿// Varredura.cpp
 
 //----------------------------------------------------------------------------------------------------------------
-// Inclusões de Arquivos
+// Incluoes de Arquivos
 
 #include "Varredura.h"
 #include "Level1.h"
@@ -10,8 +10,8 @@
 
 void Varredura::InitializeBBox()
 {
-    // Inicializa a BBox
-    BBox(mixed);
+	// Inicializa a BBox
+	BBox(mixed);
 }
 
 // ------------------------------------------------------------------------------
@@ -24,30 +24,30 @@ Varredura::Varredura(Boss* boss)
 	height = Level1::player->GetHeight();
 
 	//--------------------------------------------------------------------------------------------
-	// Inicializa a animação do ataque
+	// Inicializa a animaï¿½ï¿½o do ataque
 
-    // Ataque1 que precisa ser instanciado na frente do boss junto com os alertas
-    tileSet = new TileSet("Resources/bosses/ataque.png", (width * 5) * 3, height * 2, width * 5, height * 2, 3, 3);
-    anim = new Animation(tileSet, 0.3f, false);
+	// Ataque1 que precisa ser instanciado na frente do boss junto com os alertas
+	tileSet = new TileSet("Resources/bosses/ataque.png", (width * 5) * 3, height * 2, width * 5, height * 2, 3, 3);
+	anim = new Animation(tileSet, 0.3f, false);
 
-    uint SeqAtaque1[3] = { 0, 1, 2};
+	uint SeqAtaque1[3] = { 0, 1, 2 };
 
-    anim->Add(0, SeqAtaque1, 3);
-    anim->Select(0);
+	anim->Add(0, SeqAtaque1, 3);
+	anim->Select(0);
 
 	//--------------------------------------------------------------------------------------------
-	// Inicializa a posição do ataque
+	// Inicializa a posiï¿½ï¿½o do ataque
 
 	MoveTo(boss->X(), boss->Y() + (height * 2), Layer::MIDDLE);
 
 	//--------------------------------------------------------------------------------------------
 	// Inicializa a BBox
 
-    mixed = new Mixed();
-    InitializeBBox();
+	mixed = new Mixed();
+	InitializeBBox();
 
 	//--------------------------------------------------------------------------------------------
-	// Inicialização de variáveis auxiliares
+	// Inicializaï¿½ï¿½o de variï¿½veis auxiliares
 
 	type = BOSSATACK;
 	timer = new Timer();
@@ -57,16 +57,16 @@ Varredura::Varredura(Boss* boss)
 	this->baseDamage = boss->GetAttack();
 	this->boss = boss;
 
-	// Cria os alertas (Serão 7 para esse ataque)
+	// Cria os alertas (Serï¿½o 7 para esse ataque)
 	CreateAlert(x + (width * 2), y - height, 1);		// primeiro alerta (canto direito)
 	CreateAlert(x + (width * 2), y, 1);					// segundo alerta 
 	CreateAlert(x + (width * 1), y, 1);					// terceiro alerta
-	CreateAlert(x			   , y, 1);					// quarto alerta
+	CreateAlert(x, y, 1);								// quarto alerta
 	CreateAlert(x - (width * 1), y, 1);					// quinto alerta
 	CreateAlert(x - (width * 2), y, 1);					// sexto alerta
-	CreateAlert(x - (width * 2), y - height, 1);		// sétimo alerta (canto direito)
+	CreateAlert(x - (width * 2), y - height, 1);		// sï¿½timo alerta (canto direito)
 
-	// Define quais próximos alertas estão prestes a "atacar"
+	// Define quais prï¿½ximos alertas estï¿½o prestes a "atacar"
 	alerts[0]->UpdateAnimation();
 	alerts[1]->UpdateAnimation();
 }
@@ -85,12 +85,12 @@ Varredura::~Varredura()
 void Varredura::Update()
 {
 	DrawAlerts();
-	 
+
 	if (timer->Elapsed(0.3f) && Level1::player->IsMoving()) {
 		if (contador == 3) {
 			anim->Select(0);
 
-			// Lógica de criar a primeira bbox do atack
+			// Lï¿½gica de criar a primeira bbox do atack
 			Rect* rect = new Rect(
 				x - tileSet->TileWidth() / 8.5f,
 				y - tileSet->TileHeight() / 2.2f,
@@ -101,17 +101,17 @@ void Varredura::Update()
 
 			mixed->Insert(rect);
 
-			// Define quais próximos alertas estão prestes a "atacar"
+			// Define quais prï¿½ximos alertas estï¿½o prestes a "atacar"
 			alerts[2]->UpdateAnimation();
 			alerts[3]->UpdateAnimation();
 
-			// Remove os alertas que já atacaram
+			// Remove os alertas que jï¿½ atacaram
 			alerts[0]->draw = false;
 			alerts[1]->draw = false;
 
 			contador--;
 		}
-		else if (contador == 2){
+		else if (contador == 2) {
 			anim->NextFrame();
 
 			Rect* rect = new Rect(
@@ -124,12 +124,12 @@ void Varredura::Update()
 
 			mixed->Insert(rect);
 
-			// Define quais próximos alertas estão prestes a "atacar"
+			// Define quais prï¿½ximos alertas estï¿½o prestes a "atacar"
 			alerts[4]->UpdateAnimation();
 			alerts[5]->UpdateAnimation();
 			alerts[6]->UpdateAnimation();
 
-			// Remove os alertas que já atacaram
+			// Remove os alertas que jï¿½ atacaram
 			alerts[2]->draw = false;
 			alerts[3]->draw = false;
 
@@ -159,7 +159,7 @@ void Varredura::Update()
 			mixed->Insert(rect);
 
 
-			// Remove os alertas que já atacaram
+			// Remove os alertas que jï¿½ atacaram
 			alerts[4]->draw = false;
 			alerts[5]->draw = false;
 			alerts[6]->draw = false;
@@ -174,7 +174,10 @@ void Varredura::Update()
 		}
 
 		timer->Reset();
-    }
+	}
+
+	CameraMovement();
+	UpdateAlerts();
 }
 
 // ------------------------------------------------------------------------------
@@ -190,7 +193,7 @@ void Varredura::Draw()
 
 void Varredura::OnCollision(Object* obj)
 {
-    if (isDamage) {
+	if (isDamage) {
 		if (obj->Type() == PLAYER) {
 
 			Character* entity = (Character*)obj;
@@ -204,12 +207,12 @@ void Varredura::OnCollision(Object* obj)
 				entity->Move(DOWN);
 			}
 			else {
-				// Está nas laterais do ataque, logo, aplica 200% do dano base da hydra
+				// Estï¿½ nas laterais do ataque, logo, aplica 200% do dano base da hydra
 				Level1::player->SetDamage(baseDamage * 2);  // Aplica 200% do dano base
 
 				// Lateral direita
 				if (entity->X() > x) {
-					entity->Move(RIGHT);	
+					entity->Move(RIGHT);
 				}
 				else {
 					entity->Move(LEFT);
@@ -217,12 +220,12 @@ void Varredura::OnCollision(Object* obj)
 			}
 
 			// Dano que o inimigo causou
-			((Character*)obj)->text.insert({ std::to_string(Level1::player->GetDamage()), Color(0.941f, 0.318f, 0.459f, 1.0f)});
-			
+			((Character*)obj)->text.insert({ std::to_string(Level1::player->GetDamage()), Color(0.941f, 0.318f, 0.459f, 1.0f) });
+
 
 			isDamage = false;
 		}
-    }
+	}
 }
 
 // ------------------------------------------------------------------------------

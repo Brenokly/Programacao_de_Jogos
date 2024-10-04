@@ -1,6 +1,6 @@
-// Salto.cpp
+ï»¿// Salto.cpp
 // ------------------------------------------------------------------------------
-// Inclusões de Arquivos
+// Inclusï¿½es de Arquivos
 
 #include "Salto.h"
 #include "Level1.h"
@@ -16,10 +16,10 @@ void Salto::InitializeBBox()
 
 // ------------------------------------------------------------------------------
 
-Salto::Salto(Boss * boss)
+Salto::Salto(Boss* boss)
 {
 	//--------------------------------------------------------------------------------------------
-	// Inicialização de variáveis auxiliares
+	// Inicializaï¿½ï¿½o de variï¿½veis auxiliares
 
 	this->baseDamage = boss->GetAttack();
 	contador = 3;
@@ -30,7 +30,7 @@ Salto::Salto(Boss * boss)
 	this->boss = boss;
 
 	//--------------------------------------------------------------------------------------------
-	// Inicializa a posição
+	// Inicializa a posiÃ§Ã£o
 
 	MoveTo(Level1::player->X(), Level1::player->Y(), Layer::MIDDLE);
 
@@ -41,7 +41,7 @@ Salto::Salto(Boss * boss)
 	InitializeBBox();
 
 	//---------------------------------------------------------------------------
-	// Criação do alerta (nesse ataque terá apenas 1 alerta)
+	// CriaÃ§Ã£o do alerta (nesse ataque terï¿½ apenas 1 alerta)
 
 	CreateAlert(x, y, 4);
 }
@@ -63,13 +63,13 @@ void Salto::Update()
 	}
 
 	if (timer->Elapsed(0.3f) && Level1::player->IsMoving()) {
-		// Contador = 2 ele não faz nada, somente no 3° movimento do player ele ataca
+		// Contador = 2 ele nï¿½o faz nada, somente no 3 movimento do player ele ataca
 
 		if (contador == 3) {
 			contador--;
 		}
 		else if (contador == 2) {
-			// Define quais próximos alertas estão prestes a "atacar"
+			// Define quais prï¿½ximos alertas estï¿½o prestes a "atacar"
 			alerts[0]->UpdateAnimation();
 			contador--;
 		}
@@ -86,17 +86,15 @@ void Salto::Update()
 				x + boss->GetTileWidth() / 2.3,
 				y + boss->GetTileHeight() / 2.1);
 
-			rect->MoveTo(0, 0);
+			rect->MoveTo(0, 0 + 50);
 
 			// Adiciona a BBox ao mixed
 			mixed->Insert(rect);
 
-			// Define a posição antiga dele para atual
-			// Isso evita dele atacar o player e voltar para a posição antiga antes de saltar
+			// Define a posiÃ§Ã£o antiga dele para atual
+			// Isso evita dele atacar o player e voltar para a posiï¿½ï¿½o antiga antes de saltar
 			boss->SetPrevX(alerts[0]->GetX());
 			boss->SetPrevY(alerts[0]->GetY());
-			boss->SetTargetX(alerts[0]->GetX());
-			boss->SetTargetY(alerts[0]->GetY());
 
 			boss->MoveTo(x, y, Layer::FRONT);
 
@@ -104,14 +102,11 @@ void Salto::Update()
 			alerts[0]->draw = false;
 
 			contador--;
-		} 
+		}
 		else if (contador == 0) {
-
-			if (boss->X() == x && boss->Y() == y) {
-				boss->SetIsMoving(false);
-				boss->SetIsAttacked(false);
-				contador--;
-			}
+			boss->SetIsMoving(false);
+			boss->SetIsAttacked(false);
+			contador--;
 		}
 		else if (contador == -1) {
 			boss->contadorMovimento = 3;
@@ -120,6 +115,9 @@ void Salto::Update()
 
 		timer->Reset();
 	}
+
+	CameraMovement();
+	UpdateAlerts();
 }
 
 // ------------------------------------------------------------------------------
@@ -131,8 +129,8 @@ void Salto::OnCollision(Object* obj)
 		// Converte o objeto para character
 		Character* entity = (Character*)obj;
 
-		// Verifica se o player está se movendo ou se atacando ou andando
-		if (entity->IsMoving() || entity->GetState() != IDLE) {
+		// Verifica se o player esta se movendo ou se atacando ou andando
+		if (entity->GetState() != IDLE) {
 			return;
 		}
 
@@ -140,20 +138,20 @@ void Salto::OnCollision(Object* obj)
 		Level1::player->SetDamage(baseDamage * 2);
 
 		//--------------------------------------------------------------------------------------------
-		// Verifica onde o player está para empurrá-lo para fora do ataque
+		// Verifica onde o player estÃ£o para empurrï¿½-lo para fora do ataque
 
-		// Player pode está em 9 posições diferentes, já que o ataque tem área de 3x3
-		// Posição: (X,Y) é o centro do ataque, com essa informação podemos saber onde o player está
+		// Player pode estÃ£o em 9 posiÃ§Ã£es diferentes, jÃ¡ que o ataque tem Ã¡rea de 3x3
+		// Posicao: (X,Y) Ã© o centro do ataque, com essa informaï¿½ï¿½o podemos saber onde o player estï¿½
 
 		float xp = Level1::player->X();
 		float yp = Level1::player->Y();
 		float w = Level1::player->GetWidth();
 		float h = Level1::player->GetHeight();
 
-		if (compareTo(x,xp,y,yp)) {
-			Level1::player->MoveTo(xp, yp + (h * 2), Layer::FRONT);	// Empurra o player para cima
+		if (compareTo(x, xp, y, yp)) {
+			Level1::player->MoveTo(xp, yp - (h * 2), Layer::FRONT);	// Empurra o player para cima
 		}
-		if (compareTo(x - w, xp, y - h, yp) || compareTo(x - w, xp, y, yp) || compareTo(x - w, xp, y + h, yp)) {	
+		if (compareTo(x - w, xp, y - h, yp) || compareTo(x - w, xp, y, yp) || compareTo(x - w, xp, y + h, yp)) {
 			Level1::player->MoveTo(xp - w, yp, Layer::FRONT);		// Empurra o player para a esquerda
 		}
 		if (compareTo(x + w, xp, y - h, yp) || compareTo(x + w, xp, y, yp) || compareTo(x + w, xp, y + h, yp)) {
@@ -170,7 +168,6 @@ void Salto::OnCollision(Object* obj)
 		// Desativa o dano
 
 		isDamage = false;
-		boss->contadorMovimento = 0;
 	}
 }
 

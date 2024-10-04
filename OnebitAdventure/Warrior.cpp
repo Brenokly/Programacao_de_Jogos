@@ -11,7 +11,7 @@ Warrior::Warrior(int col, int line)
 	: Character() // Chamada do construtor da classe base
 {
 	// Cria o TileSet do Warrior
-	tileSet = new TileSet("Resources/WarriorSprite.png", width * 4, height * 2, 
+	tileSet = new TileSet("Resources/WarriorSprite2.png", width * 4, height * 2, 
 		width, height, 4, 8);
 
 	// Cria a animação do Warrior

@@ -35,6 +35,7 @@ protected:
 	int contador;									// Contador de movimento do player
 	float width, height;							// Largura e altura de um quadrado de movimento
 	float baseDamage;								// Guarda o dano base do ataque do boss
+	float limiarDist;								// Distância do player até o limiar
 
 	// --------------------------------------------------------------------------------------------
 	// Atributos de Colisão
@@ -46,6 +47,7 @@ protected:
 	// --------------------------------------------------------------------------------------------
 	// Métodos Protegidos
 
+	void CameraMovement();								// realiza a movimentação da câmera
 	virtual void InitializeBBox() = 0;				// Inicializa a caixa de colisão (BBox)
 public:
 	Attack();										// Construtor
@@ -55,6 +57,7 @@ public:
 
 	// Método para criar Alertas
 	void DrawAlerts();												// Desenha os alertas
+	void UpdateAlerts();											// Atualiza os alertas
 	void CreateAlert(float x, float y, int scala);					// Cria um alerta
 	virtual void OnCollision(Object* obj) = 0;						// Resolução da colisão
 	virtual void Update() = 0;										// Atualiza o estado do ataque

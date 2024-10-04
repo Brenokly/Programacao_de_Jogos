@@ -21,13 +21,14 @@ Alerts::Alerts(float x, float y, float scala)
 	//--------------------------------------------------------------------------------------------
 	// Variáveis auxiliares
 	nextFrame = false;
+	limiarDist = 0.0f;
 	draw = true;
-	this->x = x;
-	this->y = y;
 	this->scala = scala;
 	color = new Color{ 0.592f, 0.0f, 0.224f, 1.0f };
 
 	spriteAlerts = new Sprite("Resources/bosses/smallWarning2.png", width, height);
+
+	MoveTo(x, y, Layer::MIDDLE);
 }
 
 // ------------------------------------------------------------------------------
@@ -38,6 +39,13 @@ Alerts::~Alerts()
 	if (this->color != &defaultColor && this->color != nullptr) {
 		delete color;
 	}
+}
+
+// --------------------------------------------------------------------------------
+
+void Alerts::Update()
+{
+	CameraMovement();
 }
 
 // ------------------------------------------------------------------------------
@@ -58,3 +66,21 @@ void Alerts::UpdateAnimation(Color* color) {
 }
 
 // ------------------------------------------------------------------------------
+
+// O movimento da câmera consiste em aplicar uma força que puxa para baixo todas as entidades,
+// dando a ilusão de que o player está subindo
+void Alerts::CameraMovement()
+{
+	// Verifica se o player passou do limiar
+	if (Level1::player->Y() > window->CenterY()) return;
+
+	// Calcula a distância entre o player e o limiar
+	limiarDist = fabs(Level1::player->Y() - window->CenterY());
+
+	// Se o jogador passou do limiar, começa a aplicar a força de gravidade
+	if (limiarDist > 0) {
+		Translate(0, limiarDist * gameTime);
+	}
+}
+
+//-------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@
 
 // ------------------------------------------------------------------------------
 
-class Alerts
+class Alerts : public Object
 {
 protected:
     // --------------------------------------------------------------------------------------------
@@ -23,12 +23,14 @@ protected:
     Sprite * spriteAlerts;                                       // Sprite dos alertas
     Color * color;                                               // Cor do alerta
     static Color defaultColor;                                   // Cor padrão vermelha
+    bool nextFrame;                                              // Próximo frame
+    float scala;                                                 // Posição do alerta
+    float limiarDist;								             // Distância do player até o limiar
 
     // --------------------------------------------------------------------------------------------
     // Métodos Auxiliares
 
-    bool nextFrame;                                              // Próximo frame
-    float x, y, scala;                                           // Posição do alerta
+    void CameraMovement();								         // realiza a movimentação da câmera
 
 public:
     bool draw;                                                   // Desenha o alerta
@@ -42,6 +44,7 @@ public:
 	float GetY() const;                                          // Retorna a posição y
     void UpdateAnimation(Color* color = nullptr);                // Atualiza a animação
     void Draw();                                                 // Desenha o ataque
+	void Update();                                               // Atualiza o estado do ataque
 };
 
 // ------------------------------------------------------------------------------

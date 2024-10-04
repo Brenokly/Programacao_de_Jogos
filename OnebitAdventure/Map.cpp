@@ -236,21 +236,23 @@ Map::intMatrix Map::GenerateBiome(int biome)
 	int idx = biome < 4 ? biome : intDistribution(0, 3)(rng);
     intMatrix chunk;
 
+    // escolher o caminho
+
     // Se o bioma selecionado for FOREST, gera o bioma totalmente aleatorio
     if (idx == FOREST)
     {
         if (automatons.empty())
             InitializeAutomatons();
 
-        chunk = automatons.front().GetMap();  // Pega um automato da fila
-        automatons.pop();					  // Remove o automato da fila
+        chunk = automatons.front().GetMap();    // Pega um automato da fila
+        automatons.pop();					    // Remove o automato da fila
 
         // Gera a matriz de props do chunk
         for (size_t i = 0; i < chunk.size(); ++i) {
             for (size_t j = 0; j < chunk.at(i).size(); j++) {
 
 				uint cell = chunk.at(i).at(j);  // Seleciona a célula
-                if (cell == 1)  // Se for 1, gera um prop aleatório
+                if (cell == 1)    // Se for 1, gera um prop aleatório
                 {
                     // Gira a roleta e seleciona um prop
                     chunk.at(i).at(j) = SpinRoulette(biomes.at(idx).roulette);
