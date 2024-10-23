@@ -49,9 +49,9 @@ Após a compilação bem-sucedida, clique em Run (F5) para executar o jogo.
 Se houver erros na compilação do projeto, uma possível causa pode ser os seus Drivers!
 Tente atualizar os seus drivers de vídeo, verifique se vocÊ tem o directX11 instalado.
 
-📚 Licença
+# 📚 Licença
 
 Este projeto está licenciado sob a MIT License – consulte o arquivo LICENSE para mais detalhes.
 
-⚠️ Aviso Legal
+# ⚠️ Aviso Legal
 Este projeto não é afiliado, autorizado ou endossado pelos criadores originais de Onebit Adventure. Ele foi desenvolvido exclusivamente para fins de aprendizado e não tem intenção de violar quaisquer direitos autorais.
